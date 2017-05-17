@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2017 Level Software LLC.
+ * Copyright (C) 2015-2017 Level Software, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,16 @@
 
 package io.levelsoftware.carculator;
 
-import org.junit.Test;
+import com.facebook.stetho.Stetho;
 
-import static org.junit.Assert.assertEquals;
+import timber.log.Timber;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+public class CarculatorApplication extends BaseApplication {
+
+    @Override
+    void configureLogging() {
+        Timber.plant(new Timber.DebugTree());
+        Stetho.initializeWithDefaults(this);
     }
+
 }

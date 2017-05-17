@@ -16,14 +16,28 @@
 
 package io.levelsoftware.carculator;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.firebase.crash.FirebaseCrash;
+
+import timber.log.Timber;
+
+public class CarculatorApplication extends BaseApplication {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    void configureLogging() {
+        Timber.plant(new FirebaseReportingTree());
+    }
+
+    private class FirebaseReportingTree extends Timber.Tree {
+        @Override
+        protected void log(int priority, String tag, String message, Throwable throwable) {
+            if(priority >= Log.WARN) {
+                FirebaseCrash.log(message);
+                if(throwable != null) {
+                    FirebaseCrash.report(throwable);
+                }
+            }
+        }
     }
 }

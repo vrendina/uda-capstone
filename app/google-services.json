@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "882775511585",
+    "firebase_url": "https://uda-capstone.firebaseio.com",
+    "project_id": "uda-capstone",
+    "storage_bucket": "uda-capstone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882775511585:android:f57eea145dea3fdd",
+        "android_client_info": {
+          "package_name": "io.levelsoftware.carculator.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882775511585-10g8rrpaiko6mlcc2du11pn4ttkqrav8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVUTPL0MJqqtn_SOQB_VFVqJpYKHH1Zqo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882775511585:android:6f7e4373b3e89226",
+        "android_client_info": {
+          "package_name": "io.levelsoftware.carculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882775511585-10g8rrpaiko6mlcc2du11pn4ttkqrav8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVUTPL0MJqqtn_SOQB_VFVqJpYKHH1Zqo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
