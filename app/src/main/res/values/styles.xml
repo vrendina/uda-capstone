@@ -15,13 +15,53 @@
   -->
 
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="CarculatorTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
     </style>
+
+    <style name="CarculatorTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+    </style>
+
+    <style name="BaseActivity" parent="CarculatorTheme.NoActionBar" />
+    <style name="CarculatorTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
+    <style name="CarculatorTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="VehicleListActivity" parent="CarculatorTheme.NoActionBar" />
+    <style name="QuoteEntryActivity" parent="CarculatorTheme.NoActionBar" />
+
+    <style name="TabLayout" parent="Widget.Design.TabLayout">
+        <!--<item name="tabMaxWidth">@dimen/tab_max_width</item>-->
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/TabLayoutTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/defaultTabSelectedTextColor</item>
+    </style>
+
+    <style name="TabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <!-- QuoteListActivity Styles -->
+    <style name="BaseActivity.QuoteList" />
+
+    <style name="CarculatorTheme.AppBarOverlay.QuoteList">
+        <item name="colorControlNormal">@color/primaryDark</item>
+    </style>
+
+    <style name="TabLayout.QuoteList">
+        <item name="tabTextAppearance">@style/TabLayoutTextAppearance.QuoteList</item>
+    </style>
+
+    <style name="TabLayout.QuoteList.Theme" />
+
+    <style name="TabLayoutTextAppearance.QuoteList">
+        <item name="android:textColor">@color/defaultTabTextColor</item>
+    </style>
+
 
 </resources>

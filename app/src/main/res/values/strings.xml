@@ -16,4 +16,26 @@
 
 <resources>
     <string name="app_name">Carculator</string>
+
+    <string name="title_activity_quote_list">QuoteListActivity</string>
+    <string name="section_format">Hello World from section: %1s</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_compare">Compare Quotes</string>
+
+    <string name="loan">Buy</string>
+    <string name="lease">Lease</string>
+
+    <string name="key_loan" translatable="false">loan</string>
+    <string name="key_lease" translatable="false">lease</string>
+
+    <string-array name="quote_list_tab_names">
+        <item>@string/loan</item>
+        <item>@string/lease</item>
+    </string-array>
+
+    <string-array name="quote_list_tab_keys">
+        <item>@string/key_loan</item>
+        <item>@string/key_lease</item>
+    </string-array>
 </resources>

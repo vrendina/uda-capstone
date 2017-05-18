@@ -16,13 +16,17 @@
   -->
 
 <resources>
-    <color name="primary">#F5F5F5</color>
-    <color name="primaryDark">#9E9E9E</color>
-    <color name="accent">#673AB7</color>
+    <!-- QuoteListActivity Styles -->
+    <style name="BaseActivity.QuoteList">
+        <item name="android:colorEdgeEffect">@color/edgeEffect</item>
+    </style>
 
-    <color name="windowBackground">#E7E7E7</color>
-    <color name="edgeEffect">#40673AB7</color>
+    <style name="CarculatorTheme.AppBarOverlay.QuoteList">
+        <item name="colorControlNormal">@color/primaryDark</item>
+        <item name="android:colorControlHighlight">@color/edgeEffect</item>
+    </style>
 
-    <color name="defaultTabSelectedTextColor">#9E9E9E</color>
-    <color name="defaultTabTextColor">#D7D7D7</color>
+    <style name="TabLayout.QuoteList.Theme">
+        <item name="android:colorControlHighlight">@color/primary</item>
+    </style>
 </resources>
