@@ -28,7 +28,12 @@
     </style>
 
     <style name="BaseActivity" parent="CarculatorTheme.NoActionBar" />
-    <style name="CarculatorTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="CarculatorTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/primaryDark</item>
+        <item name="android:editTextColor">@color/primaryDark</item>
+    </style>
+
     <style name="CarculatorTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="VehicleListActivity" parent="CarculatorTheme.NoActionBar" />
@@ -49,9 +54,7 @@
     <!-- QuoteListActivity Styles -->
     <style name="BaseActivity.QuoteList" />
 
-    <style name="CarculatorTheme.AppBarOverlay.QuoteList">
-        <item name="colorControlNormal">@color/primaryDark</item>
-    </style>
+    <style name="CarculatorTheme.AppBarOverlay.QuoteList" />
 
     <style name="TabLayout.QuoteList">
         <item name="tabTextAppearance">@style/TabLayoutTextAppearance.QuoteList</item>
@@ -63,5 +66,8 @@
         <item name="android:textColor">@color/defaultTabTextColor</item>
     </style>
 
+    <!-- VehicleListActivity Styles -->
+    <style name="BaseActivity.VehicleList" />
+    <style name="CarculatorTheme.AppBarOverlay.VehicleList" />
 
 </resources>

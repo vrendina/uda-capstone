@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.ui.quotelist;
+package io.levelsoftware.carculator.ui.vehiclelist;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,34 +28,35 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 
 
-public class QuoteListFragment extends Fragment {
+public class VehicleListFragment extends Fragment {
 
-    private static final String KEY_DISPLAY_TYPE = "display_type";
+    private static final String KEY_FILTER_STRING = "filter";
+    private String filter;
 
-    @BindView(R.id.section_label) TextView sectionLabel;
+    @BindView(R.id.text_testing) TextView testTextView;
 
-    public QuoteListFragment() {}
-
-    public static QuoteListFragment newInstance(String displayType) {
-        QuoteListFragment fragment = new QuoteListFragment();
-
-        Bundle args = new Bundle();
-        args.putString(KEY_DISPLAY_TYPE, displayType);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
+    public VehicleListFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quote_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_vehicle_list, container, false);
         ButterKnife.bind(this, view);
 
-        sectionLabel.setText(getString(R.string.section_format,
-                getArguments().getString(KEY_DISPLAY_TYPE)));
-
+        if(savedInstanceState != null) {
+            filter(savedInstanceState.getString(KEY_FILTER_STRING));
+        }
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(KEY_FILTER_STRING, filter);
+        super.onSaveInstanceState(outState);
+    }
+
+    public void filter(String filter) {
+        this.filter = filter;
+        testTextView.setText(filter);
+    }
 }

@@ -29,4 +29,9 @@
     <style name="TabLayout.QuoteList.Theme">
         <item name="android:colorControlHighlight">@color/primary</item>
     </style>
+
+    <style name="CarculatorTheme.AppBarOverlay.VehicleList">
+        <item name="colorControlNormal">@color/primaryDark</item>
+        <item name="android:colorControlHighlight">@color/edgeEffect</item>
+    </style>
 </resources>
