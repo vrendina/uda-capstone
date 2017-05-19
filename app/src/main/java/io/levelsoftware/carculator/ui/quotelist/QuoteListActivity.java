@@ -16,6 +16,7 @@
 
 package io.levelsoftware.carculator.ui.quotelist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -24,19 +25,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
+import timber.log.Timber;
 
 public class QuoteListActivity extends AppCompatActivity {
 
-    @BindView(R.id.quoteList_toolbar) Toolbar toolbar;
-    @BindView(R.id.quoteList_viewPager) ViewPager viewPager;
-    @BindView(R.id.quoteList_tabLayout) TabLayout tabLayout;
-    @BindView(R.id.quoteList_floatingActionButton) FloatingActionButton floatingActionButton;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.viewPager) ViewPager viewPager;
+    @BindView(R.id.tabLayout) TabLayout tabLayout;
+    @BindView(R.id.fab) FloatingActionButton floatingActionButton;
 
-    private QuoteListPagerAdapter pagerAdapter;
+    private String[] tabNames;
+    private String[] tabKeys;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +55,33 @@ public class QuoteListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        pagerAdapter = new QuoteListPagerAdapter(getSupportFragmentManager(),
-                getResources().getStringArray(R.array.quote_list_tab_names),
-                getResources().getStringArray(R.array.quote_list_tab_keys));
+        setupTabs();
+        setupFab();
+    }
+
+    private void setupTabs() {
+        tabNames = getResources().getStringArray(R.array.quote_list_tab_names);
+        tabKeys = getResources().getStringArray(R.array.quote_list_tab_keys);
+
+        QuoteListPagerAdapter pagerAdapter = new QuoteListPagerAdapter(getSupportFragmentManager(),
+                tabNames, tabKeys);
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void setupFab() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int tabIndex = viewPager.getCurrentItem();
+                Timber.v("Adding new quote for quote type: " + tabNames[tabIndex]);
+
+                Intent intent = new Intent(QuoteListActivity.this, VehicleListActivity.class);
+                intent.putExtra(getString(R.string.key_quote_type), tabKeys[tabIndex]);
+                startActivity(intent);
+            }
+        });
     }
 
 
