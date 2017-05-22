@@ -16,6 +16,7 @@
 
 <resources>
     <string name="app_name">Carculator</string>
+    <string name="app_name_debug">Carculator Debug</string>
 
     <string name="section_format">Hello World from section: %1s</string>
 
