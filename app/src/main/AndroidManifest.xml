@@ -25,6 +25,11 @@
         android:supportsRtl="true"
         android:theme="@style/CarculatorTheme">
 
+        <provider
+            android:authorities="io.levelsoftware.carculator"
+            android:name=".data.VehicleProvider"
+            android:exported="false" />
+        
         <activity
             android:name=".ui.quotelist.QuoteListActivity"
             android:launchMode="singleTop"
