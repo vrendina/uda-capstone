@@ -73,6 +73,7 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$version.firebase"
     compile "com.google.firebase:firebase-auth:$version.firebase"
     compile "com.google.firebase:firebase-database:$version.firebase"
+    compile 'com.firebase:firebase-jobdispatcher:0.6.0'
 
     compile "com.jakewharton:butterknife:$version.butterKnife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$version.butterKnife"
