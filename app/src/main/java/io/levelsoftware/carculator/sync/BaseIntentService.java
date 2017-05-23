@@ -30,10 +30,11 @@ import io.levelsoftware.carculator.R;
 
 public abstract class BaseIntentService extends IntentService {
 
-    public static final int STATUS_COMPLETE = 100;
+    public static final int STATUS_SUCCESS = 100;
 
     public static final int STATUS_ERROR_NO_NETWORK = 900;
     public static final int STATUS_ERROR_NETWORK = 901;
+    public static final int STATUS_ERROR_DATA_CURRENT = 902;
 
     public BaseIntentService(String name) {
         super(name);

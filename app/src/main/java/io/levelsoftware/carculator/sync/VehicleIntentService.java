@@ -20,11 +20,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
+import java.util.Date;
+
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.data.PreferenceUtils;
 import timber.log.Timber;
 
 
 public class VehicleIntentService extends BaseIntentService {
+
+    public static final int MINIMUM_UPDATE_INTERVAL = 1000 * 60 * 2 ; // 2 minutes
+    //public static final int MINIMUM_UPDATE_INTERVAL = 1000 * 60 * 60 * 24 * 7 ; // 7 days
 
     private static final String SERVICE_NAME = "VehicleService";
     private static boolean isRunning;
@@ -37,29 +43,55 @@ public class VehicleIntentService extends BaseIntentService {
         return isRunning;
     }
 
+    public static void start(Context context) {
+        context.startService(new Intent(context, VehicleIntentService.class));
+    }
+
     protected static synchronized void setIsRunning(boolean isRunning) {
         VehicleIntentService.isRunning = isRunning;
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Timber.d("Running vehicle synchronization...");
+        Timber.d("Running vehicle intent service...");
         setIsRunning(true);
 
-        // Do work
-
-        sendStatusBroadcast(STATUS_COMPLETE, null);
-        Timber.d("Vehicle synchronization complete.");
+        if(dataNeedsUpdate()) {
+            updateData();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Timber.d("Vehicle intent service destroyed");
         setIsRunning(false);
     }
 
-    public static void start(Context context) {
-        context.startService(new Intent(context, VehicleIntentService.class));
+    private boolean dataNeedsUpdate() {
+        long lastUpdate = PreferenceUtils.getLastUpdate(this, getString(R.string.pref_vehicle_last_update));
+        long currentDate = (new Date()).getTime();
+
+        long elapsed = currentDate - lastUpdate;
+
+        if(elapsed < MINIMUM_UPDATE_INTERVAL) {
+            sendStatusBroadcast(STATUS_ERROR_DATA_CURRENT,
+                    "Data up to date. Minimum interval: "
+                            + MINIMUM_UPDATE_INTERVAL + " Elapsed time: " + elapsed);
+            return false;
+        }
+        return true;
+    }
+
+    private void updateData() {
+        if(networkIsAvailable()) {
+
+
+            PreferenceUtils.updateLastUpdate(this, getString(R.string.pref_vehicle_last_update));
+            sendStatusBroadcast(STATUS_SUCCESS, null);
+        } else {
+            sendStatusBroadcast(STATUS_ERROR_NO_NETWORK, "No network connection");
+        }
     }
 
     private void sendStatusBroadcast(int code, @Nullable String message) {

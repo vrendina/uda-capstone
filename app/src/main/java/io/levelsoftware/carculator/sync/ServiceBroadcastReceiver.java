@@ -19,16 +19,16 @@ package io.levelsoftware.carculator.sync;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.support.annotation.Nullable;
 
 import io.levelsoftware.carculator.R;
 
 
-public class VehicleBroadcastReceiver extends BroadcastReceiver {
+public class ServiceBroadcastReceiver extends BroadcastReceiver {
 
     OnStatusUpdateListener listener;
 
-    public VehicleBroadcastReceiver(OnStatusUpdateListener listener) {
+    public ServiceBroadcastReceiver(OnStatusUpdateListener listener) {
         this.listener = listener;
     }
 
@@ -37,26 +37,15 @@ public class VehicleBroadcastReceiver extends BroadcastReceiver {
         int code = intent.getIntExtra(context.getString(R.string.key_status_code), -1);
         String message = intent.getStringExtra(context.getString(R.string.key_status_message));
 
-        switch(code) {
-            case VehicleIntentService.STATUS_COMPLETE:
-                listener.statusComplete();
-                break;
-            case VehicleIntentService.STATUS_ERROR_NETWORK:
-            case VehicleIntentService.STATUS_ERROR_NO_NETWORK:
-                listener.statusErrorNetwork(message);
-                break;
-            default:
-                listener.statusErrorUnknown(code, message);
+        if(code == VehicleIntentService.STATUS_SUCCESS) {
+            listener.statusSuccess();
+        } else {
+            listener.statusError(code, message);
         }
     }
 
-    public static IntentFilter getFilter(Context context) {
-        return new IntentFilter(context.getString(R.string.broadcast_sync_vehicle));
-    }
-
     public interface OnStatusUpdateListener {
-        void statusComplete();
-        void statusErrorNetwork(String message);
-        void statusErrorUnknown(int code, String message);
+        void statusSuccess();
+        void statusError(int code, @Nullable String message);
     }
 }

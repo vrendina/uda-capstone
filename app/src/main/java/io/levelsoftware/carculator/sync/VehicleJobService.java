@@ -16,17 +16,20 @@
 
 package io.levelsoftware.carculator.sync;
 
+import android.content.IntentFilter;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
+import io.levelsoftware.carculator.R;
 import timber.log.Timber;
 
 public class VehicleJobService extends JobService
-        implements VehicleBroadcastReceiver.OnStatusUpdateListener {
+        implements ServiceBroadcastReceiver.OnStatusUpdateListener {
 
-    VehicleBroadcastReceiver receiver;
+    ServiceBroadcastReceiver receiver;
     JobParameters params;
 
     @Override
@@ -44,9 +47,9 @@ public class VehicleJobService extends JobService
     }
 
     private void bindReceiver() {
-        receiver = new VehicleBroadcastReceiver(this);
+        receiver = new ServiceBroadcastReceiver(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
-                VehicleBroadcastReceiver.getFilter(this));
+                new IntentFilter(getString(R.string.broadcast_sync_vehicle)));
     }
 
     private void unBindReceiver() {
@@ -54,21 +57,15 @@ public class VehicleJobService extends JobService
     }
 
     @Override
-    public void statusComplete() {
+    public void statusSuccess() {
+        Timber.d("Scheduled vehicle update completed successfully.");
         unBindReceiver();
         jobFinished(params, false);
     }
 
     @Override
-    public void statusErrorNetwork(String message) {
-        Timber.d("Got status network error: " + message);
-        unBindReceiver();
-        jobFinished(params, true);
-    }
-
-    @Override
-    public void statusErrorUnknown(int code, String message) {
-        Timber.d("Got status unknown error (" + code + "): " + message);
+    public void statusError(int code, @Nullable String message) {
+        Timber.d("Error during scheduled vehicle update. Code: " + code + " Message: " + message);
         unBindReceiver();
         jobFinished(params, true);
     }
