@@ -26,7 +26,7 @@
         android:theme="@style/CarculatorTheme">
 
         <provider
-            android:authorities="io.levelsoftware.carculator"
+            android:authorities="@string/content_provider"
             android:name=".data.VehicleProvider"
             android:exported="false" />
         
@@ -44,6 +44,18 @@
         <activity android:name=".ui.vehiclelist.VehicleListActivity"
             android:theme="@style/BaseActivity.VehicleList"
             android:parentActivityName=".ui.quotelist.QuoteListActivity" />
+
+        <service android:name=".sync.VehicleJobService"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
+        <service android:name=".sync.VehicleIntentService"
+            android:exported="false"
+            android:enabled="true"/>
     </application>
 
 </manifest>
