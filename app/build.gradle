@@ -17,9 +17,18 @@
 apply plugin: 'com.android.application'
 
 ext.version = [
-        androidSupport: "25.3.1",
-        firebase      : "10.2.4",
-        butterKnife   : "8.5.1"
+        androidSupport  : "25.3.1",
+        firebase        : "10.2.4",
+        butterKnife     : "8.5.1",
+        timber          : "4.5.1",
+        jobdispatcher   : "0.6.0",
+        okhttp          : "3.7.0",
+        collections     : "4.1",
+        stetho          : "1.4.2",
+        gson            : "2.8.0",
+        espresso        : "2.2.2",
+        junit           : "4.12"
+
 ]
 def version = ext.version;
 
@@ -59,7 +68,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$version.espresso", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
@@ -73,15 +82,19 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$version.firebase"
     compile "com.google.firebase:firebase-auth:$version.firebase"
     compile "com.google.firebase:firebase-database:$version.firebase"
-    compile 'com.firebase:firebase-jobdispatcher:0.6.0'
+    compile "com.firebase:firebase-jobdispatcher:$version.jobdispatcher"
+
+    compile "org.apache.commons:commons-collections4:$version.collections"
 
     compile "com.jakewharton:butterknife:$version.butterKnife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$version.butterKnife"
+    compile "com.jakewharton.timber:timber:$version.timber"
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.jakewharton.timber:timber:4.5.1'
-    testCompile 'junit:junit:4.12'
-    debugCompile 'com.facebook.stetho:stetho:1.4.2'
+    compile "com.squareup.okhttp3:okhttp:$version.okhttp"
+    compile "com.google.code.gson:gson:$version.gson"
+
+    debugCompile "com.facebook.stetho:stetho:$version.stetho"
+    testCompile "junit:junit:$version.junit"
 }
 
 apply plugin: 'com.google.gms.google-services'

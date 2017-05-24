@@ -25,7 +25,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.util.Date;
+
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.data.PreferenceUtils;
+import timber.log.Timber;
 
 
 public abstract class BaseIntentService extends IntentService {
@@ -33,8 +37,9 @@ public abstract class BaseIntentService extends IntentService {
     public static final int STATUS_SUCCESS = 100;
 
     public static final int STATUS_ERROR_NO_NETWORK = 900;
-    public static final int STATUS_ERROR_NETWORK = 901;
-    public static final int STATUS_ERROR_DATA_CURRENT = 902;
+    public static final int STATUS_ERROR_DATA_CURRENT = 901;
+    public static final int STATUS_ERROR_NETWORK_ISSUE = 902;
+    public static final int STATUS_ERROR_DATA_PROCESSING = 903;
 
     public BaseIntentService(String name) {
         super(name);
@@ -47,7 +52,20 @@ public abstract class BaseIntentService extends IntentService {
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
+    protected boolean dataNeedsUpdate(String preferenceKey, int minimumInterval) {
+        long lastUpdate = PreferenceUtils.getLastUpdate(this, preferenceKey);
+        long currentDate = (new Date()).getTime();
+
+        long elapsed = currentDate - lastUpdate;
+
+        Timber.d("Last updated: " + lastUpdate + " Current date: " + currentDate +
+                " Elapsed time: " + elapsed + " Update interval: " + minimumInterval);
+
+        return elapsed >= minimumInterval;
+    }
+
     protected void sendStatusBroadcast(int code, @Nullable String message, @NonNull String action) {
+        Timber.d("STATUS BROADCAST (" + code + ") " + message);
         Intent intent = new Intent();
         intent.setAction(action);
 

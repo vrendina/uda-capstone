@@ -27,8 +27,8 @@
 
         <provider
             android:authorities="@string/content_provider"
-            android:name=".data.VehicleProvider"
-            android:exported="false" />
+            android:name=".data.CarculatorProvider"
+            android:exported="true" />
         
         <activity
             android:name=".ui.quotelist.QuoteListActivity"
@@ -45,7 +45,7 @@
             android:theme="@style/BaseActivity.VehicleList"
             android:parentActivityName=".ui.quotelist.QuoteListActivity" />
 
-        <service android:name=".sync.VehicleJobService"
+        <service android:name=".sync.vehicle.VehicleJobService"
             android:exported="false"
             android:enabled="true">
             <intent-filter>
@@ -53,7 +53,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".sync.VehicleIntentService"
+        <service android:name=".sync.vehicle.VehicleIntentService"
             android:exported="false"
             android:enabled="true"/>
     </application>

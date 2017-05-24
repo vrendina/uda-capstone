@@ -27,9 +27,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 
-public class VehicleProvider extends ContentProvider {
+public class CarculatorProvider extends ContentProvider {
 
-    private VehicleDatabaseHelper dbHelper;
+    private CarculatorDatabaseHelper dbHelper;
 
     public static final int CODE_MODEL = 100;
     public static final int CODE_MODEL_WITH_ID = 101;
@@ -42,25 +42,25 @@ public class VehicleProvider extends ContentProvider {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         // content://io.levelsoftware.carculator/model
-        matcher.addURI(VehicleContract.CONTENT_AUTHORITY, VehicleContract.Model.PATH,
+        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Model.PATH,
                 CODE_MODEL);
 
         // content://io.levelsoftware.carculator/model/#
-        matcher.addURI(VehicleContract.CONTENT_AUTHORITY, VehicleContract.Model.PATH + "/#",
+        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Model.PATH + "/#",
                 CODE_MODEL_WITH_ID);
 
         // content://io.levelsoftware.carculator/make
-        matcher.addURI(VehicleContract.CONTENT_AUTHORITY, VehicleContract.Make.PATH,
+        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Make.PATH,
                 CODE_MAKE);
 
         // content://io.levelsoftware.carculator/make/#
-        matcher.addURI(VehicleContract.CONTENT_AUTHORITY, VehicleContract.Make.PATH + "/#",
+        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Make.PATH + "/#",
                 CODE_MAKE_WITH_ID);
     }
     
     @Override
     public boolean onCreate() {
-        dbHelper = new VehicleDatabaseHelper(getContext());
+        dbHelper = new CarculatorDatabaseHelper(getContext());
         return true;
     }
 
@@ -72,7 +72,7 @@ public class VehicleProvider extends ContentProvider {
 
         switch(matcher.match(uri)) {
             case CODE_MAKE:
-                cursor = db.query(VehicleContract.Make.TABLE_NAME,
+                cursor = db.query(CarculatorContract.Make.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -84,9 +84,9 @@ public class VehicleProvider extends ContentProvider {
             case CODE_MAKE_WITH_ID:
                 selectionArgs = new String[]{uri.getLastPathSegment()};
 
-                cursor = db.query(VehicleContract.Make.TABLE_NAME,
+                cursor = db.query(CarculatorContract.Make.TABLE_NAME,
                         projection,
-                        VehicleContract.Make.COLUMN_EID + " = ? ",
+                        CarculatorContract.Make.COLUMN_EID + " = ? ",
                         selectionArgs,
                         null,
                         null,
@@ -94,7 +94,7 @@ public class VehicleProvider extends ContentProvider {
                 break;
 
             case CODE_MODEL:
-                cursor = db.query(VehicleContract.Model.TABLE_NAME,
+                cursor = db.query(CarculatorContract.Model.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -106,9 +106,9 @@ public class VehicleProvider extends ContentProvider {
             case CODE_MODEL_WITH_ID:
                 selectionArgs = new String[]{uri.getLastPathSegment()};
 
-                cursor = db.query(VehicleContract.Model.TABLE_NAME,
+                cursor = db.query(CarculatorContract.Model.TABLE_NAME,
                         projection,
-                        VehicleContract.Model.COLUMN_EID + " = ? ",
+                        CarculatorContract.Model.COLUMN_EID + " = ? ",
                         selectionArgs,
                         null,
                         null,
@@ -133,10 +133,49 @@ public class VehicleProvider extends ContentProvider {
         return null;
     }
 
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String table;
+        switch (matcher.match(uri)) {
+            case CODE_MODEL:
+                table = CarculatorContract.Model.TABLE_NAME;
+                break;
+            case CODE_MAKE:
+                table = CarculatorContract.Make.TABLE_NAME;
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid uri for bulkInsert: " + uri);
+        }
+
+        db.beginTransaction();
+
+        int insertCount = 0;
+        try {
+            for (ContentValues value : values) {
+                db.insert(table, null, value);
+                insertCount++;
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
+        Context context = getContext();
+        if (context != null) {
+            context.getContentResolver().notifyChange(uri, null);
+        }
+
+        return insertCount;
+    }
+
+
+
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        throw new RuntimeException("ContentProvider 'insert' will not be implemented, use bulkInsert");
     }
 
     @Override
@@ -145,9 +184,22 @@ public class VehicleProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         switch(matcher.match(uri)) {
+            case CODE_MAKE_WITH_ID:
+                selectionArgs = new String[]{uri.getLastPathSegment()};
 
-            case CODE_MODEL:
-                numRowsDeleted = db.delete(VehicleContract.Model.TABLE_NAME, null, null);
+                numRowsDeleted = db.delete(
+                        CarculatorContract.Make.TABLE_NAME,
+                        CarculatorContract.Make.COLUMN_EID + " = ? ",
+                        selectionArgs);
+                break;
+
+            case CODE_MODEL_WITH_ID:
+                selectionArgs = new String[]{uri.getLastPathSegment()};
+
+                numRowsDeleted = db.delete(
+                        CarculatorContract.Model.TABLE_NAME,
+                        CarculatorContract.Model.COLUMN_EID + " = ? ",
+                        selectionArgs);
                 break;
 
             default:

@@ -18,9 +18,11 @@ package io.levelsoftware.carculator.data;
 
 import android.net.Uri;
 
-public class VehicleContract {
+import io.levelsoftware.carculator.BuildConfig;
 
-    public static final String CONTENT_AUTHORITY = "io.levelsoftware.carculator";
+public class CarculatorContract {
+
+    public static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID;
     public static final Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final class Make {

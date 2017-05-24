@@ -27,19 +27,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.firebase.jobdispatcher.Constraint;
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
-import com.firebase.jobdispatcher.Trigger;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
-import io.levelsoftware.carculator.sync.VehicleIntentService;
-import io.levelsoftware.carculator.sync.VehicleJobService;
+import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
 import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
 import timber.log.Timber;
 
@@ -74,21 +65,21 @@ public class QuoteListActivity extends AppCompatActivity {
         Timber.d("Starting immediate synchronization of vehicle data...");
         VehicleIntentService.start(this);
 
-        Timber.d("Scheduling future syncronization of vehicle data...");
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-
-        Job vehicleSyncJob = dispatcher.newJobBuilder()
-                .setService(VehicleJobService.class)
-                .setTag(getString(R.string.job_sync_vehicle))
-                .setRecurring(true)
-                .setLifetime(Lifetime.FOREVER)
-                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
-                .setReplaceCurrent(true)
-                .setTrigger(Trigger.executionWindow(10, 20))
-                .setConstraints(Constraint.ON_ANY_NETWORK)
-                .build();
-
-        dispatcher.mustSchedule(vehicleSyncJob);
+//        Timber.d("Scheduling future syncronization of vehicle data...");
+//        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+//
+//        Job vehicleSyncJob = dispatcher.newJobBuilder()
+//                .setService(VehicleJobService.class)
+//                .setTag(getString(R.string.job_sync_vehicle))
+//                .setRecurring(true)
+//                .setLifetime(Lifetime.FOREVER)
+//                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+//                .setReplaceCurrent(true)
+//                .setTrigger(Trigger.executionWindow(10, 20))
+//                .setConstraints(Constraint.ON_ANY_NETWORK)
+//                .build();
+//
+//        dispatcher.mustSchedule(vehicleSyncJob);
     }
 
     private void setupTabs() {

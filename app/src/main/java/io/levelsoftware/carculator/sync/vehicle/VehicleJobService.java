@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.sync;
+package io.levelsoftware.carculator.sync.vehicle;
 
 import android.content.IntentFilter;
 import android.support.annotation.Nullable;
@@ -24,12 +24,13 @@ import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.sync.SyncBroadcastReceiver;
 import timber.log.Timber;
 
 public class VehicleJobService extends JobService
-        implements ServiceBroadcastReceiver.OnStatusUpdateListener {
+        implements SyncBroadcastReceiver.OnStatusUpdateListener {
 
-    ServiceBroadcastReceiver receiver;
+    SyncBroadcastReceiver receiver;
     JobParameters params;
 
     @Override
@@ -47,7 +48,7 @@ public class VehicleJobService extends JobService
     }
 
     private void bindReceiver() {
-        receiver = new ServiceBroadcastReceiver(this);
+        receiver = new SyncBroadcastReceiver(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
                 new IntentFilter(getString(R.string.broadcast_sync_vehicle)));
     }

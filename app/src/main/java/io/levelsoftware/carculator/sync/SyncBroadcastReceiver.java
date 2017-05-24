@@ -22,13 +22,14 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
 
 
-public class ServiceBroadcastReceiver extends BroadcastReceiver {
+public class SyncBroadcastReceiver extends BroadcastReceiver {
 
     OnStatusUpdateListener listener;
 
-    public ServiceBroadcastReceiver(OnStatusUpdateListener listener) {
+    public SyncBroadcastReceiver(OnStatusUpdateListener listener) {
         this.listener = listener;
     }
 
