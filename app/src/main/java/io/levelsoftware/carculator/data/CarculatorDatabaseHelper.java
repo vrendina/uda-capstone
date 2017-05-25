@@ -32,25 +32,21 @@ public class CarculatorDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + CarculatorContract.Make.TABLE_NAME + " ("
-            + CarculatorContract.Make.COLUMN_EID       + " INTEGER NOT NULL,"
-            + CarculatorContract.Make.COLUMN_NAME      + " TEXT NOT NULL,"
-            + CarculatorContract.Make.COLUMN_NICE_NAME + " TEXT NOT NULL," +
-        " PRIMARY KEY(" + CarculatorContract.Make.COLUMN_EID + "));");
-
-        db.execSQL("CREATE TABLE " + CarculatorContract.Model.TABLE_NAME + " ("
-                + CarculatorContract.Model.COLUMN_EID       + " INTEGER NOT NULL,"
-                + CarculatorContract.Model.COLUMN_MAKE_ID   + " INTEGER NOT NULL,"
-                + CarculatorContract.Model.COLUMN_NAME      + " TEXT NOT NULL,"
-                + CarculatorContract.Model.COLUMN_NICE_NAME + " TEXT NOT NULL,"
-                + CarculatorContract.Model.COLUMN_YEAR      + " INTEGER NOT NULL,"
-                + " PRIMARY KEY(" + CarculatorContract.Model.COLUMN_EID + "));");
+        db.execSQL("CREATE TABLE " + CarculatorContract.Vehicle.TABLE_NAME + " ("
+                + CarculatorContract.Vehicle.COLUMN_EID             + " INTEGER NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_MAKE_EID        + " INTEGER NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_MAKE_NAME       + " TEXT NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_MAKE_NICE_NAME  + " TEXT NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_NAME            + " TEXT NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_NICE_NAME       + " TEXT NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_YEAR            + " INTEGER NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_BASE_PRICE      + " TEXT,"
+                + " PRIMARY KEY(" + CarculatorContract.Vehicle.COLUMN_EID + "));");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + CarculatorContract.Make.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + CarculatorContract.Model.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CarculatorContract.Vehicle.TABLE_NAME);
         onCreate(db);
     }
 }

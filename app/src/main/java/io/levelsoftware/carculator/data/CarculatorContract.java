@@ -25,8 +25,8 @@ public class CarculatorContract {
     public static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID;
     public static final Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final class Make {
-        public static final String PATH = "make";
+    public static final class Vehicle {
+        public static final String PATH = "vehicle";
         public static final String TABLE_NAME = PATH;
 
         public static final Uri CONTENT_URI = BASE_URI.buildUpon()
@@ -34,36 +34,16 @@ public class CarculatorContract {
                 .build();
 
         public static final String COLUMN_EID = "eid";
-        public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_NICE_NAME = "niceName";
-
-        /**
-         * Fetch Uri for a vehicle make using the Edmunds id
-         *
-         * @param eid Edmunds id for the requested make
-         * @return Uri
-         */
-        public static Uri buildMakeUri(long eid) {
-            return CONTENT_URI.buildUpon().appendPath(Long.toString(eid)).build();
-        }
-    }
-
-    public static final class Model {
-        public static final String PATH = "model";
-        public static final String TABLE_NAME = PATH;
-
-        public static final Uri CONTENT_URI = BASE_URI.buildUpon()
-                .appendPath(PATH)
-                .build();
-
-        public static final String COLUMN_EID = "eid";
-        public static final String COLUMN_MAKE_ID = "makeId";
+        public static final String COLUMN_MAKE_EID = "makeEid";
+        public static final String COLUMN_MAKE_NAME = "makeName";
+        public static final String COLUMN_MAKE_NICE_NAME ="makeNiceName";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_NICE_NAME = "niceName";
         public static final String COLUMN_YEAR = "year";
+        public static final String COLUMN_BASE_PRICE = "basePrice";
 
         /**
-         * Fetch Uri for a vehicle model using the Edmunds id
+         * Fetch Uri for a vehicle using the Edmunds model id
          *
          * @param eid Edmunds id for the requested model
          * @return Uri

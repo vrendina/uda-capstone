@@ -98,100 +98,60 @@ public class VehicleIntentService extends BaseIntentService {
                 /*
                     Compare with existing data so we don't do unnecessary database operations.
                  */
-                Collection<Integer> existingMakes = new HashSet<>();
-                Collection<Integer> existingModels = new HashSet<>();
+                Collection<Integer> existingVehicles = new HashSet<>();
 
-                Cursor makeCursor = getContentResolver().query(CarculatorContract.Make.CONTENT_URI,
-                        new String[]{CarculatorContract.Make.COLUMN_EID}, null, null, null);
+                Cursor cursor = getContentResolver().query(CarculatorContract.Vehicle.CONTENT_URI,
+                        new String[]{CarculatorContract.Vehicle.COLUMN_EID}, null, null, null);
 
-                if(makeCursor != null) {
-                    for(int i = 0; i < makeCursor.getCount(); i++) {
-                        if(makeCursor.moveToPosition(i)) {
-                            Integer eid = makeCursor.getInt(makeCursor.getColumnIndex(CarculatorContract.Make.COLUMN_EID));
-                            existingMakes.add(eid);
+                if(cursor != null) {
+                    for(int i = 0; i < cursor.getCount(); i++) {
+                        if(cursor.moveToPosition(i)) {
+                            Integer eid = cursor.getInt(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_EID));
+                            existingVehicles.add(eid);
                         }
                     }
-                    makeCursor.close();
+                    cursor.close();
                 }
 
-                Cursor modelCursor = getContentResolver().query(CarculatorContract.Model.CONTENT_URI,
-                        new String[]{CarculatorContract.Model.COLUMN_EID}, null, null, null);
+                List<ContentValues> contentValues = new ArrayList<>();
+                Collection<Integer> downloadedVehicles = new HashSet<>();
 
-                if(modelCursor != null) {
-                    for(int i = 0; i < modelCursor.getCount(); i++) {
-                        if(modelCursor.moveToPosition(i)) {
-                            Integer eid = modelCursor.getInt(modelCursor.getColumnIndex(CarculatorContract.Model.COLUMN_EID));
-                            existingModels.add(eid);
-                        }
-                    }
-                    modelCursor.close();
-                }
-
-                List<ContentValues> makesCv = new ArrayList<>();
-                List<ContentValues> modelsCv = new ArrayList<>();
-
-                Collection<Integer> downloadedMakes = new HashSet<>();
-                Collection<Integer> downloadedModels = new HashSet<>();
                 for(Make make: makes) {
-                    downloadedMakes.add(make.getEid());
-                    // If we don't already have this make in the database add it
-                    if(!existingMakes.contains(make.getEid())) {
-                        ContentValues makeCv = new ContentValues();
-                        makeCv.put(CarculatorContract.Make.COLUMN_EID, make.getEid());
-                        makeCv.put(CarculatorContract.Make.COLUMN_NAME, make.getName());
-                        makeCv.put(CarculatorContract.Make.COLUMN_NICE_NAME, make.getNiceName());
-                        makesCv.add(makeCv);
-                    }
-
                     for(Model model: make.getModels()) {
-                        downloadedModels.add(model.getEid());
+                        downloadedVehicles.add(model.getEid());
                         // If we don't already have this model in the database add it
-                        if(!existingModels.contains(model.getEid())) {
+                        if(!existingVehicles.contains(model.getEid())) {
                             ContentValues modelCv = new ContentValues();
-                            modelCv.put(CarculatorContract.Model.COLUMN_EID, model.getEid());
-                            modelCv.put(CarculatorContract.Model.COLUMN_MAKE_ID, make.getEid());
-                            modelCv.put(CarculatorContract.Model.COLUMN_NAME, model.getName());
-                            modelCv.put(CarculatorContract.Model.COLUMN_NICE_NAME, model.getNiceName());
-                            modelCv.put(CarculatorContract.Model.COLUMN_YEAR, model.getYear());
-                            modelsCv.add(modelCv);
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_EID, model.getEid());
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MAKE_EID, make.getEid());
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MAKE_NAME, make.getName());
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MAKE_NICE_NAME, make.getNiceName());
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_NAME, model.getName());
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_NICE_NAME, model.getNiceName());
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_YEAR, model.getYear());
+                            contentValues.add(modelCv);
                         }
                     }
                 }
-
-                Collection<Integer> removeMakes = CollectionUtils.subtract(existingMakes, downloadedMakes);
-                Collection<Integer> removeModels = CollectionUtils.subtract(existingModels, downloadedModels);
-
-//                Timber.d("Existing makes -- " + existingMakes);
-//                Timber.d("Downloaded makes --" + downloadedMakes);
-//                Timber.d("Existing models --" + existingModels);
-//                Timber.d("Downloaded models --" + downloadedModels);
-//                Timber.d("Remove makes -- " + removeMakes.toString());
-//                Timber.d("Remove models -- " + removeModels.toString());
 
                 /*
                     Delete any data that has been removed from the source.
                  */
-                int makeDeleteCount = 0;
-                for(Integer key: removeMakes) {
-                    makeDeleteCount += getContentResolver().delete(CarculatorContract.Make.buildMakeUri(key), null, null);
-                }
-                int modelDeleteCount = 0;
-                for(Integer key: removeModels) {
-                    modelDeleteCount += getContentResolver().delete(CarculatorContract.Model.buildModelUri(key), null, null);
+                Collection<Integer> removeVehicles = CollectionUtils.subtract(existingVehicles, downloadedVehicles);
+
+                int deleteCount = 0;
+                for(Integer key: removeVehicles) {
+                    deleteCount += getContentResolver().delete(CarculatorContract.Vehicle.buildModelUri(key), null, null);
                 }
 
                 /*
                     Add only new data to the database.
                  */
-                int makeInsertCount = getContentResolver().bulkInsert(CarculatorContract.Make.CONTENT_URI,
-                        makesCv.toArray(new ContentValues[makesCv.size()]));
-                int modelInsertCount = getContentResolver().bulkInsert(CarculatorContract.Model.CONTENT_URI,
-                        modelsCv.toArray(new ContentValues[modelsCv.size()]));
+                int insertCount = getContentResolver().bulkInsert(CarculatorContract.Vehicle.CONTENT_URI,
+                        contentValues.toArray(new ContentValues[contentValues.size()]));
 
-                Timber.d("Inserted " + makeInsertCount + " new make(s)");
-                Timber.d("Inserted " + modelInsertCount + " new model(s)");
-                Timber.d("Deleted " + makeDeleteCount + " make(s)");
-                Timber.d("Deleted " + modelDeleteCount + " model(s)");
+                Timber.d("Inserted " + insertCount + " new model(s)");
+                Timber.d("Deleted " + deleteCount + " model(s)");
 
                 PreferenceUtils.updateLastUpdate(this, getString(R.string.pref_vehicle_last_update));
                 sendStatusBroadcast(STATUS_SUCCESS, null);

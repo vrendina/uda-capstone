@@ -31,31 +31,21 @@ public class CarculatorProvider extends ContentProvider {
 
     private CarculatorDatabaseHelper dbHelper;
 
-    public static final int CODE_MODEL = 100;
-    public static final int CODE_MODEL_WITH_ID = 101;
-    public static final int CODE_MAKE = 102;
-    public static final int CODE_MAKE_WITH_ID = 103;
+    public static final int CODE_VEHICLE = 100;
+    public static final int CODE_VEHICLE_WITH_ID = 101;
 
     private static UriMatcher matcher;
 
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        // content://io.levelsoftware.carculator/model
-        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Model.PATH,
-                CODE_MODEL);
+        // content://io.levelsoftware.carculator/vehicle
+        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Vehicle.PATH,
+                CODE_VEHICLE);
 
-        // content://io.levelsoftware.carculator/model/#
-        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Model.PATH + "/#",
-                CODE_MODEL_WITH_ID);
-
-        // content://io.levelsoftware.carculator/make
-        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Make.PATH,
-                CODE_MAKE);
-
-        // content://io.levelsoftware.carculator/make/#
-        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Make.PATH + "/#",
-                CODE_MAKE_WITH_ID);
+        // content://io.levelsoftware.carculator/vehicle/#
+        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Vehicle.PATH + "/#",
+                CODE_VEHICLE_WITH_ID);
     }
     
     @Override
@@ -71,8 +61,8 @@ public class CarculatorProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         switch(matcher.match(uri)) {
-            case CODE_MAKE:
-                cursor = db.query(CarculatorContract.Make.TABLE_NAME,
+            case CODE_VEHICLE:
+                cursor = db.query(CarculatorContract.Vehicle.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -81,34 +71,12 @@ public class CarculatorProvider extends ContentProvider {
                         sortOrder);
                 break;
 
-            case CODE_MAKE_WITH_ID:
+            case CODE_VEHICLE_WITH_ID:
                 selectionArgs = new String[]{uri.getLastPathSegment()};
 
-                cursor = db.query(CarculatorContract.Make.TABLE_NAME,
+                cursor = db.query(CarculatorContract.Vehicle.TABLE_NAME,
                         projection,
-                        CarculatorContract.Make.COLUMN_EID + " = ? ",
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder);
-                break;
-
-            case CODE_MODEL:
-                cursor = db.query(CarculatorContract.Model.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder);
-                break;
-
-            case CODE_MODEL_WITH_ID:
-                selectionArgs = new String[]{uri.getLastPathSegment()};
-
-                cursor = db.query(CarculatorContract.Model.TABLE_NAME,
-                        projection,
-                        CarculatorContract.Model.COLUMN_EID + " = ? ",
+                        CarculatorContract.Vehicle.COLUMN_EID + " = ? ",
                         selectionArgs,
                         null,
                         null,
@@ -139,11 +107,8 @@ public class CarculatorProvider extends ContentProvider {
 
         String table;
         switch (matcher.match(uri)) {
-            case CODE_MODEL:
-                table = CarculatorContract.Model.TABLE_NAME;
-                break;
-            case CODE_MAKE:
-                table = CarculatorContract.Make.TABLE_NAME;
+            case CODE_VEHICLE:
+                table = CarculatorContract.Vehicle.TABLE_NAME;
                 break;
             default:
                 throw new UnsupportedOperationException("Invalid uri for bulkInsert: " + uri);
@@ -184,21 +149,12 @@ public class CarculatorProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         switch(matcher.match(uri)) {
-            case CODE_MAKE_WITH_ID:
+            case CODE_VEHICLE_WITH_ID:
                 selectionArgs = new String[]{uri.getLastPathSegment()};
 
                 numRowsDeleted = db.delete(
-                        CarculatorContract.Make.TABLE_NAME,
-                        CarculatorContract.Make.COLUMN_EID + " = ? ",
-                        selectionArgs);
-                break;
-
-            case CODE_MODEL_WITH_ID:
-                selectionArgs = new String[]{uri.getLastPathSegment()};
-
-                numRowsDeleted = db.delete(
-                        CarculatorContract.Model.TABLE_NAME,
-                        CarculatorContract.Model.COLUMN_EID + " = ? ",
+                        CarculatorContract.Vehicle.TABLE_NAME,
+                        CarculatorContract.Vehicle.COLUMN_EID + " = ? ",
                         selectionArgs);
                 break;
 
