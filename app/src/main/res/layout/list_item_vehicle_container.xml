@@ -15,23 +15,35 @@
   ~ limitations under the License.
   -->
 
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipe_refresh_layout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/test_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="0dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:paddingTop="16dp"
+            android:scrollbars="none"
             tools:listitem="@layout/list_item_vehicle"
-            app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
-            app:spanCount="1"/>
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-</android.support.v4.widget.SwipeRefreshLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

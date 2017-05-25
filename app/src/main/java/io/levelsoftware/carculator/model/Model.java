@@ -25,7 +25,7 @@ public class Model {
     private Integer eid;
     @SerializedName("year")
     @Expose
-    private String year;
+    private Integer year;
     @SerializedName("name")
     @Expose
     private String name;
@@ -44,11 +44,11 @@ public class Model {
         this.eid = eid;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

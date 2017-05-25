@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import io.levelsoftware.carculator.BuildConfig;
 import io.levelsoftware.carculator.NetworkManager;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.data.CarculatorContract;
@@ -154,7 +155,7 @@ public class VehicleIntentService extends BaseIntentService {
                 Timber.d("Deleted " + deleteCount + " model(s)");
 
                 PreferenceUtils.updateLastUpdate(this, getString(R.string.pref_vehicle_last_update));
-                sendStatusBroadcast(STATUS_SUCCESS, null);
+                sendStatusBroadcast(STATUS_SUCCESS, "Successfully completed");
             }
         } else {
             sendStatusBroadcast(STATUS_ERROR_NO_NETWORK, "No network connection");
@@ -163,6 +164,15 @@ public class VehicleIntentService extends BaseIntentService {
 
     @Nullable
     private Make[] fetchNetworkData() {
+        // Simulate long latency for network request (10 seconds)
+        if(BuildConfig.DEBUG) {
+            try {
+                Thread.sleep(10*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         URL url;
         try {
             url = new URL(CONTENT_URL);
