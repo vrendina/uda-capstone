@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import io.levelsoftware.carculator.NetworkManager;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.data.CarculatorContract;
 import io.levelsoftware.carculator.data.PreferenceUtils;
@@ -211,7 +212,7 @@ public class VehicleIntentService extends BaseIntentService {
             return null;
         }
 
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = NetworkManager.getClient();
         Request request = new Request.Builder()
                 .url(url)
                 .build();

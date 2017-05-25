@@ -24,7 +24,7 @@ ext.version = [
         jobdispatcher   : "0.6.0",
         okhttp          : "3.7.0",
         collections     : "4.1",
-        stetho          : "1.4.2",
+        stetho          : "1.5.0",
         gson            : "2.8.0",
         espresso        : "2.2.2",
         junit           : "4.12"
@@ -94,6 +94,9 @@ dependencies {
     compile "com.google.code.gson:gson:$version.gson"
 
     debugCompile "com.facebook.stetho:stetho:$version.stetho"
+    debugCompile "com.facebook.stetho:stetho-okhttp3:$version.stetho"
+    debugCompile "com.squareup.okhttp3:logging-interceptor:$version.okhttp"
+
     testCompile "junit:junit:$version.junit"
 }
 
