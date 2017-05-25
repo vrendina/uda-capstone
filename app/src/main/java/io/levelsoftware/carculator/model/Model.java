@@ -75,4 +75,30 @@ public class Model {
     public void setBasePrice(Integer basePrice) {
         this.basePrice = basePrice;
     }
+
+    @Override
+    public String toString() {
+        return "Model{" +
+                "eid=" + eid +
+                ", year='" + year + '\'' +
+                ", name='" + name + '\'' +
+                ", niceName='" + niceName + '\'' +
+                ", basePrice=" + basePrice +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Model model = (Model) o;
+
+        return eid.equals(model.eid);
+    }
+
+    @Override
+    public int hashCode() {
+        return eid.hashCode();
+    }
 }

@@ -66,4 +66,29 @@ public class Make {
     public void setModels(List<Model> models) {
         this.models = models;
     }
+
+    @Override
+    public String toString() {
+        return "Make{" +
+                "eid=" + eid +
+                ", name='" + name + '\'' +
+                ", niceName='" + niceName + '\'' +
+                ", models=" + models +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Make make = (Make) o;
+
+        return eid.equals(make.eid);
+    }
+
+    @Override
+    public int hashCode() {
+        return eid.hashCode();
+    }
 }
