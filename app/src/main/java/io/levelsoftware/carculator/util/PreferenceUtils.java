@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.data;
+package io.levelsoftware.carculator.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
