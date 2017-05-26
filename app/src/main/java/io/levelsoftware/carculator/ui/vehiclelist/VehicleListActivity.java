@@ -16,8 +16,13 @@
 
 package io.levelsoftware.carculator.ui.vehiclelist;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -25,7 +30,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +45,8 @@ public class VehicleListActivity extends AppCompatActivity {
 
     public static final String KEY_SEARCH_QUERY = "search_query";
     private String searchQuery = "";
+
+    private BroadcastReceiver clickReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,27 +64,21 @@ public class VehicleListActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         listFragment = (VehicleListFragment) fragmentManager.findFragmentById(R.id.fragment_vehicle_list);
 
-        // This prevents the back button from being focused when rotating with a search query present
-        View fragmentView = listFragment.getView();
-        if(fragmentView != null) {
-            fragmentView.requestFocus();
-        }
-
         if(savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY);
-            Timber.d("Saved search query" + searchQuery);
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        bindClickReceiver();
+    }
 
-        // This prevents the back button from being focused when rotating with a search query present
-//        View fragmentView = listFragment.getView();
-//        if(fragmentView != null) {
-//            fragmentView.requestFocus();
-//        }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unBindClickReceiver();
     }
 
     @Override
@@ -114,6 +114,22 @@ public class VehicleListActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    private void bindClickReceiver() {
+        clickReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Timber.d("Got click broadcast!");
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(clickReceiver,
+                new IntentFilter(getString(R.string.broadcast_click_vehicle)));
+    }
+
+    private void unBindClickReceiver() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(clickReceiver);
     }
 
     private void setSearchQuery(String searchQuery) {

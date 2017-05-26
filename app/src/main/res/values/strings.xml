@@ -51,5 +51,7 @@
 
     <string name="pref_vehicle_last_update" translatable="false">vehicle_last_update</string>
     <string name="job_sync_vehicle" translatable="false">job_vehicle_sync</string>
+
     <string name="broadcast_sync_vehicle" translatable="false">io.levelsoftware.carculator.sync.VEHICLE_SYNC</string>
+    <string name="broadcast_click_vehicle" translatable="false">io.levelsoftware.carculator.ui.CLICK_VEHICLE</string>
 </resources>

@@ -16,6 +16,9 @@
 
 package io.levelsoftware.carculator.ui.vehiclelist;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -63,7 +66,15 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
     public void onClick(View view) {
         Timber.d("Clicked on view at position -- " + getAdapterPosition());
 
+        Context context = view.getContext();
         // Send click broadcast up to activity
+        Intent intent = new Intent();
+        intent.setAction(context.getString(R.string.broadcast_click_vehicle));
+
+//        intent.putExtra(getString(R.string.key_status_code), code);
+//        intent.putExtra(getString(R.string.key_status_message), message);
+
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
 }

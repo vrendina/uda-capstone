@@ -39,6 +39,7 @@ import io.levelsoftware.carculator.data.CarculatorContract;
 import io.levelsoftware.carculator.sync.BaseIntentService;
 import io.levelsoftware.carculator.sync.SyncBroadcastReceiver;
 import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
+import timber.log.Timber;
 
 
 public class VehicleListFragment extends Fragment implements
@@ -76,7 +77,7 @@ public class VehicleListFragment extends Fragment implements
             searchQuery = savedInstanceState.getString(VehicleListActivity.KEY_SEARCH_QUERY);
         }
 
-        bindReceiver();
+        bindSyncReceiver();
         getActivity().getSupportLoaderManager().initLoader(KEY_VEHICLE_LOADER, null, this);
 
         return view;
@@ -85,7 +86,7 @@ public class VehicleListFragment extends Fragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unBindReceiver();
+        unBindSyncReceiver();
     }
 
     @Override
@@ -136,24 +137,26 @@ public class VehicleListFragment extends Fragment implements
         }
     }
 
-    private void bindReceiver() {
+    private void bindSyncReceiver() {
         receiver = new SyncBroadcastReceiver(this);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver,
                 new IntentFilter(getString(R.string.broadcast_sync_vehicle)));
     }
 
-    private void unBindReceiver() {
+    private void unBindSyncReceiver() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
     @Override
     public void statusSuccess() {
+        Timber.d("RECEIVED: Status broadcast success");
         swipeRefreshLayout.setEnabled(false);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void statusError(int code, @Nullable String message) {
+        Timber.d("RECEIVED: Status broadcast error");
         syncError = true;
         if(count == 0) {
             showError(code);
