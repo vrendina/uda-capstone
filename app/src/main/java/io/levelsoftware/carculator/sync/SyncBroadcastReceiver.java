@@ -35,8 +35,8 @@ public class SyncBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int code = intent.getIntExtra(context.getString(R.string.key_status_code), -1);
-        String message = intent.getStringExtra(context.getString(R.string.key_status_message));
+        int code = intent.getIntExtra(context.getString(R.string.intent_key_status_code), -1);
+        String message = intent.getStringExtra(context.getString(R.string.intent_key_status_message));
 
         if(code == VehicleIntentService.STATUS_SUCCESS) {
             listener.statusSuccess();

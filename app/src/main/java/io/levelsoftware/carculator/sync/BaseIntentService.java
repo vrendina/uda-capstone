@@ -69,8 +69,8 @@ public abstract class BaseIntentService extends IntentService {
         Intent intent = new Intent();
         intent.setAction(action);
 
-        intent.putExtra(getString(R.string.key_status_code), code);
-        intent.putExtra(getString(R.string.key_status_message), message);
+        intent.putExtra(getString(R.string.intent_key_status_code), code);
+        intent.putExtra(getString(R.string.intent_key_status_message), message);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }

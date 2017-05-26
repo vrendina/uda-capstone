@@ -28,6 +28,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class VehicleListFragment extends Fragment implements
         recyclerView.setAdapter(adaper);
 
         if(savedInstanceState != null) {
-            searchQuery = savedInstanceState.getString(VehicleListActivity.KEY_SEARCH_QUERY);
+            searchQuery = savedInstanceState.getString(getString(R.string.intent_key_search_query));
         }
 
         bindSyncReceiver();
@@ -97,7 +98,7 @@ public class VehicleListFragment extends Fragment implements
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(VehicleListActivity.KEY_SEARCH_QUERY, searchQuery);
+        outState.putString(getString(R.string.intent_key_search_query), searchQuery);
         super.onSaveInstanceState(outState);
     }
 
@@ -189,7 +190,7 @@ public class VehicleListFragment extends Fragment implements
 
     public void filter(@Nullable String query) {
         this.searchQuery = query;
-        if(query != null) {
+        if(!TextUtils.isEmpty(query)) {
             adaper.filter(query);
         }
     }

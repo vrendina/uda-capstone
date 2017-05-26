@@ -41,12 +41,9 @@ public class VehicleListActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
 
     private VehicleListFragment listFragment;
-    private SearchView searchView;
-
-    public static final String KEY_SEARCH_QUERY = "search_query";
-    private String searchQuery = "";
-
     private BroadcastReceiver clickReceiver;
+
+    private String searchQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +62,7 @@ public class VehicleListActivity extends AppCompatActivity {
         listFragment = (VehicleListFragment) fragmentManager.findFragmentById(R.id.fragment_vehicle_list);
 
         if(savedInstanceState != null) {
-            searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY);
+            searchQuery = savedInstanceState.getString(getString(R.string.intent_key_search_query));
         }
     }
 
@@ -83,7 +80,7 @@ public class VehicleListActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(KEY_SEARCH_QUERY, searchQuery);
+        outState.putString(getString(R.string.intent_key_search_query), searchQuery);
         super.onSaveInstanceState(outState);
     }
 
@@ -93,7 +90,7 @@ public class VehicleListActivity extends AppCompatActivity {
 
         MenuItem searchMenuItem = menu.findItem(R.id.action_search);
 
-        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint(getString(R.string.search_hint));
 
