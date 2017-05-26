@@ -44,7 +44,7 @@ public class VehicleListNestedAdapter extends
 
     @Override
     public void onBindViewHolder(VehicleListNestedViewHolder holder, int position) {
-        holder.setModel(data.getModels().get(position));
+        holder.setVehicle(data.getModels().get(position), data);
         // Show the divider unless we are at the last position
         holder.showDivider(position != getItemCount() - 1);
     }

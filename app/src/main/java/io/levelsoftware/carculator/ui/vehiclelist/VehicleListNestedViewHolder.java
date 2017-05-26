@@ -19,16 +19,19 @@ package io.levelsoftware.carculator.ui.vehiclelist;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.model.Make;
 import io.levelsoftware.carculator.model.Model;
 import timber.log.Timber;
 
 class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    
+
+    @BindView(R.id.linear_layout) LinearLayout linearLayout;
     @BindView(R.id.text_view_model_name) TextView nameTextView;
     @BindView(R.id.text_view_base_price) TextView basePriceTextView;
     @BindView(R.id.image_view_model_picture) ImageView modelImageView;
@@ -40,13 +43,15 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
         view.setOnClickListener(this);
     }
 
-    public void setModel(Model model) {
+    public void setVehicle(Model model, Make make) {
         nameTextView.setText(model.getYear() + " " + model.getName());
 
         if(model.getBasePrice() != null && model.getBasePrice() != 0) {
             basePriceTextView.setText(model.getBasePrice().toString());
             basePriceTextView.setVisibility(View.VISIBLE);
         }
+
+        linearLayout.setContentDescription(model.getYear() + " " + make.getName() + " " + model.getName());
     }
     
     public void showDivider(boolean visible) {

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -30,6 +31,7 @@ import io.levelsoftware.carculator.model.Make;
 
 
 public class VehicleListContainerViewHolder extends RecyclerView.ViewHolder {
+    @BindView(R.id.linear_layout) LinearLayout linearLayout;
     @BindView(R.id.text_view_make_name) TextView makeTextView;
     @BindView(R.id.image_view_make_logo) ImageView makeLogoImageView;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
@@ -55,5 +57,7 @@ public class VehicleListContainerViewHolder extends RecyclerView.ViewHolder {
 
         makeLogoImageView.setImageResource(logoResourceId);
         makeTextView.setText(make.getName());
+        
+        linearLayout.setContentDescription(make.getName());
     }
 }
