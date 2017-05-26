@@ -28,7 +28,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,8 @@ public class VehicleListFragment extends Fragment implements
 
     private String searchQuery = "";
     private boolean syncError = false;
-    private int count;
+
+    public int count;
 
     public VehicleListFragment() {}
 
@@ -190,7 +190,7 @@ public class VehicleListFragment extends Fragment implements
 
     public void filter(@Nullable String query) {
         this.searchQuery = query;
-        if(!TextUtils.isEmpty(query)) {
+        if(query != null && count > 0) {
             adaper.filter(query);
         }
     }
