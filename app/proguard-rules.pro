@@ -18,3 +18,6 @@
 
 # Model classes for serialization
 -keep class io.levelsoftware.carculator.model.** { *; }
+
+# Android support library
+-keep class android.support.v7.widget.SearchView { *; }
