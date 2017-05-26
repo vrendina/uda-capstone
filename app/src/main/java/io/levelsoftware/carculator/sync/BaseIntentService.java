@@ -28,7 +28,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import java.util.Date;
 
 import io.levelsoftware.carculator.R;
-import io.levelsoftware.carculator.data.PreferenceUtils;
+import io.levelsoftware.carculator.util.PreferenceUtils;
 import timber.log.Timber;
 
 
