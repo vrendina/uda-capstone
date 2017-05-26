@@ -22,7 +22,10 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +39,8 @@ public class VehicleListActivity extends AppCompatActivity {
     private VehicleListFragment listFragment;
     private SearchView searchView;
 
-    private static final String KEY_SEARCH_QUERY = "search_query";
-    private String searchQuery;
+    public static final String KEY_SEARCH_QUERY = "search_query";
+    private String searchQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +58,27 @@ public class VehicleListActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         listFragment = (VehicleListFragment) fragmentManager.findFragmentById(R.id.fragment_vehicle_list);
 
+        // This prevents the back button from being focused when rotating with a search query present
+        View fragmentView = listFragment.getView();
+        if(fragmentView != null) {
+            fragmentView.requestFocus();
+        }
+
         if(savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY);
             Timber.d("Saved search query" + searchQuery);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // This prevents the back button from being focused when rotating with a search query present
+//        View fragmentView = listFragment.getView();
+//        if(fragmentView != null) {
+//            fragmentView.requestFocus();
+//        }
     }
 
     @Override
@@ -71,9 +91,17 @@ public class VehicleListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_vehicle_list, menu);
 
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint(getString(R.string.search_hint));
+
+        if(!TextUtils.isEmpty(searchQuery)) {
+            searchMenuItem.expandActionView();
+            searchView.setQuery(searchQuery, true);
+            searchView.requestFocus();
+        }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override public boolean onQueryTextSubmit(String query) {return false;}

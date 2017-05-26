@@ -17,7 +17,9 @@
 package io.levelsoftware.carculator.ui.vehiclelist;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,12 +35,14 @@ import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.data.CarculatorContract;
 import io.levelsoftware.carculator.model.Make;
 import io.levelsoftware.carculator.model.Model;
+import timber.log.Timber;
 
 
 public class VehicleListContainerAdapter extends
         RecyclerView.Adapter<VehicleListContainerAdapter.VehicleListContainerViewHolder> {
 
     private Make[] data;
+    private Make[] filteredData;
 
     @Override
     public VehicleListContainerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,10 +53,6 @@ public class VehicleListContainerAdapter extends
     }
 
     public void setCursor(Cursor cursor) {
-        /*
-            This processing will likely need to be put in a background task. This is what not
-            being allowed to use an ORM looks like.
-         */
         if(cursor != null && cursor.getCount() > 0) {
 
             LinkedHashMap<Make, ArrayList<Model>> dataBuilder = new LinkedHashMap<>();
@@ -65,9 +66,7 @@ public class VehicleListContainerAdapter extends
                 if (!dataBuilder.containsKey(make)) {
                     make.setName(cursor.getString(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_MAKE_NAME)));
                     make.setNiceName(cursor.getString(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_MAKE_NICE_NAME)));
-
-                    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") ArrayList<Model> models = new ArrayList<>();
-                    dataBuilder.put(make, models);
+                    dataBuilder.put(make, new ArrayList<Model>());
                 }
 
                 Model model = new Model();
@@ -84,14 +83,71 @@ public class VehicleListContainerAdapter extends
                 make.setModels(dataBuilder.get(make));
             }
             data = dataBuilder.keySet().toArray(new Make[dataBuilder.keySet().size()]);
+            filteredData = data.clone();
 
             notifyDataSetChanged();
         }
     }
 
+    // TODO: Performance optimization
+    public void filter(@NonNull String query) {
+        Timber.d("Query string: '" + query + "'");
+        if(TextUtils.isEmpty(query.replaceAll("[^A-Za-z0-9]", ""))) {
+            filteredData = data.clone();
+        } else {
+            // Split the query string based on whitespace and use an AND operator on each element
+            String[] queries = query.split("\\s");
+
+//            ArrayList<String> suggestions = new ArrayList<>();
+            LinkedHashMap<Make, ArrayList<Model>> dataBuilder = new LinkedHashMap<>();
+
+            for (Make make : data) {
+                for (Model model : make.getModels()) {
+                    String readableVehicleString = model.getYear() + " " + make.getName() + " " + model.getName();
+                    String vehicleString = readableVehicleString.replaceAll("[^A-Za-z0-9]", "").toLowerCase(Locale.ENGLISH);
+
+                    // Match all parts of the query string
+                    for(int i = 0; i < queries.length; i++) {
+                        String q = queries[i].replaceAll("[^A-Za-z0-9]", "").toLowerCase(Locale.ENGLISH);
+
+                        if(vehicleString.contains(q)) {
+                            // If we have matched all of the queries then add the make to the list
+                            if(i == queries.length - 1) {
+//                                suggestions.add(readableVehicleString);
+
+                                Make filteredMake = new Make();
+                                filteredMake.setEid(make.getEid());
+
+                                if (!dataBuilder.containsKey(filteredMake)) {
+                                    filteredMake.setName(make.getName());
+                                    filteredMake.setNiceName(make.getNiceName());
+                                    dataBuilder.put(filteredMake, new ArrayList<Model>());
+                                }
+                                dataBuilder.get(filteredMake).add(model);
+
+                                Timber.d(readableVehicleString);
+                            }
+                            continue;
+                        }
+                        // If we don't match part of the query break out of the loop
+                        break;
+                    }
+                }
+            }
+
+            for(Make make: dataBuilder.keySet()) {
+                make.setModels(dataBuilder.get(make));
+            }
+
+            filteredData = dataBuilder.keySet().toArray(new Make[dataBuilder.keySet().size()]);
+        }
+
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(VehicleListContainerViewHolder holder, int position) {
-        Make make = data[position];
+        Make make = filteredData[position];
 
         holder.adapter = new VehicleListNestedAdapter(make);
         holder.recyclerView.setAdapter(holder.adapter);
@@ -101,8 +157,8 @@ public class VehicleListContainerAdapter extends
 
     @Override
     public int getItemCount() {
-        if(data != null) {
-            return data.length;
+        if(filteredData != null) {
+            return filteredData.length;
         }
         return 0;
     }

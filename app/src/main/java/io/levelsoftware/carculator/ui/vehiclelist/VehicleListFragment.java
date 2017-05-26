@@ -47,14 +47,14 @@ public class VehicleListFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int KEY_VEHICLE_LOADER = 0;
-    private static final String KEY_FILTER_STRING = "filter";
-    private String filter;
 
     @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private SyncBroadcastReceiver receiver;
     private VehicleListContainerAdapter adaper;
+
+    private String searchQuery = "";
     private boolean syncError = false;
     private int count;
 
@@ -72,12 +72,13 @@ public class VehicleListFragment extends Fragment implements
         adaper = new VehicleListContainerAdapter();
         recyclerView.setAdapter(adaper);
 
+        if(savedInstanceState != null) {
+            searchQuery = savedInstanceState.getString(VehicleListActivity.KEY_SEARCH_QUERY);
+        }
+
         bindReceiver();
         getActivity().getSupportLoaderManager().initLoader(KEY_VEHICLE_LOADER, null, this);
 
-        if(savedInstanceState != null) {
-            filter(savedInstanceState.getString(KEY_FILTER_STRING));
-        }
         return view;
     }
 
@@ -89,7 +90,7 @@ public class VehicleListFragment extends Fragment implements
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(KEY_FILTER_STRING, filter);
+        outState.putString(VehicleListActivity.KEY_SEARCH_QUERY, searchQuery);
         super.onSaveInstanceState(outState);
     }
 
@@ -117,6 +118,7 @@ public class VehicleListFragment extends Fragment implements
         } else {
             swipeRefreshLayout.setRefreshing(false);
             adaper.setCursor(data);
+            adaper.filter(searchQuery);
         }
     }
 
@@ -176,7 +178,8 @@ public class VehicleListFragment extends Fragment implements
         }
     }
 
-    public void filter(@Nullable String filter) {
-        this.filter = filter;
+    public void filter(@Nullable String query) {
+        this.searchQuery = query;
+        adaper.filter(query);
     }
 }
