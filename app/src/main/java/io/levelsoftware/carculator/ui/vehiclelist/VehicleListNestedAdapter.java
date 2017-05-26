@@ -24,11 +24,9 @@ import android.view.ViewGroup;
 
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.Make;
-import timber.log.Timber;
 
 public class VehicleListNestedAdapter extends
-        RecyclerView.Adapter<VehicleListNestedViewHolder> implements
-        VehicleListNestedViewHolder.OnClickListener {
+        RecyclerView.Adapter<VehicleListNestedViewHolder> {
 
     private Make data;
 
@@ -47,7 +45,8 @@ public class VehicleListNestedAdapter extends
     @Override
     public void onBindViewHolder(VehicleListNestedViewHolder holder, int position) {
         holder.setModel(data.getModels().get(position));
-        holder.setOnClickListener(this);
+        // Show the divider unless we are at the last position
+        holder.showDivider(position != getItemCount() - 1);
     }
 
     @Override
@@ -58,8 +57,4 @@ public class VehicleListNestedAdapter extends
         return 0;
     }
 
-    @Override
-    public void onClick(int position) {
-        Timber.d("Clicked on view at postion");
-    }
 }

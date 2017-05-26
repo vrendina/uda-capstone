@@ -39,13 +39,11 @@ import io.levelsoftware.carculator.data.CarculatorContract;
 import io.levelsoftware.carculator.sync.BaseIntentService;
 import io.levelsoftware.carculator.sync.SyncBroadcastReceiver;
 import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
-import timber.log.Timber;
 
 
 public class VehicleListFragment extends Fragment implements
         SwipeRefreshLayout.OnRefreshListener,
         SyncBroadcastReceiver.OnStatusUpdateListener,
-        VehicleListContainerAdapter.OnClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int KEY_VEHICLE_LOADER = 0;
@@ -71,7 +69,7 @@ public class VehicleListFragment extends Fragment implements
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
 
-        adaper = new VehicleListContainerAdapter(this);
+        adaper = new VehicleListContainerAdapter();
         recyclerView.setAdapter(adaper);
 
         if(savedInstanceState != null) {
@@ -185,10 +183,5 @@ public class VehicleListFragment extends Fragment implements
         if(query != null) {
             adaper.filter(query);
         }
-    }
-
-    @Override
-    public void clickVehicle() {
-        Timber.d("Clicked on vehicle!");
     }
 }

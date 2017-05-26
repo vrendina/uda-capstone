@@ -18,6 +18,7 @@ package io.levelsoftware.carculator.ui.vehiclelist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -27,16 +28,11 @@ import io.levelsoftware.carculator.model.Model;
 import timber.log.Timber;
 
 class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-    public interface OnClickListener {
-        public void onClick(int position);
-    }
-
-    @BindView(R.id.text_view_model_name)
-    TextView nameTextView;
+    
+    @BindView(R.id.text_view_model_name) TextView nameTextView;
     @BindView(R.id.text_view_base_price) TextView basePriceTextView;
-
-    private OnClickListener listener;
+    @BindView(R.id.image_view_model_picture) ImageView modelImageView;
+    @BindView(R.id.image_view_divider) ImageView dividerImagerView;
 
     public VehicleListNestedViewHolder(View view) {
         super(view);
@@ -52,18 +48,17 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
             basePriceTextView.setVisibility(View.VISIBLE);
         }
     }
-
-    public void setOnClickListener(OnClickListener listener) {
-        this.listener = listener;
+    
+    public void showDivider(boolean visible) {
+        dividerImagerView.setVisibility((visible) ? View.VISIBLE : View.GONE);
     }
+    
 
     @Override
     public void onClick(View view) {
         Timber.d("Clicked on view at position -- " + getAdapterPosition());
 
-        if(listener != null) {
-            listener.onClick(getAdapterPosition());
-        }
+        // Send click broadcast up to activity
     }
 
 }

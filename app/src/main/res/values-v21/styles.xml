@@ -16,22 +16,20 @@
   -->
 
 <resources>
-    <!-- QuoteListActivity Styles -->
-    <style name="BaseActivity.QuoteList">
+    <!-- Activity Themes -->
+    <style name="BaseActivity" parent="CarculatorTheme.NoActionBar">
         <item name="android:colorEdgeEffect">@color/edgeEffect</item>
     </style>
 
-    <style name="CarculatorTheme.AppBarOverlay.QuoteList">
+    <!-- AppBarOverlay Themes -->
+    <style name="CarculatorTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/primaryDark</item>
+        <item name="android:editTextColor">@color/primaryDark</item>
         <item name="android:colorControlHighlight">@color/edgeEffect</item>
     </style>
 
+    <!-- TabLayout Themes -->
     <style name="TabLayout.QuoteList.Theme">
         <item name="android:colorControlHighlight">@color/primary</item>
-    </style>
-
-    <style name="CarculatorTheme.AppBarOverlay.VehicleList">
-        <item name="colorControlNormal">@color/primaryDark</item>
-        <item name="android:colorControlHighlight">@color/edgeEffect</item>
     </style>
 </resources>

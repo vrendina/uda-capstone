@@ -15,17 +15,8 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <color name="primary">#F5F5F5</color>
-    <color name="primaryDark">#9E9E9E</color>
-    <color name="veryDark">#303030</color>
-    <color name="accent">#673AB7</color>
-
-    <color name="windowBackground">#E7E7E7</color>
-    <color name="edgeEffect">#40673AB7</color>
-
-    <color name="defaultTabSelectedTextColor">#9E9E9E</color>
-    <color name="defaultTabTextColor">#D7D7D7</color>
-
-    <color name="listDivider">@color/windowBackground</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <size android:height="1dp" />
+    <solid android:color="@color/listDivider" />
+</shape>

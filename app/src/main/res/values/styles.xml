@@ -27,18 +27,26 @@
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
+    <!-- Activity Themes -->
     <style name="BaseActivity" parent="CarculatorTheme.NoActionBar" />
+    <style name="BaseActivity.QuoteList" />
+    <style name="BaseActivity.VehicleList" />
 
+    <!-- AppBarOverlay Themes -->
     <style name="CarculatorTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/primaryDark</item>
         <item name="android:editTextColor">@color/primaryDark</item>
     </style>
 
+    <style name="CarculatorTheme.AppBarOverlay.QuoteList" />
+    <style name="CarculatorTheme.AppBarOverlay.VehicleList">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- PopupOverlay Themes -->
     <style name="CarculatorTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="VehicleListActivity" parent="CarculatorTheme.NoActionBar" />
-    <style name="QuoteEntryActivity" parent="CarculatorTheme.NoActionBar" />
-
+    <!-- TabLayout Styles -->
     <style name="TabLayout" parent="Widget.Design.TabLayout">
         <!--<item name="tabMaxWidth">@dimen/tab_max_width</item>-->
         <item name="tabBackground">?attr/selectableItemBackground</item>
@@ -46,28 +54,46 @@
         <item name="tabSelectedTextColor">@color/defaultTabSelectedTextColor</item>
     </style>
 
+    <style name="TabLayout.QuoteList">
+        <item name="tabTextAppearance">@style/TabLayoutTextAppearance.QuoteList</item>
+    </style>
+
     <style name="TabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">true</item>
     </style>
 
-    <!-- QuoteListActivity Styles -->
-    <style name="BaseActivity.QuoteList" />
-
-    <style name="CarculatorTheme.AppBarOverlay.QuoteList" />
-
-    <style name="TabLayout.QuoteList">
-        <item name="tabTextAppearance">@style/TabLayoutTextAppearance.QuoteList</item>
-    </style>
-
-    <style name="TabLayout.QuoteList.Theme" />
-
     <style name="TabLayoutTextAppearance.QuoteList">
         <item name="android:textColor">@color/defaultTabTextColor</item>
     </style>
 
-    <!-- VehicleListActivity Styles -->
-    <style name="BaseActivity.VehicleList" />
-    <style name="CarculatorTheme.AppBarOverlay.VehicleList" />
+    <!-- TabLayout Themes -->
+    <style name="TabLayout.QuoteList.Theme" />
+
+    <!-- Text Styles -->
+    <style name="BaseTextAppearance" parent="TextAppearance.AppCompat"/>
+
+    <style name="BaseTextAppearance.SingleLine">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="BaseTextAppearance.SingleLine.MakeListHeader">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/primaryDark</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BaseTextAppearance.SingleLine.ModelListName">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/veryDark</item>
+    </style>
+
+
+
+
+
+
+
 
 </resources>

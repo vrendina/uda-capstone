@@ -41,12 +41,6 @@ public class VehicleListContainerAdapter extends
     private Make[] data;
     private Make[] filteredData;
 
-    private OnClickListener listener;
-
-    public VehicleListContainerAdapter(OnClickListener listener) {
-        this.listener = listener;
-    }
-
     @Override
     public VehicleListContainerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -159,10 +153,5 @@ public class VehicleListContainerAdapter extends
             return filteredData.length;
         }
         return 0;
-    }
-
-
-    public interface OnClickListener {
-        void clickVehicle();
     }
 }

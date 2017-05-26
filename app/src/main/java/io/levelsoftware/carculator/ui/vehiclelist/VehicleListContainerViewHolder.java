@@ -30,10 +30,8 @@ import io.levelsoftware.carculator.model.Make;
 
 
 public class VehicleListContainerViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.text_view_model_name)
-    TextView makeTextView;
-    @BindView(R.id.image_view_make_logo)
-    ImageView makeLogoImageView;
+    @BindView(R.id.text_view_make_name) TextView makeTextView;
+    @BindView(R.id.image_view_make_logo) ImageView makeLogoImageView;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     public Make make;
