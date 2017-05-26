@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
@@ -69,6 +70,11 @@ public class VehicleListFragment extends Fragment implements
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(getContext(), R.color.primaryDark),
+                ContextCompat.getColor(getContext(), R.color.accent),
+                ContextCompat.getColor(getContext(), R.color.accent)
+        );
 
         adaper = new VehicleListContainerAdapter();
         recyclerView.setAdapter(adaper);
