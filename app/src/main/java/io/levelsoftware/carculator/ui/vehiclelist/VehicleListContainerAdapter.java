@@ -23,14 +23,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.data.CarculatorContract;
 import io.levelsoftware.carculator.model.Make;
@@ -39,10 +36,16 @@ import timber.log.Timber;
 
 
 public class VehicleListContainerAdapter extends
-        RecyclerView.Adapter<VehicleListContainerAdapter.VehicleListContainerViewHolder> {
+        RecyclerView.Adapter<VehicleListContainerViewHolder> {
 
     private Make[] data;
     private Make[] filteredData;
+
+    private OnClickListener listener;
+
+    public VehicleListContainerAdapter(OnClickListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public VehicleListContainerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -147,12 +150,7 @@ public class VehicleListContainerAdapter extends
 
     @Override
     public void onBindViewHolder(VehicleListContainerViewHolder holder, int position) {
-        Make make = filteredData[position];
-
-        holder.adapter = new VehicleListNestedAdapter(make);
-        holder.recyclerView.setAdapter(holder.adapter);
-
-        holder.testTextView.setText(make.getName());
+        holder.setMake(filteredData[position]);
     }
 
     @Override
@@ -163,16 +161,8 @@ public class VehicleListContainerAdapter extends
         return 0;
     }
 
-    class VehicleListContainerViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.test_text) TextView testTextView;
-        @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
-        VehicleListNestedAdapter adapter;
-
-        public VehicleListContainerViewHolder(View view) {
-            super(view);
-
-            ButterKnife.bind(this, view);
-        }
+    public interface OnClickListener {
+        void clickVehicle();
     }
 }

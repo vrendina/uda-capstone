@@ -21,16 +21,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.Make;
-import io.levelsoftware.carculator.model.Model;
+import timber.log.Timber;
 
 public class VehicleListNestedAdapter extends
-        RecyclerView.Adapter<VehicleListNestedAdapter.VehicleListNestedViewHolder> {
+        RecyclerView.Adapter<VehicleListNestedViewHolder> implements
+        VehicleListNestedViewHolder.OnClickListener {
 
     private Make data;
 
@@ -48,8 +46,8 @@ public class VehicleListNestedAdapter extends
 
     @Override
     public void onBindViewHolder(VehicleListNestedViewHolder holder, int position) {
-        Model model = data.getModels().get(position);
-        holder.testTextView.setText(model.getYear() + " " + model.getName());
+        holder.setModel(data.getModels().get(position));
+        holder.setOnClickListener(this);
     }
 
     @Override
@@ -60,13 +58,8 @@ public class VehicleListNestedAdapter extends
         return 0;
     }
 
-    class VehicleListNestedViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.test_text) TextView testTextView;
-
-        public VehicleListNestedViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
+    @Override
+    public void onClick(int position) {
+        Timber.d("Clicked on view at postion");
     }
 }
