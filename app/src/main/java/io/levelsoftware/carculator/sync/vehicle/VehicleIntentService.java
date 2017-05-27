@@ -41,6 +41,7 @@ import io.levelsoftware.carculator.data.CarculatorContract;
 import io.levelsoftware.carculator.model.Make;
 import io.levelsoftware.carculator.model.Model;
 import io.levelsoftware.carculator.sync.BaseIntentService;
+import io.levelsoftware.carculator.util.NetworkUtils;
 import io.levelsoftware.carculator.util.PreferenceUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -51,7 +52,7 @@ import timber.log.Timber;
 public class VehicleIntentService extends BaseIntentService {
 
     private static final String CONTENT_URL = "https://uda-capstone.firebaseapp.com/vehicles.json";
-    private static final int MINIMUM_UPDATE_INTERVAL = 1000 * 60 * 1 ; // 1 minute
+    private static final int MINIMUM_UPDATE_INTERVAL = 1000 * 60 * 2 ; // 2 minutes
 
     private static final String SERVICE_NAME = "VehicleService";
     private static boolean isRunning;
@@ -92,7 +93,7 @@ public class VehicleIntentService extends BaseIntentService {
     }
 
     private void updateData() {
-        if(networkIsAvailable()) {
+        if(NetworkUtils.networkIsAvailable(this)) {
             Make[] makes = fetchNetworkData();
 
             if(makes != null) {

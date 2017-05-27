@@ -17,10 +17,7 @@
 package io.levelsoftware.carculator.sync;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -43,13 +40,6 @@ public abstract class BaseIntentService extends IntentService {
 
     public BaseIntentService(String name) {
         super(name);
-    }
-
-    protected boolean networkIsAvailable() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
     protected boolean dataNeedsUpdate(String preferenceKey, int minimumInterval) {
