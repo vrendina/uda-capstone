@@ -18,14 +18,23 @@
 <resources>
     <color name="primary">#F5F5F5</color>
     <color name="primaryDark">#9E9E9E</color>
-    <color name="veryDark">#303030</color>
     <color name="accent">#673AB7</color>
+
+    <color name="extraDark">#303030</color>
+    <color name="extraLight">#BDBDBD</color>
+
+    <color name="accentLight">#A584DD</color>
 
     <color name="windowBackground">#E7E7E7</color>
     <color name="edgeEffect">#40673AB7</color>
 
-    <color name="defaultTabSelectedTextColor">#9E9E9E</color>
+    <color name="defaultTabSelectedTextColor">@color/primaryDark</color>
     <color name="defaultTabTextColor">#D7D7D7</color>
 
     <color name="listDivider">@color/windowBackground</color>
+
+    <color name="backgroundStatusIcon">@color/extraLight</color>
+
+    <color name="snackbarBackground">@color/extraDark</color>
+    <color name="snackbarActionText">@color/accentLight</color>
 </resources>
