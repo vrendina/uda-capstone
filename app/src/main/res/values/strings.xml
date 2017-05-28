@@ -20,6 +20,7 @@
 
     <string name="content_description_logo">Logo</string>
     <string name="content_description_model_picture">Model Picture</string>
+    <string name="content_description_edmunds">Data Provided by Edmunds.com</string>
 
     <string name="section_format">Hello World from section: %1s</string>
 

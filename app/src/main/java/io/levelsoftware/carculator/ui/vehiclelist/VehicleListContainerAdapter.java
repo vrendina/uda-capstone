@@ -36,17 +36,48 @@ import timber.log.Timber;
 
 
 public class VehicleListContainerAdapter extends
-        RecyclerView.Adapter<VehicleListContainerViewHolder> {
+        RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Make[] data;
     private Make[] filteredData;
 
-    @Override
-    public VehicleListContainerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_vehicle_container, parent, false);
+    private static final int VIEW_TYPE_DATA = 0;
+    private static final int VIEW_TYPE_FOOTER = 1;
 
-        return new VehicleListContainerViewHolder(view);
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        View view;
+        if(viewType == VIEW_TYPE_DATA) {
+            view = inflater.inflate(R.layout.list_item_vehicle_container, parent, false);
+            return new VehicleListContainerViewHolder(view);
+        }
+        if(viewType == VIEW_TYPE_FOOTER) {
+            view = inflater.inflate(R.layout.list_item_vehicle_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof VehicleListContainerViewHolder && position < filteredData.length) {
+            ((VehicleListContainerViewHolder) holder).setMake(filteredData[position]);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (position == filteredData.length) ? VIEW_TYPE_FOOTER : VIEW_TYPE_DATA;
+    }
+
+    @Override
+    public int getItemCount() {
+        if(filteredData != null) {
+            return (filteredData.length == 0) ? 0 : filteredData.length + 1;
+        }
+        return 0;
     }
 
     public void setCursor(Cursor cursor) {
@@ -142,16 +173,10 @@ public class VehicleListContainerAdapter extends
         notifyDataSetChanged();
     }
 
-    @Override
-    public void onBindViewHolder(VehicleListContainerViewHolder holder, int position) {
-        holder.setMake(filteredData[position]);
+    private class FooterViewHolder extends RecyclerView.ViewHolder {
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 
-    @Override
-    public int getItemCount() {
-        if(filteredData != null) {
-            return filteredData.length;
-        }
-        return 0;
-    }
 }
