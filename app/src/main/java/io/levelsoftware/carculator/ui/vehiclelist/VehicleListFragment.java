@@ -142,7 +142,15 @@ public class VehicleListFragment extends Fragment implements
 
         if(shouldLoadVehicleData()) {
             loadVehicleData();
-        } else {
+        }
+
+        // If we are already loading vehicle data, show the spinner
+        if(vehicleDataIsLoading()) {
+            setSwipeRefreshLayoutState(true, true);
+        }
+
+        // If we have data, show the data
+        if(count > 0) {
             setSwipeRefreshLayoutState(false, false);
 
             adaper.setCursor(data);
@@ -157,7 +165,6 @@ public class VehicleListFragment extends Fragment implements
     }
 
     private void loadVehicleData() {
-        Timber.d("Loading vehicle data...");
         VehicleIntentService.start(getActivity());
 
         setSwipeRefreshLayoutState(true, true);
@@ -174,7 +181,11 @@ public class VehicleListFragment extends Fragment implements
             return false;
         }
         // If the vehicle service is already running don't load
-        return !VehicleIntentService.isRunning();
+        return !vehicleDataIsLoading();
+    }
+
+    private boolean vehicleDataIsLoading() {
+        return VehicleIntentService.isRunning();
     }
 
     private void bindReceivers() {
