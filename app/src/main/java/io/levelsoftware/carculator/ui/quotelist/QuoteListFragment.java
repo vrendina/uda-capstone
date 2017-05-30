@@ -57,5 +57,4 @@ public class QuoteListFragment extends Fragment {
 
         return view;
     }
-
 }
