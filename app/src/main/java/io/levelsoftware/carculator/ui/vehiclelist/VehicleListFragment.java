@@ -48,7 +48,6 @@ import io.levelsoftware.carculator.sync.BaseIntentService;
 import io.levelsoftware.carculator.sync.SyncBroadcastReceiver;
 import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
 import io.levelsoftware.carculator.util.NetworkUtils;
-import timber.log.Timber;
 
 
 public class VehicleListFragment extends Fragment implements
@@ -120,7 +119,6 @@ public class VehicleListFragment extends Fragment implements
 
     @Override
     public void onRefresh() {
-        Timber.d("Called onRefresh");
         loadVehicleData();
     }
 
@@ -214,13 +212,11 @@ public class VehicleListFragment extends Fragment implements
 
     @Override
     public void statusSuccess() {
-        Timber.d("RECEIVED: Status broadcast success");
         setSwipeRefreshLayoutState(false, false);
     }
 
     @Override
     public void statusError(int code, @Nullable String message) {
-        Timber.d("RECEIVED: Status broadcast error");
         if(count == 0) {
             showError(code);
         }
