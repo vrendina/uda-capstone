@@ -35,21 +35,36 @@
     <string name="error_network_error">Network Error</string>
     <string name="error_data">Data Error</string>
 
-    <string name="loan">Buy</string>
-    <string name="lease">Lease</string>
+    <string name="tab_loan">Buy</string>
+    <string name="tab_lease">Lease</string>
+    <string name="tab_quote">Quote</string>
+    <string name="tab_dealer">Dealer</string>
 
     <string-array name="quote_list_tab_names">
-        <item>@string/loan</item>
-        <item>@string/lease</item>
+        <item>@string/tab_loan</item>
+        <item>@string/tab_lease</item>
+    </string-array>
+
+    <string-array name="quote_entry_tab_names">
+        <item>@string/tab_quote</item>
+        <item>@string/tab_dealer</item>
     </string-array>
 
     <string name="key_quote_type" translatable="false">quote_type</string>
-    <string name="key_loan" translatable="false">loan</string>
-    <string name="key_lease" translatable="false">lease</string>
+
+    <string name="tab_key_loan" translatable="false">loan</string>
+    <string name="tab_key_lease" translatable="false">lease</string>
+    <string name="tab_key_quote" translatable="false">quote</string>
+    <string name="tab_key_dealer" translatable="false">dealer</string>
 
     <string-array name="quote_list_tab_keys">
-        <item>@string/key_loan</item>
-        <item>@string/key_lease</item>
+        <item>@string/tab_key_loan</item>
+        <item>@string/tab_key_lease</item>
+    </string-array>
+
+    <string-array name="quote_entry_tab_keys">
+        <item>@string/tab_key_quote</item>
+        <item>@string/tab_key_dealer</item>
     </string-array>
 
     <string name="intent_key_status_code" translatable="false">status_code</string>

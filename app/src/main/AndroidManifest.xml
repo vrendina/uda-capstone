@@ -27,42 +27,52 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CarculatorTheme">
-
         <provider
-            android:authorities="@string/content_provider"
             android:name=".data.CarculatorProvider"
+            android:authorities="@string/content_provider"
             android:exported="true" />
-        
+
         <activity
             android:name=".ui.quotelist.QuoteListActivity"
             android:launchMode="singleTop"
             android:theme="@style/BaseActivity.QuoteList">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".ui.vehiclelist.VehicleListActivity"
+            android:parentActivityName=".ui.quotelist.QuoteListActivity"
+            android:theme="@style/BaseActivity.VehicleList">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+
+        <activity android:name=".ui.quoteentry.QuoteEntryActivity"
+            android:theme="@style/BaseActivity.QuoteEntry">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.vehiclelist.VehicleListActivity"
-            android:theme="@style/BaseActivity.VehicleList"
-            android:parentActivityName=".ui.quotelist.QuoteListActivity" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-            </activity>
-
-        <service android:name=".sync.vehicle.VehicleJobService"
-            android:exported="false"
-            android:enabled="true">
+        <service
+            android:name=".sync.vehicle.VehicleJobService"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+        <service
+            android:name=".sync.vehicle.VehicleIntentService"
+            android:enabled="true"
+            android:exported="false" />
 
-        <service android:name=".sync.vehicle.VehicleIntentService"
-            android:exported="false"
-            android:enabled="true"/>
     </application>
 
 </manifest>
