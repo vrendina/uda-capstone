@@ -23,6 +23,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,15 +34,18 @@ import com.google.firebase.auth.FirebaseUser;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import timber.log.Timber;
 
-public class QuoteActivity extends AppCompatActivity {
+public class QuoteActivity extends AppCompatActivity
+        implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.view_pager) ViewPager viewPager;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
 
-    private String[] tabNames;
-    private String[] tabKeys;
+    @BindView(R.id.linear_layout_toolbar_price) LinearLayout toolbarPriceLinearLayout;
+    @BindView(R.id.text_view_toolbar_price) TextView toolbarPriceTextView;
+    @BindView(R.id.text_view_toolbar_price_label) TextView toolbarPriceLabelTextView;
 
     private FirebaseAuth auth;
     private FirebaseUser user;
@@ -59,6 +66,13 @@ public class QuoteActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         setupTabs();
+        setupToolbar();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewPager.removeOnPageChangeListener(this);
     }
 
     private void setupTabs() {
@@ -66,24 +80,46 @@ public class QuoteActivity extends AppCompatActivity {
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(this);
+    }
+
+    private void setupToolbar() {
+        toolbarPriceLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleToolbarDisplayMode();
+            }
+        });
+    }
+
+    private void toggleToolbarDisplayMode() {
+        Timber.d("Toggle toolbar display mode");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_quote_entry, menu);
+        getMenuInflater().inflate(R.menu.menu_quote, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
+//        int id = item.getItemId();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+    @Override public void onPageSelected(int position) {}
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        // Hide the keyboard when switching tabs
+        if (state == ViewPager.SCROLL_STATE_IDLE)
+        {
+//            coordinatorLayout.requestFocus();
+            ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
+        }
     }
 }
 

@@ -86,17 +86,44 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="BaseTextAppearance.SingleLine.MakeListHeader">
-        <item name="android:textSize">20sp</item>
+    <style name="BaseTextAppearance.SingleLine.SectionHeader">
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/primaryDark</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="BaseTextAppearance.SingleLine.SectionHeader.MakeList" />
+    <style name="BaseTextAppearance.SingleLine.SectionHeader.QuoteForm" />
 
     <style name="BaseTextAppearance.SingleLine.ModelListName">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/extraDark</item>
     </style>
 
+    <style name="BaseTextAppearance.ToolbarPrice">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/primaryDark</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BaseTextAppearance.ToolbarPriceLabel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/primaryDark</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!-- TextInputLayout Theme -->
+    <style name="BaseTextInputLayout.Theme" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">@color/textInputLine</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent</item>
+    </style>
+
+    <!-- TextInput Styles -->
+    <style name="BaseTextInputEditText">
+        <item name="android:textColor">@color/extraDark</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
 
 

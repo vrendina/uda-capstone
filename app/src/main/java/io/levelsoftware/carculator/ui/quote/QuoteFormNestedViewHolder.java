@@ -16,9 +16,10 @@
 
 package io.levelsoftware.carculator.ui.quote;
 
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +27,8 @@ import io.levelsoftware.carculator.R;
 
 public class QuoteFormNestedViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.text_view_test) TextView testTextView;
+    @BindView(R.id.text_input_layout) TextInputLayout textInputLayout;
+    @BindView(R.id.edit_text) TextInputEditText editText;
 
     public QuoteFormNestedViewHolder(View view) {
         super(view);

@@ -39,7 +39,7 @@ public class QuoteFormFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_quote_entry, container, false);
+        View view = inflater.inflate(R.layout.fragment_quote_form, container, false);
         ButterKnife.bind(this, view);
 
         QuoteFormContainerAdapter adapter = new QuoteFormContainerAdapter();

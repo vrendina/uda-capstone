@@ -34,7 +34,7 @@ public class QuoteFormNestedAdapter extends RecyclerView.Adapter<QuoteFormNested
 
     @Override
     public void onBindViewHolder(QuoteFormNestedViewHolder holder, int position) {
-        holder.testTextView.setText("Nested "  + position);
+        holder.textInputLayout.setHint("Nested "  + position);
     }
 
     @Override

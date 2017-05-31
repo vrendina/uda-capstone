@@ -35,7 +35,7 @@ public class QuoteFormContainerAdapter extends RecyclerView.Adapter<QuoteFormCon
 
     @Override
     public void onBindViewHolder(QuoteFormContainerViewHolder holder, int position) {
-        holder.sectionTitleTextView.setText("Testing " + position);
+        holder.sectionTitleTextView.setText("Section " + position);
     }
 
     @Override

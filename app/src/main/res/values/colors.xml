@@ -32,6 +32,7 @@
     <color name="defaultTabTextColor">#D7D7D7</color>
 
     <color name="listDivider">@color/windowBackground</color>
+    <color name="textInputLine">@color/windowBackground</color>
 
     <color name="backgroundStatusIcon">@color/extraLight</color>
 
