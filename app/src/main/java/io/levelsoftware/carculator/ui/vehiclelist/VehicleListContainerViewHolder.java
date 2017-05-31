@@ -34,7 +34,7 @@ public class VehicleListContainerViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.linear_layout) LinearLayout linearLayout;
     @BindView(R.id.text_view_make_name) TextView makeTextView;
     @BindView(R.id.image_view_make_logo) ImageView makeLogoImageView;
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) RecyclerView nestedRecyclerView;
 
     public Make make;
     public VehicleListNestedAdapter adapter;
@@ -50,7 +50,7 @@ public class VehicleListContainerViewHolder extends RecyclerView.ViewHolder {
         Context context = this.itemView.getContext();
 
         adapter = new VehicleListNestedAdapter(make);
-        recyclerView.setAdapter(adapter);
+        nestedRecyclerView.setAdapter(adapter);
 
         int logoResourceId = context.getResources().getIdentifier("make_" + make.getNiceName(),
                 "drawable", BuildConfig.APPLICATION_ID);

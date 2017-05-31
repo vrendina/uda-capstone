@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.ui.quoteentry;
+package io.levelsoftware.carculator.ui.quote;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 
-public class QuoteEntryActivity extends AppCompatActivity {
+public class QuoteActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.view_pager) ViewPager viewPager;
@@ -53,6 +53,7 @@ public class QuoteEntryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         auth = FirebaseAuth.getInstance();
@@ -61,7 +62,7 @@ public class QuoteEntryActivity extends AppCompatActivity {
     }
 
     private void setupTabs() {
-        QuoteEntryPagerAdapter pagerAdapter = new QuoteEntryPagerAdapter(getSupportFragmentManager(), this);
+        QuotePagerAdapter pagerAdapter = new QuotePagerAdapter(getSupportFragmentManager(), this);
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

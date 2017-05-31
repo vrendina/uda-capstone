@@ -36,14 +36,15 @@
             android:name=".ui.quotelist.QuoteListActivity"
             android:launchMode="singleTop"
             android:theme="@style/BaseActivity.QuoteList">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.vehiclelist.VehicleListActivity"
             android:parentActivityName=".ui.quotelist.QuoteListActivity"
+            android:noHistory="true"
             android:theme="@style/BaseActivity.VehicleList">
 
             <!-- <intent-filter> -->
@@ -52,12 +53,13 @@
             <!-- </intent-filter> -->
         </activity>
 
-        <activity android:name=".ui.quoteentry.QuoteEntryActivity"
-            android:theme="@style/BaseActivity.QuoteEntry">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".ui.quote.QuoteActivity"
+            android:parentActivityName=".ui.quotelist.QuoteListActivity"
+            android:theme="@style/BaseActivity.Quote">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <service

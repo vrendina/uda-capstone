@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.ui.quoteentry;
+package io.levelsoftware.carculator.ui.quote;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -23,14 +23,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import io.levelsoftware.carculator.R;
 
-public class QuoteEntryPagerAdapter extends FragmentPagerAdapter {
+public class QuotePagerAdapter extends FragmentPagerAdapter {
 
     private String[] pages;
     private String[] keys;
 
     Context context;
 
-    public QuoteEntryPagerAdapter(FragmentManager manager, Context context) {
+    public QuotePagerAdapter(FragmentManager manager, Context context) {
         super(manager);
 
         this.context = context;
@@ -44,11 +44,11 @@ public class QuoteEntryPagerAdapter extends FragmentPagerAdapter {
         String key = keys[position];
 
         if(key.equals(context.getString(R.string.tab_key_dealer))) {
-            return new QuoteEntryDealerFragment();
+            return new QuoteDealerFragment();
         }
 
         if(key.equals(context.getString(R.string.tab_key_quote))) {
-            return new QuoteEntryFormFragment();
+            return new QuoteFormFragment();
         }
 
         return null;

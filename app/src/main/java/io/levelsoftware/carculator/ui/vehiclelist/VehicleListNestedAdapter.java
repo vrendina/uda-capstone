@@ -37,7 +37,7 @@ public class VehicleListNestedAdapter extends
     @Override
     public VehicleListNestedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_vehicle, parent, false);
+        View view = inflater.inflate(R.layout.list_item_vehicle_element, parent, false);
 
         return new VehicleListNestedViewHolder(view);
     }

@@ -32,4 +32,8 @@
     <style name="TabLayout.QuoteList.Theme">
         <item name="android:colorControlHighlight">@color/primary</item>
     </style>
+
+    <style name="TabLayout.Quote.Theme">
+        <item name="android:colorControlHighlight">@color/primary</item>
+    </style>
 </resources>

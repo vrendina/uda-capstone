@@ -28,26 +28,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/image_view_make_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="16dp"
-            android:scaleType="fitCenter"
-            android:tint="@color/primaryDark"
-            tools:src="@drawable/make_bmw"
-            android:contentDescription="@string/content_description_logo"/>
-
         <TextView
-            android:id="@+id/text_view_make_name"
-            style="@style/BaseTextAppearance.SingleLine.MakeListHeader"
+            android:id="@+id/text_view_section_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="0dp"
+            android:paddingLeft="16dp"
             android:paddingEnd="16dp"
-            android:paddingStart="0dp"
+            android:paddingStart="16dp"
             android:paddingRight="16dp"
-            tools:text="BMW"
+            tools:text="Section"
             android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
@@ -65,9 +54,10 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:scrollbars="none"
-            tools:listitem="@layout/list_item_vehicle_element"
-            android:orientation="vertical"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/list_item_quote_form_element"
+            android:orientation="vertical" />
 
     </android.support.v7.widget.CardView>
 

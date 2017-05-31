@@ -34,7 +34,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
-import timber.log.Timber;
+import io.levelsoftware.carculator.ui.quote.QuoteActivity;
 
 public class VehicleListActivity extends AppCompatActivity {
 
@@ -117,7 +117,8 @@ public class VehicleListActivity extends AppCompatActivity {
         clickReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Timber.d("Got click broadcast!");
+                Intent quoteIntent = new Intent(VehicleListActivity.this, QuoteActivity.class);
+                startActivity(quoteIntent);
             }
         };
 
