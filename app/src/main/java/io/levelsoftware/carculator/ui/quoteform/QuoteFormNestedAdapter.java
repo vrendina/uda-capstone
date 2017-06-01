@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.ui.quote;
+package io.levelsoftware.carculator.ui.quoteform;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,20 +22,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import io.levelsoftware.carculator.R;
+import timber.log.Timber;
 
-public class QuoteFormContainerAdapter extends RecyclerView.Adapter<QuoteFormContainerViewHolder> {
-
+public class QuoteFormNestedAdapter extends RecyclerView.Adapter<QuoteFormNestedViewHolder> {
     @Override
-    public QuoteFormContainerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public QuoteFormNestedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(R.layout.list_item_quote_form_container, parent, false);
-        return new QuoteFormContainerViewHolder(view);
+        View view = inflater.inflate(R.layout.list_item_quote_form_element, parent, false);
+        return new QuoteFormNestedViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(QuoteFormContainerViewHolder holder, int position) {
-        holder.sectionTitleTextView.setText("Section " + position);
+    public void onBindViewHolder(QuoteFormNestedViewHolder holder, int position) {
+        Timber.d("Bind nested view holder: " + position);
+        holder.setIsRecyclable(false);
+        holder.textInputLayout.setHint("Nested "  + position);
     }
 
     @Override

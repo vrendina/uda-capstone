@@ -21,13 +21,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="io.levelsoftware.carculator.ui.quote.QuoteActivity">
+    tools:context="io.levelsoftware.carculator.ui.quoteform.QuoteFormActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/CarculatorTheme.AppBarOverlay.Quote"
+        android:theme="@style/CarculatorTheme.AppBarOverlay.QuoteForm"
         android:background="@color/primary">
 
         <FrameLayout
@@ -64,20 +64,15 @@
                     android:layout_height="wrap_content"
                     android:text="monthly payment" />
 
-
-
             </LinearLayout>
         </FrameLayout>
-
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
             style="@style/TabLayout.QuoteList"
-            android:theme="@style/TabLayout.Quote.Theme"
+            android:theme="@style/TabLayout.QuoteForm.Theme"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
-
-
 
     </android.support.design.widget.AppBarLayout>
 
@@ -88,4 +83,3 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>
-

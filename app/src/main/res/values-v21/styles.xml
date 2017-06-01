@@ -33,7 +33,7 @@
         <item name="android:colorControlHighlight">@color/primary</item>
     </style>
 
-    <style name="TabLayout.Quote.Theme">
+    <style name="TabLayout.QuoteForm.Theme">
         <item name="android:colorControlHighlight">@color/primary</item>
     </style>
 </resources>

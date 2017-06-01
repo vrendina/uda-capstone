@@ -18,7 +18,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="io.levelsoftware.carculator.ui.quote.QuoteActivity">
+    tools:context="io.levelsoftware.carculator.ui.quoteform.QuoteFormActivity">
 
     <item android:id="@+id/action_chart"
         android:icon="@drawable/ic_chart_gray_24dp"

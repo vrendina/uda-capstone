@@ -14,37 +14,31 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.ui.quote;
+package io.levelsoftware.carculator.ui.quoteform;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 
 
-public class QuoteFormFragment extends Fragment {
+public class QuoteFormDealerFragment extends Fragment {
 
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
-
-    public QuoteFormFragment() {}
+    public QuoteFormDealerFragment() {}
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_quote_form, container, false);
+        View view = inflater.inflate(R.layout.fragment_dealer_entry, container, false);
         ButterKnife.bind(this, view);
-
-        QuoteFormContainerAdapter adapter = new QuoteFormContainerAdapter();
-        recyclerView.setAdapter(adapter);
 
         return view;
     }
+
 }

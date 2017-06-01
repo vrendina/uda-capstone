@@ -53,10 +53,10 @@
             <!-- </intent-filter> -->
         </activity>
 
-        <activity android:name=".ui.quote.QuoteActivity"
+        <activity android:name=".ui.quoteform.QuoteFormActivity"
             android:parentActivityName=".ui.quotelist.QuoteListActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"
-            android:theme="@style/BaseActivity.Quote">
+            android:theme="@style/BaseActivity.QuoteForm">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

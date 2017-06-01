@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.ui.quote;
+package io.levelsoftware.carculator.ui.quoteform;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -31,7 +31,7 @@
     <style name="BaseActivity" parent="CarculatorTheme.NoActionBar" />
     <style name="BaseActivity.QuoteList" />
     <style name="BaseActivity.VehicleList" />
-    <style name="BaseActivity.Quote">
+    <style name="BaseActivity.QuoteForm">
         <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
         <!--<item name="android:windowTranslucentStatus">true</item>-->
     </style>
@@ -46,7 +46,7 @@
     <style name="CarculatorTheme.AppBarOverlay.VehicleList">
         <item name="android:textSize">16sp</item>
     </style>
-    <style name="CarculatorTheme.AppBarOverlay.Quote" />
+    <style name="CarculatorTheme.AppBarOverlay.QuoteForm" />
 
     <!-- PopupOverlay Themes -->
     <style name="CarculatorTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -63,7 +63,7 @@
         <item name="tabTextAppearance">@style/TabLayoutTextAppearance.QuoteList</item>
     </style>
 
-    <style name="TabLayout.Quote" parent="TabLayout.QuoteList" />
+    <style name="TabLayout.QuoteForm" parent="TabLayout.QuoteList" />
 
     <style name="TabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
@@ -76,7 +76,7 @@
 
     <!-- TabLayout Themes -->
     <style name="TabLayout.QuoteList.Theme" />
-    <style name="TabLayout.Quote.Theme" />
+    <style name="TabLayout.QuoteForm.Theme" />
 
     <!-- Text Styles -->
     <style name="BaseTextAppearance" parent="TextAppearance.AppCompat"/>

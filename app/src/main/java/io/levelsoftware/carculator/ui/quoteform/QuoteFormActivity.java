@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.ui.quote;
+package io.levelsoftware.carculator.ui.quoteform;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -36,7 +36,7 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import timber.log.Timber;
 
-public class QuoteActivity extends AppCompatActivity
+public class QuoteFormActivity extends AppCompatActivity
         implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -53,7 +53,7 @@ public class QuoteActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quote_entry);
+        setContentView(R.layout.activity_quote_form);
 
         ButterKnife.bind(this);
 
@@ -98,7 +98,7 @@ public class QuoteActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_quote, menu);
+        getMenuInflater().inflate(R.menu.menu_quote_form, menu);
         return true;
     }
 

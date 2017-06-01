@@ -34,7 +34,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
-import io.levelsoftware.carculator.ui.quote.QuoteActivity;
+import io.levelsoftware.carculator.ui.quoteform.QuoteFormActivity;
 
 public class VehicleListActivity extends AppCompatActivity {
 
@@ -117,7 +117,7 @@ public class VehicleListActivity extends AppCompatActivity {
         clickReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Intent quoteIntent = new Intent(VehicleListActivity.this, QuoteActivity.class);
+                Intent quoteIntent = new Intent(VehicleListActivity.this, QuoteFormActivity.class);
                 startActivity(quoteIntent);
             }
         };
