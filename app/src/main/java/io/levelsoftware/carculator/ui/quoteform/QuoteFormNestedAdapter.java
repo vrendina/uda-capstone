@@ -22,9 +22,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import io.levelsoftware.carculator.R;
-import timber.log.Timber;
+import io.levelsoftware.carculator.ui.quoteform.manager.Field;
+import io.levelsoftware.carculator.ui.quoteform.manager.FormManager;
+import io.levelsoftware.carculator.ui.quoteform.manager.Section;
 
 public class QuoteFormNestedAdapter extends RecyclerView.Adapter<QuoteFormNestedViewHolder> {
+
+    private FormManager form;
+    private Section section;
+
+    public QuoteFormNestedAdapter(Section section, FormManager form) {
+        this.form = form;
+        this.section = section;
+    }
+
     @Override
     public QuoteFormNestedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -35,13 +46,12 @@ public class QuoteFormNestedAdapter extends RecyclerView.Adapter<QuoteFormNested
 
     @Override
     public void onBindViewHolder(QuoteFormNestedViewHolder holder, int position) {
-        Timber.d("Bind nested view holder: " + position);
-        holder.setIsRecyclable(false);
-        holder.textInputLayout.setHint("Nested "  + position);
+        Field field = form.getFieldByKey(section.getFieldKeyForIndex(position));
+        holder.setFormField(field);
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return section.getFieldCount();
     }
 }

@@ -26,6 +26,7 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.ui.quoteform.manager.Field;
 import timber.log.Timber;
 
 public class QuoteFormNestedViewHolder extends RecyclerView.ViewHolder
@@ -34,17 +35,39 @@ public class QuoteFormNestedViewHolder extends RecyclerView.ViewHolder
     @BindView(R.id.text_input_layout) TextInputLayout textInputLayout;
     @BindView(R.id.edit_text) TextInputEditText editText;
 
+    private Field field;
+
     public QuoteFormNestedViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
 
         editText.addTextChangedListener(this);
+        editText.setTextIsSelectable(true);
+//        editText.setOnFocusChangeListener(this);
+
+//        editText.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent event) {
+//                ((InputMethodManager)view.getContext().getSystemService(INPUT_METHOD_SERVICE))
+//                        .hideSoftInputFromWindow(view.getWindowToken(), 0);
+//
+//                if(view.equals(editText)) {
+//                    editText.requestFocus();
+//                }
+//
+//                return true;
+//            }
+//        });
+    }
+
+    public void setFormField(Field field) {
+        this.field = field;
+        textInputLayout.setHint(field.getTitle());
+        editText.setContentDescription(field.getTitle());
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -52,7 +75,19 @@ public class QuoteFormNestedViewHolder extends RecyclerView.ViewHolder
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable s) {}
 
-    }
+//    @Override
+//    public void onFocusChange(View view, boolean hasFocus) {
+//        Timber.d("Edit text " + field.getKey() + " has focus: " + hasFocus);
+//
+//        if(hasFocus) {
+//        }
+//
+//        if(!hasFocus) {
+//
+//        }
+//    }
+
+
 }

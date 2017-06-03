@@ -23,21 +23,29 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.ui.quoteform.manager.FormManager;
+import io.levelsoftware.carculator.ui.quoteform.manager.Section;
 
 public class QuoteFormContainerViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.text_view_section_title) TextView sectionTitleTextView;
     @BindView(R.id.recycler_view) RecyclerView nestedRecyclerView;
 
-    QuoteFormNestedAdapter adapter;
+//    private FormManager form;
+//    private QuoteFormNestedAdapter adapter;
 
     public QuoteFormContainerViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
+    }
 
-        adapter = new QuoteFormNestedAdapter();
+    public void setFormSection(Section section, FormManager form) {
+        QuoteFormNestedAdapter adapter = new QuoteFormNestedAdapter(section, form);
+
         nestedRecyclerView.setAdapter(adapter);
         nestedRecyclerView.setHasFixedSize(true);
         nestedRecyclerView.setNestedScrollingEnabled(false);
+
+        sectionTitleTextView.setText(section.getTitle());
     }
 }

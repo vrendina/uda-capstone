@@ -35,7 +35,7 @@
             style="@style/BaseTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="flagNoExtractUi"
+            android:imeOptions="flagNoExtractUi|actionDone"
             android:inputType="number" />
 
     </android.support.design.widget.TextInputLayout>

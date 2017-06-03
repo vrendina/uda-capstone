@@ -22,9 +22,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.ui.quoteform.manager.FormManager;
+import io.levelsoftware.carculator.ui.quoteform.manager.Section;
 import timber.log.Timber;
 
 public class QuoteFormContainerAdapter extends RecyclerView.Adapter<QuoteFormContainerViewHolder> {
+
+    private FormManager form;
+
+    public QuoteFormContainerAdapter(FormManager form) {
+        this.form = form;
+    }
 
     @Override
     public QuoteFormContainerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,15 +43,28 @@ public class QuoteFormContainerAdapter extends RecyclerView.Adapter<QuoteFormCon
     }
 
     @Override
-    public void onBindViewHolder(QuoteFormContainerViewHolder holder, int position) {
-        Timber.d("Bind section view holder: " + position);
+    public void onViewAttachedToWindow(QuoteFormContainerViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
 
-        holder.setIsRecyclable(false);
-        holder.sectionTitleTextView.setText("Section " + position);
+        Timber.d("View attached to window: " + holder.sectionTitleTextView.getText());
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(QuoteFormContainerViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        Timber.d("View detached from window:" + holder.sectionTitleTextView.getText());
+    }
+
+    @Override
+    public void onBindViewHolder(QuoteFormContainerViewHolder holder, int position) {
+        Timber.d("Bind section view holder: " + form.getSectionByIndex(position).getTitle());
+
+        Section section = form.getSectionByIndex(position);
+        holder.setFormSection(section, form);
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return form.getSectionCount();
     }
 }

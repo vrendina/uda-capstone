@@ -36,15 +36,16 @@
             android:name=".ui.quotelist.QuoteListActivity"
             android:launchMode="singleTop"
             android:theme="@style/BaseActivity.QuoteList">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".ui.vehiclelist.VehicleListActivity"
-            android:parentActivityName=".ui.quotelist.QuoteListActivity"
             android:noHistory="true"
+            android:parentActivityName=".ui.quotelist.QuoteListActivity"
             android:theme="@style/BaseActivity.VehicleList">
 
             <!-- <intent-filter> -->
@@ -52,10 +53,9 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-
-        <activity android:name=".ui.quoteform.QuoteFormActivity"
+        <activity
+            android:name=".ui.quoteform.QuoteFormActivity"
             android:parentActivityName=".ui.quotelist.QuoteListActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
             android:theme="@style/BaseActivity.QuoteForm">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
