@@ -16,8 +16,10 @@
 
 package io.levelsoftware.carculator.ui.quoteform;
 
+import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,7 +32,7 @@ import io.levelsoftware.carculator.ui.quoteform.manager.Field;
 import timber.log.Timber;
 
 public class QuoteFormNestedViewHolder extends RecyclerView.ViewHolder
-    implements TextWatcher {
+    implements TextWatcher, View.OnFocusChangeListener {
 
     @BindView(R.id.text_input_layout) TextInputLayout textInputLayout;
     @BindView(R.id.edit_text) TextInputEditText editText;
@@ -43,7 +45,7 @@ public class QuoteFormNestedViewHolder extends RecyclerView.ViewHolder
 
         editText.addTextChangedListener(this);
         editText.setTextIsSelectable(true);
-//        editText.setOnFocusChangeListener(this);
+        editText.setOnFocusChangeListener(this);
 
 //        editText.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
@@ -77,17 +79,19 @@ public class QuoteFormNestedViewHolder extends RecyclerView.ViewHolder
     @Override
     public void afterTextChanged(Editable s) {}
 
-//    @Override
-//    public void onFocusChange(View view, boolean hasFocus) {
-//        Timber.d("Edit text " + field.getKey() + " has focus: " + hasFocus);
-//
-//        if(hasFocus) {
-//        }
-//
-//        if(!hasFocus) {
-//
-//        }
-//    }
+    @Override
+    public void onFocusChange(View view, boolean hasFocus) {
+        Timber.d("Edit text " + field.getKey() + " has focus: " + hasFocus);
+
+        if(hasFocus) {
+            Intent intent = new Intent();
+            LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+        }
+
+        if(!hasFocus) {
+
+        }
+    }
 
 
 }

@@ -23,14 +23,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import io.levelsoftware.carculator.R;
 
-public class QuotePagerAdapter extends FragmentPagerAdapter {
+public class QuoteFormPagerAdapter extends FragmentPagerAdapter {
 
     private String[] pages;
     private String[] keys;
 
     Context context;
 
-    public QuotePagerAdapter(FragmentManager manager, Context context) {
+    public QuoteFormPagerAdapter(FragmentManager manager, Context context) {
         super(manager);
 
         this.context = context;
@@ -48,7 +48,7 @@ public class QuotePagerAdapter extends FragmentPagerAdapter {
         }
 
         if(key.equals(context.getString(R.string.tab_key_quote))) {
-            return new QuoteFormFragment();
+            return new QuoteFormLeaseFragment();
         }
 
         return null;

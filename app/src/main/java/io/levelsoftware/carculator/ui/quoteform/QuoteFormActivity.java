@@ -76,7 +76,7 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     private void setupTabs() {
-        QuotePagerAdapter pagerAdapter = new QuotePagerAdapter(getSupportFragmentManager(), this);
+        QuoteFormPagerAdapter pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this);
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

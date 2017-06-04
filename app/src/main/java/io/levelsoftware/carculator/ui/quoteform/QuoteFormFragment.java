@@ -17,15 +17,11 @@
 package io.levelsoftware.carculator.ui.quoteform;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +34,6 @@ import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.ui.quoteform.manager.Field;
 import io.levelsoftware.carculator.ui.quoteform.manager.FormManager;
 import io.levelsoftware.carculator.ui.quoteform.manager.Section;
-import timber.log.Timber;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -65,25 +60,7 @@ public class QuoteFormFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        focusBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String fieldKey = intent.getStringExtra(getString(R.string.intent_key_focus_field));
 
-                Timber.d("Got focus broadcast: " + fieldKey);
-
-                // If a field key wasn't passed then close the keyboard and remove all focus
-                if(TextUtils.isEmpty(fieldKey)) {
-                    closeInput();
-
-                // Otherwise we need to scroll the view so the EditText doesn't get recycled when the keyboard loads
-                } else {
-                    Timber.d("Called scroll to position");
-//                    recyclerView.smoothScrollBy(0, 400);
-                    //recyclerView.scrollBy(0, 400);
-                }
-            }
-        };
 
         return view;
     }
@@ -92,8 +69,7 @@ public class QuoteFormFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(focusBroadcastReceiver,
-                new IntentFilter(getString(R.string.broadcast_focus_field)));
+
     }
 
     @Override

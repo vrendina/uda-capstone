@@ -93,7 +93,9 @@
     </style>
 
     <style name="BaseTextAppearance.SingleLine.SectionHeader.MakeList" />
-    <style name="BaseTextAppearance.SingleLine.SectionHeader.QuoteForm" />
+    <style name="BaseTextAppearance.SingleLine.SectionHeader.QuoteForm">
+        <item name="android:padding">16dp</item>
+    </style>
 
     <style name="BaseTextAppearance.SingleLine.ModelListName">
         <item name="android:textSize">16sp</item>

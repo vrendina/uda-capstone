@@ -21,6 +21,7 @@
     <string name="content_description_logo">Logo</string>
     <string name="content_description_model_picture">Model Picture</string>
     <string name="content_description_edmunds">Data Provided by Edmunds.com</string>
+    <string name="content_description_settings">Settings</string>
 
     <string name="section_format">Hello World from section: %1s</string>
 
@@ -71,16 +72,31 @@
     <string name="intent_key_status_code" translatable="false">status_code</string>
     <string name="intent_key_status_message" translatable="false">status_message</string>
     <string name="intent_key_search_query" translatable="false">search_query</string>
-    <string name="intent_key_focus_field" translatable="false">focus_field</string>
 
     <string name="pref_vehicle_last_update" translatable="false">vehicle_last_update</string>
     <string name="job_sync_vehicle" translatable="false">job_vehicle_sync</string>
 
     <string name="broadcast_sync_vehicle" translatable="false">io.levelsoftware.carculator.sync.VEHICLE_SYNC</string>
     <string name="broadcast_click_vehicle" translatable="false">io.levelsoftware.carculator.ui.CLICK_VEHICLE</string>
-    <string name="broadcast_focus_field" translatable="false">io.levelsoftware.carculator.ui.FOCUS_FIELD</string>
 
-
-    <string name="form_key_negotiated_price" translatable="false">negotiated_price</string>
     <string name="form_field_negotiated_price">Negotiated Price</string>
+    <string name="form_field_residual_value">Residual Value</string>
+    <string name="form_field_tax_rate">Tax Rate</string>
+
+    <string name="form_field_money_factor">Money Factor</string>
+    <string name="form_field_lease_term">Lease Term (mo)</string>
+
+    <string name="form_field_dealer_incentives">Incentives</string>
+    <string name="form_field_down_payment">Down Payment</string>
+    <string name="form_field_trade_in_value">Trade-in Value</string>
+    <string name="form_field_trade_in_owed">Trade-in Owed</string>
+
+    <string name="form_section_fees">Fees</string>
+
+    <string name="form_field_title_fee">Title and Registration</string>
+    <string name="form_field_doc_fee">Documentation</string>
+    <string name="form_field_acquisition_fee">Acquisition</string>
+    <string name="form_field_other_fee">Other</string>
+
+
 </resources>
