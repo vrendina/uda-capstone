@@ -72,12 +72,15 @@
     <string name="intent_key_status_code" translatable="false">status_code</string>
     <string name="intent_key_status_message" translatable="false">status_message</string>
     <string name="intent_key_search_query" translatable="false">search_query</string>
+    <string name="intent_key_form_field_id" translatable="false">form_field_id</string>
+    <string name="intent_key_form_field_focused" translatable="false">form_field_focused</string>
 
     <string name="pref_vehicle_last_update" translatable="false">vehicle_last_update</string>
     <string name="job_sync_vehicle" translatable="false">job_vehicle_sync</string>
 
     <string name="broadcast_sync_vehicle" translatable="false">io.levelsoftware.carculator.sync.VEHICLE_SYNC</string>
     <string name="broadcast_click_vehicle" translatable="false">io.levelsoftware.carculator.ui.CLICK_VEHICLE</string>
+    <string name="broadcast_field_focus" translatable="false">io.levelsoftware.carculator.ui.FIELD_FOCUS</string>
 
     <string name="form_field_negotiated_price">Negotiated Price</string>
     <string name="form_field_residual_value">Residual Value</string>

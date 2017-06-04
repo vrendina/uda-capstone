@@ -24,7 +24,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -113,13 +112,14 @@ public class QuoteFormActivity extends AppCompatActivity
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
         // Hide the keyboard when switching tabs
-        if (state == ViewPager.SCROLL_STATE_IDLE)
-        {
-//            coordinatorLayout.requestFocus();
-            ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE))
-                    .hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
-        }
+//        if (state == ViewPager.SCROLL_STATE_IDLE)
+//        {
+////            coordinatorLayout.requestFocus();
+//            ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE))
+//                    .hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
+//        }
     }
 }
 
