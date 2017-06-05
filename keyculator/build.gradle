@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 ext.version = [
         androidSupport: "25.3.1",
-        firebase      : "10.2.4",
         butterKnife   : "8.5.1",
         timber        : "4.5.1",
-        jobdispatcher : "0.6.0",
-        okhttp        : "3.7.0",
-        collections   : "4.1",
-        stetho        : "1.5.0",
-        gson          : "2.8.0",
         espresso      : "2.2.2",
         junit         : "4.12"
 
@@ -35,33 +29,20 @@ def version = ext.version;
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
+
     defaultConfig {
-        applicationId "io.levelsoftware.carculator"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
-    }
 
-    signingConfigs {
-        release {
-            storeFile file("keystore.jks")
-            storePassword 'JKs^4cU&rOTMl7j0'
-            keyAlias 'carculator'
-            keyPassword '808ntW$P2X@H7#k6'
-        }
     }
-
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
-        debug {
-            applicationIdSuffix ".debug"
         }
     }
 }
@@ -74,31 +55,9 @@ dependencies {
     testCompile "junit:junit:$version.junit"
 
     compile "com.android.support:appcompat-v7:$version.androidSupport"
-    compile "com.android.support:design:$version.androidSupport"
-    compile "com.android.support:palette-v7:$version.androidSupport"
-    compile "com.android.support:recyclerview-v7:$version.androidSupport"
     compile "com.android.support:cardview-v7:$version.androidSupport"
-
-    compile "com.google.firebase:firebase-core:$version.firebase"
-    compile "com.google.firebase:firebase-crash:$version.firebase"
-    compile "com.google.firebase:firebase-auth:$version.firebase"
-    compile "com.google.firebase:firebase-database:$version.firebase"
-    compile "com.firebase:firebase-jobdispatcher:$version.jobdispatcher"
-
-    compile "org.apache.commons:commons-collections4:$version.collections"
 
     compile "com.jakewharton:butterknife:$version.butterKnife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$version.butterKnife"
     compile "com.jakewharton.timber:timber:$version.timber"
-
-    compile "com.squareup.okhttp3:okhttp:$version.okhttp"
-    compile "com.google.code.gson:gson:$version.gson"
-
-    debugCompile "com.facebook.stetho:stetho:$version.stetho"
-    debugCompile "com.facebook.stetho:stetho-okhttp3:$version.stetho"
-    debugCompile "com.squareup.okhttp3:logging-interceptor:$version.okhttp"
-
-    compile project(":keyculator")
 }
-
-apply plugin: 'com.google.gms.google-services'

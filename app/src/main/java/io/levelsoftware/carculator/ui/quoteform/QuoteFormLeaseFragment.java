@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -45,13 +44,10 @@ public class QuoteFormLeaseFragment extends QuoteFormFragment
     @BindView(R.id.button_test) Button testButton;
     @BindView(R.id.scroll_view) ScrollView scrollView;
     @BindView(R.id.linear_layout_form_container) LinearLayout formContainerLinearLayout;
-    @BindView(R.id.frame_layout_keyboard) FrameLayout keyboardFrameLayout;
 
     private SparseArray<FormField> fields = new SparseArray<>();
 
-    private boolean keyboardVisible;
     private int defaultScrollViewHeight;
-
     private ValueAnimator scrollViewAnimator;
 
     @Nullable @Override

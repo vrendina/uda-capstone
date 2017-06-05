@@ -245,36 +245,11 @@
 
     </ScrollView>
 
-    <FrameLayout
-        android:id="@+id/frame_layout_keyboard"
+
+    <io.levelsoftware.keyculator.Keyculator
+        android:id="@+id/keyculator"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone">
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/primary"
-            android:layout_marginTop="8dp"
-            app:cardElevation="16dp"
-            app:cardCornerRadius="0dp"
-            android:layout_gravity="bottom">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/primary">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="This is the keyboard view"/>
-
-            </FrameLayout>
-
-        </android.support.v7.widget.CardView>
-
-    </FrameLayout>
+        android:layout_height="200dp"
+        android:layout_gravity="bottom" />
 
 </FrameLayout>
