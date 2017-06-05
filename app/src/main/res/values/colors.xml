@@ -26,7 +26,7 @@
     <color name="accentLight">#A584DD</color>
 
     <color name="windowBackground">#E7E7E7</color>
-    <color name="edgeEffect">#40673AB7</color>
+    <color name="edgeEffect">#20673AB7</color>
 
     <color name="defaultTabSelectedTextColor">@color/primaryDark</color>
     <color name="defaultTabTextColor">#D7D7D7</color>

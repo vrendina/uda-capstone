@@ -26,18 +26,221 @@
         app:cardElevation="@dimen/keyboard_elevation"
         app:cardCornerRadius="0dp">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            android:background="@color/background">
+            android:orientation="vertical">
 
-            <ImageView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="This is the screen for the calculator"/>
+
+                <ImageView
+                    android:layout_width="@dimen/operator_bar_width"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_backspace_black_24dp"
+                    android:contentDescription="@string/key_backspace"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="@color/number_text"
+                    android:layout_marginBottom="1dp"
+                    android:clickable="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/black"/>
+                android:orientation="horizontal">
 
-        </FrameLayout>
+                <LinearLayout
+                    android:theme="@style/NumberButtonTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@color/number_background">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_seven"/>
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_eight"/>
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_nine"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_four"/>
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_five"/>
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_six"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_one"/>
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_two"/>
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_three"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_zero"/>
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_decimal"/>
+
+                        <TextView
+                            style="@style/BaseTextAppearance.Button.Number"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/key_equals"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/operator_bar_width"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/operator_background">
+
+                    <TextView
+                        style="@style/BaseTextAppearance.Button.Operator"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/key_division"/>
+
+                    <TextView
+                        style="@style/BaseTextAppearance.Button.Operator"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/key_multiplication"/>
+
+                    <TextView
+                        style="@style/BaseTextAppearance.Button.Operator"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/key_subtraction"/>
+
+                    <TextView
+                        style="@style/BaseTextAppearance.Button.Operator"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/key_addition"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 

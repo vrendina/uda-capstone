@@ -16,10 +16,7 @@
   -->
 
 <resources>
-    <dimen name="default_keyboard_height">240dp</dimen>
-
-    <dimen name="keyboard_top_margin">4dp</dimen>
-    <dimen name="keyboard_elevation">16dp</dimen>
-
-    <dimen name="operator_bar_width">64dp</dimen>
+    <style name="NumberButtonTheme">
+        <item name="android:colorControlHighlight">@color/highlight</item>
+    </style>
 </resources>

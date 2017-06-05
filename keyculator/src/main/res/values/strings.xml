@@ -16,4 +16,29 @@
 
 <resources>
     <string name="app_name">Keyculator</string>
+
+    <string name="key_zero" translatable="false">0</string>
+    <string name="key_one" translatable="false">1</string>
+    <string name="key_two" translatable="false">2</string>
+    <string name="key_three" translatable="false">3</string>
+    <string name="key_four" translatable="false">4</string>
+    <string name="key_five" translatable="false">5</string>
+    <string name="key_six" translatable="false">6</string>
+    <string name="key_seven" translatable="false">7</string>
+    <string name="key_eight" translatable="false">8</string>
+    <string name="key_nine" translatable="false">9</string>
+
+    <string name="key_decimal" translatable="false">.</string>
+    <string name="key_addition" translatable="false">+</string>
+    <string name="key_subtraction" translatable="false">−</string>
+    <string name="key_multiplication" translatable="false">×</string>
+    <string name="key_division" translatable="false">÷</string>
+    <string name="key_equals" translatable="false">=</string>
+
+    <string name="key_next" translatable="false">→</string>
+    <string name="key_close" translatable="false">↓</string>
+    <string name="key_prev" translatable="false">←</string>
+
+    <string name="key_backspace">Backspace</string>
+    <string name="key_clear">Clear</string>
 </resources>

@@ -16,5 +16,14 @@
   -->
 
 <resources>
-    <color name="background">#F5F5F5</color>
+    <color name="screen_background">#FFFFFF</color>
+
+    <color name="number_background">#F5F5F5</color>
+    <color name="number_text">@color/operator_background</color>
+
+    <color name="operator_background">#9E9E9E</color>
+    <color name="operator_text">@color/number_background</color>
+
+    <color name="highlight">#20673AB7</color>
+    <color name="separator">#E7E7E7</color>
 </resources>
