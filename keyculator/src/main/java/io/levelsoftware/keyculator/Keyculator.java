@@ -159,13 +159,13 @@ public class Keyculator extends FrameLayout {
      */
     public void showKeyboard() {
         // If the keyboard is already open don't do anything
-        if(view.getY() == offScreenPosition - keyboardHeight) {
-            Timber.v("Keyboard is already fully visible");
+        if(keyboardIsActive() || keyboardIsEntering()) {
+            Timber.v("Keyboard is already fully visible or animating in");
             return;
         }
 
         if(!keyboardIsEntering()) {
-            if(keyboardIsExiting()) {
+            if(keyboardIsHiding()) {
                 exitAnimatorSet.cancel();
             }
             Timber.d("Current keyboard position: " + view.getY() +
@@ -186,12 +186,12 @@ public class Keyculator extends FrameLayout {
      */
     public void hideKeyboard() {
         // If the keyboard is already off screen don't do anything
-        if(view.getY() == offScreenPosition) {
-            Timber.v("Keyboard is already fully hidden");
+        if(keyboardIsHidden() || keyboardIsHiding()) {
+            Timber.v("Keyboard is already fully hidden or hiding");
             return;
         }
 
-        if(!keyboardIsExiting()) {
+        if(!keyboardIsHiding()) {
             if(keyboardIsEntering()) {
                 enterAnimatorSet.cancel();
             }
@@ -221,11 +221,11 @@ public class Keyculator extends FrameLayout {
     }
 
     /**
-     * Checks if the keyboard is in the process of exiting.
+     * Checks if the keyboard is in the process of hiding.
      * 
      * @return true if the keyboard is currently animating out
      */
-    public boolean keyboardIsExiting() {
+    public boolean keyboardIsHiding() {
         return keyboardIsAnimating(keyboardExitAnimator);
     }
 
@@ -244,6 +244,26 @@ public class Keyculator extends FrameLayout {
                 Timber.d("Initial scroll view height: " + initialScrollViewHeight);
             }
         });
+    }
+
+    /**
+     * Determine if the keyboard is fully visible. Can be used with keyboardIsEntering to determine
+     * the state of the keyboard.
+     *
+     * @return true if the keyboard is fully up
+     */
+    public boolean keyboardIsActive() {
+        return view.getY() == offScreenPosition - keyboardHeight;
+    }
+
+    /**
+     * Determine if the keyboard is completed hidden. Can be used with keyboardIsHiding to determine
+     * the state of the keyboard.
+     *
+     * @return true if the keyboard is fully off screen
+     */
+    public boolean keyboardIsHidden() {
+        return view.getY() == offScreenPosition;
     }
 
 }

@@ -22,16 +22,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 
 
 public class QuoteFormLeaseFragment extends QuoteFormFragment {
-
-    @BindView(R.id.button_test) Button testButton;
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -40,21 +36,10 @@ public class QuoteFormLeaseFragment extends QuoteFormFragment {
         View view = inflater.inflate(R.layout.fragment_quote_lease_form, container, false);
         ButterKnife.bind(this, view);
 
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                testClicked();
-            }
-        });
-
         setupFields();
         setupKeyboard();
 
         return view;
-    }
-
-    public void testClicked() {
-        hideKeyboard();
     }
 
     @Override

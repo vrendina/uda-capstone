@@ -20,15 +20,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:form="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-
-    <Button
-        android:id="@+id/button_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Toggle Keyboard"/>
+    android:layout_width="match_parent">
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -42,7 +34,10 @@
             android:id="@+id/form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -251,6 +246,7 @@
     <io.levelsoftware.keyculator.Keyculator
         android:id="@+id/keyculator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"/>
 
 </FrameLayout>

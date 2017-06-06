@@ -36,7 +36,8 @@ import timber.log.Timber;
 
 
 public abstract class QuoteFormFragment extends Fragment
-        implements FormField.OnFormFieldEventListener {
+        implements FormField.OnFormFieldEventListener,
+        View.OnFocusChangeListener {
 
     @BindView(R.id.form_container) LinearLayout container;
     @BindView(R.id.keyculator) Keyculator keyculator;
@@ -66,6 +67,8 @@ public abstract class QuoteFormFragment extends Fragment
             FormField field = fields.get(fields.keyAt(i));
             field.setOnFormFieldEventListener(this);
         }
+
+        container.setOnFocusChangeListener(this);
     }
 
     protected void setupFields() {
@@ -89,12 +92,21 @@ public abstract class QuoteFormFragment extends Fragment
         }
     }
 
+    @Override
+    public void onFocusChange(View view, boolean hasFocus) {
+        // If the user taps on the form container, hide the keyboard
+        if(hasFocus && view == container) {
+            if(keyculator.keyboardIsActive() || keyculator.keyboardIsEntering()) {
+                hideKeyboard();
+            }
+        }
+    }
+
     protected void showKeyboard() {
         keyculator.showKeyboard();
     }
 
     protected void hideKeyboard() {
-        ((View)scrollView.getParent()).requestFocus();
         keyculator.hideKeyboard();
     }
 
