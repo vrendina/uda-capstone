@@ -56,8 +56,7 @@ public abstract class BaseIntentService extends IntentService {
 
     protected void sendStatusBroadcast(int code, @Nullable String message, @NonNull String action) {
         Timber.d("STATUS BROADCAST (" + code + ") " + message);
-        Intent intent = new Intent();
-        intent.setAction(action);
+        Intent intent = new Intent(action);
 
         intent.putExtra(getString(R.string.intent_key_status_code), code);
         intent.putExtra(getString(R.string.intent_key_status_message), message);
