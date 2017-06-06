@@ -19,22 +19,25 @@ package io.levelsoftware.keyculator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 
-public class Keyculator extends FrameLayout {
+public class Keyculator extends FrameLayout implements View.OnClickListener {
 
     private View view;
     private View scrollView;
@@ -54,6 +57,17 @@ public class Keyculator extends FrameLayout {
     private int exitAnimationDuration;
     private int enterAnimationDuration;
 
+    private SparseArray<TextView> buttons = new SparseArray<>();
+
+    private TextView screen;
+    private TextView result;
+
+    private OnEventListener listener;
+
+    protected static final int EVENT_KEYBOARD_OPENED = 0;
+    protected static final int EVENT_KEYBOARD_CLOSED = 1;
+    protected static final int EVENT_KEYBOARD_RESULT = 2;
+
     public Keyculator(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -64,7 +78,6 @@ public class Keyculator extends FrameLayout {
         enterAnimationDuration = getResources().getInteger(R.integer.default_enter_duration);
         exitAnimationDuration = getResources().getInteger(R.integer.default_exit_duration);
 
-        ButterKnife.bind(this, view);
     }
 
     @Override
@@ -73,6 +86,12 @@ public class Keyculator extends FrameLayout {
 
         configureDimensions();
         setupAnimators();
+
+        screen = (TextView) findViewById(R.id.text_view_screen);
+        result = (TextView) findViewById(R.id.text_view_result);
+
+        collectButtons((ViewGroup)findViewById(R.id.container));
+        attachListeners();
     }
     
     private void configureDimensions() {
@@ -108,6 +127,27 @@ public class Keyculator extends FrameLayout {
                 });
             }
         });
+    }
+
+    protected void collectButtons(ViewGroup parent) {
+        for(int i = 0; i<parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if(child instanceof TextView) {
+                Timber.d("Found button: " + ((TextView) child).getText());
+                buttons.put(child.getId(), (TextView) child);
+            } else if(child instanceof ViewGroup) {
+                collectButtons((ViewGroup) child);
+            }
+        }
+    }
+
+    private void attachListeners() {
+        for(int i = 0; i<buttons.size(); i++) {
+            TextView button = buttons.get(buttons.keyAt(i));
+            button.setOnClickListener(this);
+        }
+
+        findViewById(R.id.backspace).setOnClickListener(this);
     }
 
     private void setupAnimators() {
@@ -178,6 +218,8 @@ public class Keyculator extends FrameLayout {
                             + getResources().getDimensionPixelSize(R.dimen.keyboard_top_margin));
 
             enterAnimatorSet.start();
+
+            sendEvent(EVENT_KEYBOARD_OPENED);
         }
     }
 
@@ -204,6 +246,8 @@ public class Keyculator extends FrameLayout {
             scrollViewExpandAnimator.setIntValues(scrollView.getMeasuredHeight(), initialScrollViewHeight);
 
             exitAnimatorSet.start();
+
+            sendEvent(EVENT_KEYBOARD_CLOSED);
         }
     }
 
@@ -247,6 +291,17 @@ public class Keyculator extends FrameLayout {
     }
 
     /**
+     * Sets the class to be used for event callbacks. There are two ways to receive events
+     * from this keyboard. By directly associating an OnEventListener class through this
+     * method or by subscribing to local broadcasts with a KeyculatorBroadcastReceiver.
+     *
+     * @param listener class that implements OnEventListener interface
+     */
+    public void setEventListener(OnEventListener listener) {
+        this.listener = listener;
+    }
+
+    /**
      * Determine if the keyboard is fully visible. Can be used with keyboardIsEntering to determine
      * the state of the keyboard.
      *
@@ -266,4 +321,46 @@ public class Keyculator extends FrameLayout {
         return view.getY() == offScreenPosition;
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view instanceof TextView) {
+            Timber.v("Got button click event: " + ((TextView) view).getText());
+        }
+
+        if(view.getId() == R.id.backspace) {
+            Timber.v("Pressed backspace");
+        }
+    }
+
+    private void sendEvent(int code, double result) {
+        if(listener != null) {
+            switch (code) {
+                case EVENT_KEYBOARD_OPENED:
+                    listener.keyboardOpened();
+                    break;
+
+                case EVENT_KEYBOARD_CLOSED:
+                    listener.keyboardClosed();
+                    break;
+
+                case EVENT_KEYBOARD_RESULT:
+                    listener.keyboardResult(result);
+            }
+        }
+
+        Intent event = new Intent(KeyculatorBroadcastReceiver.ACTION);
+        event.putExtra(KeyculatorBroadcastReceiver.INTENT_KEY_EVENT_CODE, code);
+        event.putExtra(KeyculatorBroadcastReceiver.INTENT_KEY_RESULT, result);
+        LocalBroadcastManager.getInstance(this.getContext()).sendBroadcast(event);
+    }
+
+    private void sendEvent(int code) {
+        sendEvent(code, 0);
+    }
+
+    public interface OnEventListener {
+        void keyboardOpened();
+        void keyboardClosed();
+        void keyboardResult(double result);
+    }
 }

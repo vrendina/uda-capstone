@@ -16,8 +16,10 @@
 
 package io.levelsoftware.carculator.ui.quoteform;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,10 +35,12 @@ import com.google.firebase.auth.FirebaseUser;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.keyculator.Keyculator;
+import io.levelsoftware.keyculator.KeyculatorBroadcastReceiver;
 import timber.log.Timber;
 
 public class QuoteFormActivity extends AppCompatActivity
-        implements ViewPager.OnPageChangeListener {
+        implements ViewPager.OnPageChangeListener, Keyculator.OnEventListener{
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.view_pager) ViewPager viewPager;
@@ -48,6 +52,8 @@ public class QuoteFormActivity extends AppCompatActivity
 
     private FirebaseAuth auth;
     private FirebaseUser user;
+
+    private KeyculatorBroadcastReceiver keyboardBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +72,14 @@ public class QuoteFormActivity extends AppCompatActivity
 
         setupTabs();
         setupToolbar();
+        bindKeyboardReceiver();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         viewPager.removeOnPageChangeListener(this);
+        unBindKeyboardReceiver();
     }
 
     private void setupTabs() {
@@ -89,6 +97,17 @@ public class QuoteFormActivity extends AppCompatActivity
                 toggleToolbarDisplayMode();
             }
         });
+    }
+
+    private void bindKeyboardReceiver() {
+        keyboardBroadcastReceiver = new KeyculatorBroadcastReceiver(this);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(keyboardBroadcastReceiver,
+                new IntentFilter(KeyculatorBroadcastReceiver.ACTION));
+    }
+
+    private void unBindKeyboardReceiver() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(keyboardBroadcastReceiver);
     }
 
     private void toggleToolbarDisplayMode() {
@@ -121,5 +140,14 @@ public class QuoteFormActivity extends AppCompatActivity
 //                    .hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
 //        }
     }
+
+    @Override
+    public void keyboardOpened() {}
+
+    @Override
+    public void keyboardClosed() {}
+
+    @Override
+    public void keyboardResult(double result) {}
 }
 

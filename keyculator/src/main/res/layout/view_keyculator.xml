@@ -37,15 +37,26 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/text_view_screen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
                     android:paddingTop="8dp"
+                    android:paddingBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/text_view_result"
+                    android:layout_width="@dimen/operator_bar_width"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="This is the screen for the calculator"/>
+                    android:ellipsize="end"
+                    android:maxLines="1" />
 
                 <ImageView
+                    android:id="@+id/backspace"
                     android:layout_width="@dimen/operator_bar_width"
                     android:layout_height="match_parent"
                     android:padding="8dp"
@@ -60,6 +71,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -79,6 +91,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/seven"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -87,6 +100,7 @@
                             android:text="@string/key_seven"/>
 
                         <TextView
+                            android:id="@+id/eight"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -95,6 +109,7 @@
                             android:text="@string/key_eight"/>
 
                         <TextView
+                            android:id="@+id/nine"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -110,6 +125,7 @@
                         android:layout_weight="1">
 
                         <TextView
+                            android:id="@+id/four"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -118,6 +134,7 @@
                             android:text="@string/key_four"/>
 
                         <TextView
+                            android:id="@+id/five"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -126,6 +143,7 @@
                             android:text="@string/key_five"/>
 
                         <TextView
+                            android:id="@+id/six"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -142,6 +160,7 @@
                         android:layout_weight="1">
 
                         <TextView
+                            android:id="@+id/one"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -150,6 +169,7 @@
                             android:text="@string/key_one"/>
 
                         <TextView
+                            android:id="@+id/two"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -158,6 +178,7 @@
                             android:text="@string/key_two"/>
 
                         <TextView
+                            android:id="@+id/three"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -173,6 +194,7 @@
                         android:layout_weight="1">
 
                         <TextView
+                            android:id="@+id/zero"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -181,6 +203,7 @@
                             android:text="@string/key_zero"/>
 
                         <TextView
+                            android:id="@+id/decimal"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -189,6 +212,7 @@
                             android:text="@string/key_decimal"/>
 
                         <TextView
+                            android:id="@+id/equals"
                             style="@style/BaseTextAppearance.Button.Number"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -207,6 +231,7 @@
                     android:background="@color/operator_background">
 
                     <TextView
+                        android:id="@+id/division"
                         style="@style/BaseTextAppearance.Button.Operator"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -215,6 +240,7 @@
                         android:text="@string/key_division"/>
 
                     <TextView
+                        android:id="@+id/multiplication"
                         style="@style/BaseTextAppearance.Button.Operator"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -223,6 +249,7 @@
                         android:text="@string/key_multiplication"/>
 
                     <TextView
+                        android:id="@+id/subtraction"
                         style="@style/BaseTextAppearance.Button.Operator"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -231,6 +258,7 @@
                         android:text="@string/key_subtraction"/>
 
                     <TextView
+                        android:id="@+id/addition"
                         style="@style/BaseTextAppearance.Button.Operator"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
