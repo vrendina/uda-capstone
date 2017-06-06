@@ -34,10 +34,13 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+
 import timber.log.Timber;
 
 
-public class Keyculator extends FrameLayout implements View.OnClickListener {
+public class Keyculator extends FrameLayout
+        implements View.OnClickListener, View.OnLongClickListener {
 
     private View view;
     private View scrollView;
@@ -60,13 +63,14 @@ public class Keyculator extends FrameLayout implements View.OnClickListener {
     private SparseArray<TextView> buttons = new SparseArray<>();
 
     private TextView screen;
-    private TextView result;
 
     private OnEventListener listener;
 
     protected static final int EVENT_KEYBOARD_OPENED = 0;
     protected static final int EVENT_KEYBOARD_CLOSED = 1;
     protected static final int EVENT_KEYBOARD_RESULT = 2;
+
+    private ValueManager valueManager = new ValueManager();
 
     public Keyculator(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -87,8 +91,7 @@ public class Keyculator extends FrameLayout implements View.OnClickListener {
         configureDimensions();
         setupAnimators();
 
-        screen = (TextView) findViewById(R.id.text_view_screen);
-        result = (TextView) findViewById(R.id.text_view_result);
+        screen = (TextView) findViewById(R.id.screen);
 
         collectButtons((ViewGroup)findViewById(R.id.container));
         attachListeners();
@@ -107,14 +110,10 @@ public class Keyculator extends FrameLayout implements View.OnClickListener {
                 }
                 view.setLayoutParams(params);
 
-                Timber.d("Current keyboard position: " + view.getY() +
-                        " Offscreen position: " + offScreenPosition +
-                        " Keyboard height: " + view.getMeasuredHeight());
-
                 // Move the keyboard off the screen initially
                 view.setY(view.getY() + keyboardHeight);
 
-                // Update the value of the off screen position once the layout has been completely setup
+                // Update the values of the off screen position once the layout has been completely setup
                 view.post(new Runnable() {
                     @Override
                     public void run() {
@@ -148,6 +147,7 @@ public class Keyculator extends FrameLayout implements View.OnClickListener {
         }
 
         findViewById(R.id.backspace).setOnClickListener(this);
+        findViewById(R.id.backspace).setOnLongClickListener(this);
     }
 
     private void setupAnimators() {
@@ -208,9 +208,6 @@ public class Keyculator extends FrameLayout implements View.OnClickListener {
             if(keyboardIsHiding()) {
                 exitAnimatorSet.cancel();
             }
-            Timber.d("Current keyboard position: " + view.getY() +
-                    " Offscreen position: " + offScreenPosition +
-                    " Keyboard height: " + keyboardHeight);
 
             keyboardEnterAnimator.setFloatValues(view.getY(), offScreenPosition - keyboardHeight);
             scrollViewCollapseAnimator.setIntValues(scrollView.getMeasuredHeight(),
@@ -237,10 +234,6 @@ public class Keyculator extends FrameLayout implements View.OnClickListener {
             if(keyboardIsEntering()) {
                 enterAnimatorSet.cancel();
             }
-
-            Timber.d("Current keyboard position: " + view.getY() +
-                    " Offscreen position: " + offScreenPosition +
-                    " Keyboard height: " + keyboardHeight);
 
             keyboardExitAnimator.setFloatValues(view.getY(), offScreenPosition);
             scrollViewExpandAnimator.setIntValues(scrollView.getMeasuredHeight(), initialScrollViewHeight);
@@ -321,18 +314,7 @@ public class Keyculator extends FrameLayout implements View.OnClickListener {
         return view.getY() == offScreenPosition;
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view instanceof TextView) {
-            Timber.v("Got button click event: " + ((TextView) view).getText());
-        }
-
-        if(view.getId() == R.id.backspace) {
-            Timber.v("Pressed backspace");
-        }
-    }
-
-    private void sendEvent(int code, double result) {
+    private void sendEvent(int code, BigDecimal result) {
         if(listener != null) {
             switch (code) {
                 case EVENT_KEYBOARD_OPENED:
@@ -350,17 +332,59 @@ public class Keyculator extends FrameLayout implements View.OnClickListener {
 
         Intent event = new Intent(KeyculatorBroadcastReceiver.ACTION);
         event.putExtra(KeyculatorBroadcastReceiver.INTENT_KEY_EVENT_CODE, code);
-        event.putExtra(KeyculatorBroadcastReceiver.INTENT_KEY_RESULT, result);
+//        event.putExtra(KeyculatorBroadcastReceiver.INTENT_KEY_RESULT, result);
         LocalBroadcastManager.getInstance(this.getContext()).sendBroadcast(event);
     }
 
     private void sendEvent(int code) {
-        sendEvent(code, 0);
+        sendEvent(code, new BigDecimal(0));
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if(view instanceof TextView) {
+            int id = view.getId();
+            String string = ((TextView) view).getText().toString();
+
+            // If we hit the equals button
+            if(id == R.id.equals) {
+                evaluate();
+                return;
+            }
+
+            valueManager.append(string);
+            updateDisplay();
+        }
+
+        if(view.getId() == R.id.backspace) {
+            valueManager.removeLast();
+            updateDisplay();
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        if(view.getId() == R.id.backspace) {
+            valueManager.clear();
+            updateDisplay();
+            return true;
+        }
+        return false;
+    }
+
+    private void updateDisplay() {
+        screen.setText(valueManager.getFormattedString());
+    }
+
+    private void evaluate() {
+        updateDisplay();
     }
 
     public interface OnEventListener {
         void keyboardOpened();
         void keyboardClosed();
-        void keyboardResult(double result);
+        void keyboardResult(BigDecimal result);
     }
+
 }

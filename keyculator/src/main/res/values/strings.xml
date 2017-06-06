@@ -35,10 +35,6 @@
     <string name="key_division" translatable="false">÷</string>
     <string name="key_equals" translatable="false">=</string>
 
-    <string name="key_next" translatable="false">→</string>
-    <string name="key_close" translatable="false">↓</string>
-    <string name="key_prev" translatable="false">←</string>
-
     <string name="key_backspace">Backspace</string>
     <string name="key_clear">Clear</string>
 </resources>

@@ -17,6 +17,7 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
@@ -37,23 +38,21 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/text_view_screen"
+                    android:id="@+id/screen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:textAlignment="center"
                     android:layout_weight="1"
                     android:paddingTop="8dp"
-                    android:paddingBottom="8dp" />
-
-                <TextView
-                    android:id="@+id/text_view_result"
-                    android:layout_width="@dimen/operator_bar_width"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingTop="8dp"
+                    android:paddingStart="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingRight="16dp"
                     android:paddingBottom="8dp"
-                    android:ellipsize="end"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:ellipsize="start"
+                    tools:text="1,324 + 57"/>
 
                 <ImageView
                     android:id="@+id/backspace"

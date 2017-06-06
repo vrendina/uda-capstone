@@ -32,6 +32,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
@@ -148,6 +150,8 @@ public class QuoteFormActivity extends AppCompatActivity
     public void keyboardClosed() {}
 
     @Override
-    public void keyboardResult(double result) {}
+    public void keyboardResult(BigDecimal result) {}
+
+
 }
 

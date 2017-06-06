@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.ui.FormField;
@@ -37,7 +39,7 @@ import timber.log.Timber;
 
 public abstract class QuoteFormFragment extends Fragment
         implements FormField.OnFormFieldEventListener,
-        View.OnFocusChangeListener {
+        View.OnFocusChangeListener, Keyculator.OnEventListener {
 
     @BindView(R.id.form_container) LinearLayout container;
     @BindView(R.id.keyculator) Keyculator keyculator;
@@ -54,7 +56,7 @@ public abstract class QuoteFormFragment extends Fragment
         for(int i = 0; i<parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if(child instanceof FormField) {
-                Timber.d("Found form field " + child.toString());
+                Timber.v("Found form field " + child.toString());
                 fields.put(child.getId(), (FormField) child);
             } else if(child instanceof ViewGroup) {
                 collectFields((ViewGroup) child);
@@ -78,11 +80,12 @@ public abstract class QuoteFormFragment extends Fragment
 
     protected void setupKeyboard() {
         keyculator.setScrollView(scrollView);
+        keyculator.setEventListener(this);
     }
 
     @Override
     public void fieldFocusChanged(@IdRes int id, boolean hasFocus) {
-        Timber.d("Focus changed for " + id + " has focus: " + hasFocus);
+        Timber.v("Focus changed for " + id + " has focus: " + hasFocus);
         if(hasFocus) {
             showKeyboard();
 
@@ -105,9 +108,15 @@ public abstract class QuoteFormFragment extends Fragment
     protected void showKeyboard() {
         keyculator.showKeyboard();
     }
-
     protected void hideKeyboard() {
         keyculator.hideKeyboard();
     }
 
+    @Override public void keyboardOpened() {}
+    @Override public void keyboardClosed() {}
+
+    @Override
+    public void keyboardResult(BigDecimal result) {
+        Timber.d("Got keyboard result: " + result);
+    }
 }
