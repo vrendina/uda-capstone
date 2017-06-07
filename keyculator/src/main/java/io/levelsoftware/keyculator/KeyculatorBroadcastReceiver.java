@@ -22,8 +22,6 @@ import android.content.Intent;
 
 import java.math.BigDecimal;
 
-import timber.log.Timber;
-
 
 public class KeyculatorBroadcastReceiver extends BroadcastReceiver {
 
@@ -42,8 +40,6 @@ public class KeyculatorBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         int code = intent.getIntExtra(INTENT_KEY_EVENT_CODE, -1);
         BigDecimal result = (BigDecimal)intent.getSerializableExtra(INTENT_KEY_RESULT);
-
-        Timber.d("Called receive: " + code);
 
         switch (code) {
             case Keyculator.EVENT_KEYBOARD_OPENED:
