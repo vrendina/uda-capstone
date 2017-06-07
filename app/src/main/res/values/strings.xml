@@ -82,6 +82,8 @@
     <string name="broadcast_click_vehicle" translatable="false">io.levelsoftware.carculator.ui.CLICK_VEHICLE</string>
     <string name="broadcast_field_focus" translatable="false">io.levelsoftware.carculator.ui.FIELD_FOCUS</string>
 
+    <string name="form_section_pricing">Pricing</string>
+
     <string name="form_field_negotiated_price">Negotiated Price</string>
     <string name="form_field_residual_value">Residual Value</string>
     <string name="form_field_tax_rate">Tax Rate</string>
