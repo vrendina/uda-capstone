@@ -17,6 +17,7 @@
 package io.levelsoftware.keyculator;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -48,7 +49,7 @@ public class ValueManager {
 
     private static final String STATE_KEY_OPERATOR = "operator";
 
-    private BigDecimal result;
+    private StringNumber result;
 
     protected ValueManager() {
         operands.add(new Operand());
@@ -72,8 +73,8 @@ public class ValueManager {
 
             // We already have an operator and are trying to add another one
             if(operator != null && operands.get(1).getLength() > 0) {
-                if(getResult() != null) {
-                    setInitialValue(getResult().toPlainString());
+                if(getResult().getStringValue() != null) {
+                    setInitialValue(getResult().getStringValue());
                 }
             }
             operator = value;
@@ -114,14 +115,6 @@ public class ValueManager {
         invalidateResult();
     }
 
-    @Nullable
-    protected BigDecimal getResult() {
-        if(result == null) {
-            result = recalculate();
-        }
-        return result;
-    }
-
     protected void setInitialValue(@Nullable String value) {
         if(TextUtils.isEmpty(value)) {
             operands.get(0).removeAllCharacters();
@@ -135,60 +128,61 @@ public class ValueManager {
     protected Bundle saveState() {
         Bundle outState = new Bundle();
 
-        outState.putString(STATE_KEY_FIRST_OPERAND, operands.get(0).getStringValue());
-        outState.putString(STATE_KEY_SECOND_OPERAND, operands.get(1).getStringValue());
+        outState.putParcelable(STATE_KEY_FIRST_OPERAND, operands.get(0).getStringNumber());
+        outState.putParcelable(STATE_KEY_SECOND_OPERAND, operands.get(1).getStringNumber());
         outState.putString(STATE_KEY_OPERATOR, operator);
 
         return outState;
     }
 
     protected void restoreState(Bundle bundle) {
-        String firstOperand = bundle.getString(STATE_KEY_FIRST_OPERAND);
-        String secondOperand = bundle.getString(STATE_KEY_SECOND_OPERAND);
+        StringNumber firstOperand = bundle.getParcelable(STATE_KEY_FIRST_OPERAND);
+        StringNumber secondOperand = bundle.getParcelable(STATE_KEY_SECOND_OPERAND);
 
-        if(firstOperand != null) {
-            operands.get(0).setValue(firstOperand);
+        if(firstOperand != null && firstOperand.getStringValue() != null) {
+            operands.get(0).setValue(firstOperand.getStringValue());
         }
 
-        if(secondOperand != null) {
-            operands.get(1).setValue(secondOperand);
+        if(secondOperand != null && secondOperand.getStringValue() != null) {
+            operands.get(1).setValue(secondOperand.getStringValue());
         }
 
         operator = bundle.getString(STATE_KEY_OPERATOR);
     }
 
-    private BigDecimal recalculate() {
-        BigDecimal x = operands.get(0).getDecimalValue();
-        BigDecimal y = operands.get(1).getDecimalValue();
+    @NonNull
+    protected StringNumber getResult() {
+        StringNumber x = operands.get(0).getStringNumber();
+        StringNumber y = operands.get(1).getStringNumber();
 
-        if(x == null) {
-            return null;
-        }
+        BigDecimal dx = x.getDecimalValue();
+        BigDecimal dy = y.getDecimalValue();
 
-        if(operator == null || y == null) {
+        if(dx == null || operator == null || dy == null) {
             return x;
         }
 
         if(operator.equals(OPERATOR_DIVISION)) {
-            if(y.equals(BigDecimal.ZERO)) {
+            if(dy.equals(BigDecimal.ZERO)) {
                 return x;
             }
-            return x.divide(y, 32, BigDecimal.ROUND_HALF_EVEN).setScale(16, RoundingMode.HALF_EVEN).stripTrailingZeros();
+            return new StringNumber(dx.divide(dy, 32, BigDecimal.ROUND_HALF_EVEN)
+                    .setScale(16, RoundingMode.HALF_EVEN).stripTrailingZeros());
         }
 
         if(operator.equals(OPERATOR_ADDITION)) {
-            return x.add(y).stripTrailingZeros();
+            return new StringNumber(dx.add(dy).stripTrailingZeros());
         }
 
         if(operator.equals(OPERATOR_SUBTRACTION)) {
-            return x.subtract(y).stripTrailingZeros();
+            return new StringNumber(dx.subtract(dy).stripTrailingZeros());
         }
 
         if(operator.equals(OPERATOR_MULTIPLICATION)) {
-            return x.multiply(y).setScale(12, BigDecimal.ROUND_HALF_EVEN).stripTrailingZeros();
+            return new StringNumber(dx.multiply(dy).setScale(12, BigDecimal.ROUND_HALF_EVEN).stripTrailingZeros());
         }
 
-        return null;
+        return new StringNumber("");
     }
 
     private void invalidateResult() {

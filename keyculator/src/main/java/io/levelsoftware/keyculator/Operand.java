@@ -17,10 +17,7 @@
 package io.levelsoftware.keyculator;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -28,14 +25,12 @@ import java.util.Locale;
 public class Operand {
 
     private String formattedValue;
-    private String stringValue;
-    private BigDecimal decimalValue;
+//    private String stringValue;
+//    private BigDecimal decimalValue;
+    private StringNumber stringNumber;
     private ArrayList<String> charSequence = new ArrayList<>();
 
     private NumberFormat formatter = NumberFormat.getInstance(Locale.US);
-
-    private BigInteger characteristic;
-    private String mantissa;
 
     protected void setValue(@NonNull String value) {
         removeAllCharacters();
@@ -79,60 +74,50 @@ public class Operand {
             if(charSequence.size() == 0) {
                 formattedValue = "";
             } else {
-                String decimal = "";
-                if(charSequence.contains(".")) {
-                    decimal = ".";
-                }
+                String characteristic = getStringNumber().getCharacteristic();
+                String mantissa = getStringNumber().getMantissa();
 
-                formattedValue = formatter.format(getCharacteristic()) + decimal
-                        + ((getMantissa() == null) ? "" : getMantissa());
+                formattedValue =
+                        ((characteristic == null) ? "" : formatter.format(getStringNumber().getIntegerCharacteristic())) +
+                        ((stringNumber.hasDecimalPoint()) ? "." : "") +
+                        ((mantissa == null) ? "" : mantissa);
             }
         }
         return formattedValue;
     }
 
-    protected BigDecimal getDecimalValue() {
-        if(decimalValue == null) {
-            if(getStringValue() != null) {
-                decimalValue = new BigDecimal(getStringValue());
-            }
-        }
-        return decimalValue;
-    }
+//    protected BigDecimal getDecimalValue() {
+//        if(decimalValue == null) {
+//            if(getStringValue() != null) {
+//                decimalValue = new BigDecimal(getStringValue());
+//            }
+//        }
+//        return decimalValue;
+//    }
 
-    protected BigInteger getCharacteristic() {
-        if(characteristic == null) {
-            String[] components = getStringValue().split("\\.");
-            if(components.length > 0 && !TextUtils.isEmpty(components[0])) {
-                characteristic = new BigInteger(components[0]);
-            }
+//    protected String getStringValue() {
+//        if(stringValue == null) {
+//            if(charSequence.size() == 0) {
+//                return null;
+//            }
+//            StringBuilder builder = new StringBuilder();
+//            for (String c : charSequence) {
+//                builder.append(c);
+//            }
+//            stringValue = builder.toString();
+//        }
+//        return stringValue;
+//    }
 
-            if(components.length > 1 && !TextUtils.isEmpty(components[1])) {
-                mantissa = components[1];
-            }
-        }
-        return characteristic;
-    }
-
-    protected String getMantissa() {
-        if(mantissa == null) {
-            getCharacteristic();
-        }
-        return mantissa;
-    }
-
-    protected String getStringValue() {
-        if(stringValue == null) {
-            if(charSequence.size() == 0) {
-                return null;
-            }
+    protected StringNumber getStringNumber() {
+        if(stringNumber == null) {
             StringBuilder builder = new StringBuilder();
             for (String c : charSequence) {
                 builder.append(c);
             }
-            stringValue = builder.toString();
+            stringNumber = new StringNumber(builder.toString());
         }
-        return stringValue;
+        return stringNumber;
     }
 
     protected int getLength() {
@@ -141,10 +126,9 @@ public class Operand {
 
     private void invalidate() {
         formattedValue = null;
-        decimalValue = null;
-        stringValue = null;
-        characteristic = null;
-        mantissa = null;
+//        decimalValue = null;
+//        stringValue = null;
+        stringNumber = null;
     }
 
     @Override

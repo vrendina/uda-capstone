@@ -20,8 +20,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import java.math.BigDecimal;
-
 
 public class KeyculatorBroadcastReceiver extends BroadcastReceiver {
 
@@ -39,7 +37,7 @@ public class KeyculatorBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int code = intent.getIntExtra(INTENT_KEY_EVENT_CODE, -1);
-        BigDecimal result = (BigDecimal)intent.getSerializableExtra(INTENT_KEY_RESULT);
+        StringNumber result = intent.getParcelableExtra(INTENT_KEY_RESULT);
 
         switch (code) {
             case Keyculator.EVENT_KEYBOARD_OPENED:

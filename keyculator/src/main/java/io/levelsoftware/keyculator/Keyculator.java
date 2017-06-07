@@ -35,8 +35,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
-
 import timber.log.Timber;
 
 
@@ -347,7 +345,7 @@ public class Keyculator extends FrameLayout
         valueManager.restoreState(bundle);
     }
 
-    private void sendEvent(int code, BigDecimal result) {
+    private void sendEvent(int code, StringNumber result) {
         if(listener != null) {
             switch (code) {
                 case EVENT_KEYBOARD_OPENED:
@@ -370,7 +368,7 @@ public class Keyculator extends FrameLayout
     }
 
     private void sendEvent(int code) {
-        sendEvent(code, new BigDecimal(0));
+        sendEvent(code, new StringNumber(""));
     }
 
     private void setInitialValue(@Nullable String value) {
@@ -386,9 +384,7 @@ public class Keyculator extends FrameLayout
 
             // If we hit the equals button
             if(id == R.id.equals) {
-                if (valueManager.getResult() != null) {
-                    valueManager.setInitialValue(valueManager.getResult().toPlainString());
-                }
+                valueManager.setInitialValue(valueManager.getResult().getStringValue());
                 updateDisplay();
                 return;
             }
@@ -421,7 +417,7 @@ public class Keyculator extends FrameLayout
     public interface OnEventListener {
         void keyboardOpened();
         void keyboardClosed();
-        void keyboardResult(@Nullable BigDecimal result);
+        void keyboardResult(@NonNull StringNumber result);
     }
 
 }
