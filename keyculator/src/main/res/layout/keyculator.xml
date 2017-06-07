@@ -36,12 +36,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                app:cardElevation="2dp"
+                app:cardElevation="@dimen/screen_elevation"
                 app:cardCornerRadius="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="@dimen/screen_height"
                 android:orientation="horizontal">
 
                 <TextView

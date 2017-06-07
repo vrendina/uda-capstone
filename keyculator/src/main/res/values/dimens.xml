@@ -21,5 +21,8 @@
     <dimen name="keyboard_top_margin">4dp</dimen>
     <dimen name="keyboard_elevation">12dp</dimen>
 
+    <dimen name="screen_height">36dp</dimen>
+    <dimen name="screen_elevation">2dp</dimen>
+
     <dimen name="operator_bar_width">64dp</dimen>
 </resources>

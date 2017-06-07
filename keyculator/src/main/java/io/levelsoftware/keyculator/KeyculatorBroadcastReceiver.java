@@ -20,14 +20,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import java.math.BigDecimal;
+
+import timber.log.Timber;
+
 
 public class KeyculatorBroadcastReceiver extends BroadcastReceiver {
 
     public static final String ACTION = "io.levelsoftware.keyculator.KEYBOARD_EVENT";
 
     protected static final String INTENT_KEY_EVENT_CODE = "event_code";
-    protected static final String INTENT_KEY_CHARACTERISTIC = "characteristic";
-    protected static final String INTENT_KEY_MANTISSA = "mantissa";
+    protected static final String INTENT_KEY_RESULT = "result";
 
     private Keyculator.OnEventListener listener;
 
@@ -38,8 +41,9 @@ public class KeyculatorBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int code = intent.getIntExtra(INTENT_KEY_EVENT_CODE, -1);
-//        double result = intent.getDoubleExtra(INTENT_KEY_RESULT, 0);
+        BigDecimal result = (BigDecimal)intent.getSerializableExtra(INTENT_KEY_RESULT);
 
+        Timber.d("Called receive: " + code);
 
         switch (code) {
             case Keyculator.EVENT_KEYBOARD_OPENED:
@@ -51,7 +55,8 @@ public class KeyculatorBroadcastReceiver extends BroadcastReceiver {
                 break;
 
             case Keyculator.EVENT_KEYBOARD_RESULT:
-//                listener.keyboardResult(result);
+                listener.keyboardResult(result);
+                break;
         }
     }
 

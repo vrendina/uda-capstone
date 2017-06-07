@@ -78,7 +78,7 @@ public class Keyculator extends FrameLayout
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(R.layout.view_keyculator, this);
+        view = inflater.inflate(R.layout.keyculator, this);
         
         enterAnimationDuration = getResources().getInteger(R.integer.default_enter_duration);
         exitAnimationDuration = getResources().getInteger(R.integer.default_exit_duration);
@@ -89,7 +89,9 @@ public class Keyculator extends FrameLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        view.setVisibility(INVISIBLE);
         configureDimensions();
+
         setupAnimators();
 
         screen = (TextView) findViewById(R.id.screen);
@@ -119,6 +121,7 @@ public class Keyculator extends FrameLayout
                     @Override
                     public void run() {
                         offScreenPosition = view.getY();
+                        view.setVisibility(VISIBLE);
 
                         Timber.d("Current keyboard position: " + view.getY() +
                                 " Offscreen position: " + offScreenPosition +
@@ -222,6 +225,16 @@ public class Keyculator extends FrameLayout
     }
 
     /**
+     * Show the keyboard and set the display to contain the passed value.
+     *
+     * @param value numerical value to show on keyboard screen expressed as string
+     */
+    public void showKeyboard(@Nullable String value) {
+        setInitialValue(value);
+        showKeyboard();
+    }
+
+    /**
      * Hide the keyboard and expand the scrolling view.
      */
     public void hideKeyboard() {
@@ -316,18 +329,6 @@ public class Keyculator extends FrameLayout
     }
 
     /**
-     * Sets the initial value the keyboard should display. This should be called when opening
-     * the keyboard and focusing on a new field. If the value is null then the initial value
-     * will be cleared.
-     *
-     * @param value numerical value passed as a string
-     */
-    public void setInitialValue(@Nullable String value) {
-        valueManager.setInitialValue(value);
-        updateDisplay();
-    }
-
-    /**
      * Save the current state of the keyboard to a bundle so that it can be restored after
      * any configuration changes.
      *
@@ -364,12 +365,17 @@ public class Keyculator extends FrameLayout
 
         Intent event = new Intent(KeyculatorBroadcastReceiver.ACTION);
         event.putExtra(KeyculatorBroadcastReceiver.INTENT_KEY_EVENT_CODE, code);
-//        event.putExtra(KeyculatorBroadcastReceiver.INTENT_KEY_RESULT, result);
+        event.putExtra(KeyculatorBroadcastReceiver.INTENT_KEY_RESULT, result);
         LocalBroadcastManager.getInstance(this.getContext()).sendBroadcast(event);
     }
 
     private void sendEvent(int code) {
         sendEvent(code, new BigDecimal(0));
+    }
+
+    private void setInitialValue(@Nullable String value) {
+        valueManager.setInitialValue(value);
+        updateDisplay();
     }
 
     @Override
@@ -408,14 +414,14 @@ public class Keyculator extends FrameLayout
     }
 
     private void updateDisplay() {
-        listener.keyboardResult(valueManager.getResult());
+        sendEvent(EVENT_KEYBOARD_RESULT, valueManager.getResult());
         screen.setText(valueManager.getFormattedString());
     }
 
     public interface OnEventListener {
         void keyboardOpened();
         void keyboardClosed();
-        void keyboardResult(BigDecimal result);
+        void keyboardResult(@Nullable BigDecimal result);
     }
 
 }
