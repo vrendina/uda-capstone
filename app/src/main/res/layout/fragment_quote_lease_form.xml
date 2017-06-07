@@ -39,6 +39,12 @@
             android:focusableInTouchMode="true"
             android:clickable="true">
 
+            <TextView
+                style="@style/BaseTextAppearance.SingleLine.SectionHeader.QuoteForm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/form_section_pricing"/>
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,18 +55,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <!-- Left Column -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_gravity="top">
 
                             <io.levelsoftware.carculator.ui.FormField
                                 android:id="@+id/form_field_negotiated_price"
@@ -102,20 +106,15 @@
                                 form:hint="@string/form_field_trade_in_owed"
                                 form:inputType="currency|decimal" />
 
-                        </LinearLayout>
-
                     </LinearLayout>
 
                     <!-- Right Column -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_gravity="top">
 
                             <io.levelsoftware.carculator.ui.FormField
                                 android:id="@+id/form_field_residual_value"
@@ -149,7 +148,6 @@
                                 form:hint="@string/form_field_trade_in_value"
                                 form:inputType="currency"/>
 
-                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -172,18 +170,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <!-- Left Column -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_gravity="top">
 
                             <io.levelsoftware.carculator.ui.FormField
                                 android:id="@+id/form_field_title_fee"
@@ -201,20 +197,15 @@
                                 form:hint="@string/form_field_acquisition_fee"
                                 form:inputType="currency|decimal" />
 
-                        </LinearLayout>
-
                     </LinearLayout>
 
                     <!-- Right Column -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_gravity="top">
 
                         <io.levelsoftware.carculator.ui.FormField
                             android:id="@+id/form_field_doc_fee"
@@ -231,8 +222,6 @@
                             android:padding="16dp"
                             form:hint="@string/form_field_other_fee"
                             form:inputType="currency"/>
-
-                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
