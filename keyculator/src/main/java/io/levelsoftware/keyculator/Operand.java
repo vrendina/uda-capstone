@@ -20,17 +20,18 @@ import android.support.annotation.NonNull;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class Operand {
 
     private String formattedValue;
-//    private String stringValue;
-//    private BigDecimal decimalValue;
     private StringNumber stringNumber;
     private ArrayList<String> charSequence = new ArrayList<>();
 
-    private NumberFormat formatter = NumberFormat.getInstance(Locale.US);
+    private NumberFormat formatter;
+
+    protected Operand(NumberFormat formatter) {
+        this.formatter = formatter;
+    }
 
     protected void setValue(@NonNull String value) {
         removeAllCharacters();

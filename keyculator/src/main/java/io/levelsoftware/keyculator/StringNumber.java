@@ -25,8 +25,6 @@ import android.text.TextUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import timber.log.Timber;
-
 public class StringNumber implements Parcelable {
 
     private String characteristic;
@@ -102,8 +100,6 @@ public class StringNumber implements Parcelable {
     }
 
     private void decomposeNumber(@NonNull String number) {
-        Timber.d("Decomposing number: '" + number + "'");
-
         String[] components = number.split("\\.");
 
         if(components.length > 0) {
@@ -163,12 +159,9 @@ public class StringNumber implements Parcelable {
 
         StringNumber that = (StringNumber) o;
 
-        if (decimal != that.decimal) return false;
-
-        if (getCharacteristic() != null ? !getCharacteristic().equals(that.getCharacteristic()) : that.getCharacteristic() != null)
-            return false;
-
-        return getMantissa() != null ? getMantissa().equals(that.getMantissa()) : that.getMantissa() == null;
+        return decimal == that.decimal &&
+                (getCharacteristic() != null ? getCharacteristic().equals(that.getCharacteristic()) : that.getCharacteristic() == null &&
+                (getMantissa() != null ? getMantissa().equals(that.getMantissa()) : that.getMantissa() == null));
 
     }
 

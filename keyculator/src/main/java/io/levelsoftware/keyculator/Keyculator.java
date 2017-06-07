@@ -80,7 +80,6 @@ public class Keyculator extends FrameLayout
         
         enterAnimationDuration = getResources().getInteger(R.integer.default_enter_duration);
         exitAnimationDuration = getResources().getInteger(R.integer.default_exit_duration);
-
     }
 
     @Override

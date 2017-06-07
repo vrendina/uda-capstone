@@ -23,7 +23,9 @@ import android.text.TextUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ValueManager {
 
@@ -41,6 +43,8 @@ public class ValueManager {
         operators.add(OPERATOR_MULTIPLICATION);
     }
 
+    protected NumberFormat formatter = NumberFormat.getInstance(Locale.getDefault());
+
     private ArrayList<Operand> operands = new ArrayList<>(2);
     private String operator;
 
@@ -49,11 +53,9 @@ public class ValueManager {
 
     private static final String STATE_KEY_OPERATOR = "operator";
 
-    private StringNumber result;
-
     protected ValueManager() {
-        operands.add(new Operand());
-        operands.add(new Operand());
+        operands.add(new Operand(formatter));
+        operands.add(new Operand(formatter));
     }
 
     protected String getFormattedString() {
@@ -186,7 +188,7 @@ public class ValueManager {
     }
 
     private void invalidateResult() {
-        result = null;
+        //result = null;
     }
     private boolean isOperator(String value) {
         return operators.contains(value);
