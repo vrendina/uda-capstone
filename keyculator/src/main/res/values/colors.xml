@@ -17,6 +17,7 @@
 
 <resources>
     <color name="screen_background">#FFFFFF</color>
+    <color name="screen_text">#303030</color>
 
     <color name="number_background">#F5F5F5</color>
     <color name="number_text">@color/operator_background</color>

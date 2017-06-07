@@ -152,6 +152,5 @@ public class QuoteFormActivity extends AppCompatActivity
     @Override
     public void keyboardResult(BigDecimal result) {}
 
-
 }
 

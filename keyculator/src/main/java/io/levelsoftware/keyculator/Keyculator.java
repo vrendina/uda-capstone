@@ -20,6 +20,7 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -49,10 +50,10 @@ public class Keyculator extends FrameLayout
     private int initialScrollViewHeight;
     private float offScreenPosition;
 
-    public ValueAnimator keyboardEnterAnimator;
-    public ValueAnimator keyboardExitAnimator;
-    public ValueAnimator scrollViewCollapseAnimator;
-    public ValueAnimator scrollViewExpandAnimator;
+    private ValueAnimator keyboardEnterAnimator;
+    private ValueAnimator keyboardExitAnimator;
+    private ValueAnimator scrollViewCollapseAnimator;
+    private ValueAnimator scrollViewExpandAnimator;
 
     private AnimatorSet enterAnimatorSet;
     private AnimatorSet exitAnimatorSet;
@@ -314,6 +315,37 @@ public class Keyculator extends FrameLayout
         return view.getY() == offScreenPosition;
     }
 
+    /**
+     * Sets the initial value the keyboard should display. This should be called when opening
+     * the keyboard and focusing on a new field. If the value is null then the initial value
+     * will be cleared.
+     *
+     * @param value numerical value passed as a string
+     */
+    public void setInitialValue(@Nullable String value) {
+        valueManager.setInitialValue(value);
+        updateDisplay();
+    }
+
+    /**
+     * Save the current state of the keyboard to a bundle so that it can be restored after
+     * any configuration changes.
+     *
+     * @return Bundle containing keyboard state
+     */
+    public Bundle saveState() {
+        return valueManager.saveState();
+    }
+
+    /**
+     * Restores the state of the keyboard.
+     *
+     * @param bundle Bundle obtained from saveState()
+     */
+    public void restoreState(Bundle bundle) {
+        valueManager.restoreState(bundle);
+    }
+
     private void sendEvent(int code, BigDecimal result) {
         if(listener != null) {
             switch (code) {
@@ -342,14 +374,16 @@ public class Keyculator extends FrameLayout
 
     @Override
     public void onClick(View view) {
-
         if(view instanceof TextView) {
             int id = view.getId();
             String string = ((TextView) view).getText().toString();
 
             // If we hit the equals button
             if(id == R.id.equals) {
-                evaluate();
+                if (valueManager.getResult() != null) {
+                    valueManager.setInitialValue(valueManager.getResult().toPlainString());
+                }
+                updateDisplay();
                 return;
             }
 
@@ -374,11 +408,8 @@ public class Keyculator extends FrameLayout
     }
 
     private void updateDisplay() {
+        listener.keyboardResult(valueManager.getResult());
         screen.setText(valueManager.getFormattedString());
-    }
-
-    private void evaluate() {
-        updateDisplay();
     }
 
     public interface OnEventListener {
