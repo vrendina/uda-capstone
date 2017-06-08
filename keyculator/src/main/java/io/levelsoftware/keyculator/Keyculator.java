@@ -27,7 +27,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,50 +85,67 @@ public class Keyculator extends FrameLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        view.setVisibility(INVISIBLE);
-        configureDimensions();
-
+        setupLayout();
         setupAnimators();
 
-        screen = (TextView) findViewById(R.id.screen);
-
-        collectButtons((ViewGroup)findViewById(R.id.container));
+        bindViews();
         attachListeners();
     }
-    
-    private void configureDimensions() {
+
+    private void setupLayout() {
+        //view.setVisibility(INVISIBLE);
+        keyboardHeight = getResources().getDimensionPixelSize(R.dimen.default_keyboard_height);
+
         this.post(new Runnable() {
             @Override
             public void run() {
                 LayoutParams params = (LayoutParams)view.getLayoutParams();
-                params.gravity = Gravity.BOTTOM;
 
                 if(params.height <= 0) {
-                    keyboardHeight = getResources().getDimensionPixelSize(R.dimen.default_keyboard_height);
                     params.height = keyboardHeight;
+                    view.setLayoutParams(params);
+                } else {
+                    keyboardHeight = params.height;
                 }
-                view.setLayoutParams(params);
 
-                // Move the keyboard off the screen initially
-                view.setY(view.getY() + keyboardHeight);
-
-                // Update the values of the off screen position once the layout has been completely setup
-                view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        offScreenPosition = view.getY();
-                        view.setVisibility(VISIBLE);
-
-                        Timber.d("Current keyboard position: " + view.getY() +
-                                " Offscreen position: " + offScreenPosition +
-                                " Keyboard height: " + view.getMeasuredHeight());
-                    }
-                });
+                Timber.v("Setting initial layout parameters keyboard height: " + params.height);
             }
         });
     }
+    
+    private void configureDimensions() {
+        // Move the keyboard beyond the bottom of its parent view
+        int parentHeight = ((View)view.getParent()).getHeight();
+        view.setY(parentHeight);
+        offScreenPosition = view.getY();
 
-    protected void collectButtons(ViewGroup parent) {
+        Timber.v("Parent height: " + parentHeight +
+            " Keyboard position: " + offScreenPosition +
+            " Keyboard height: " + view.getMeasuredHeight());
+
+        // Measure the initial height of the scrollView
+        if(scrollView != null) {
+            initialScrollViewHeight = scrollView.getMeasuredHeight();
+            Timber.v("Setting initial scroll view height: " + initialScrollViewHeight);
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        Timber.v("Called onLayout, changed: " + changed);
+        if(changed) {
+            configureDimensions();
+        }
+    }
+
+    private void bindViews() {
+        screen = (TextView) findViewById(R.id.screen);
+        collectButtons((ViewGroup)findViewById(R.id.container));
+    }
+
+    private void collectButtons(ViewGroup parent) {
         for(int i = 0; i<parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if(child instanceof TextView) {
@@ -284,14 +300,6 @@ public class Keyculator extends FrameLayout
      */
     public void setScrollView(@NonNull View view) {
         this.scrollView = view;
-
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                initialScrollViewHeight = scrollView.getMeasuredHeight();
-                Timber.d("Initial scroll view height: " + initialScrollViewHeight);
-            }
-        });
     }
 
     /**
