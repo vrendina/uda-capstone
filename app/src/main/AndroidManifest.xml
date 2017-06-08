@@ -27,20 +27,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CarculatorTheme">
+
         <provider
             android:name=".data.CarculatorProvider"
             android:authorities="@string/content_provider"
             android:exported="true" />
 
+        <activity android:name=".ui.SplashActivity"
+            android:noHistory="true"
+            android:theme="@style/BaseActivity.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ui.quotelist.QuoteListActivity"
             android:launchMode="singleTop"
             android:theme="@style/BaseActivity.QuoteList">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".ui.vehiclelist.VehicleListActivity"
@@ -56,12 +65,13 @@
         <activity
             android:name=".ui.quoteform.QuoteFormActivity"
             android:parentActivityName=".ui.quotelist.QuoteListActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/BaseActivity.QuoteForm">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/BaseActivity.QuoteForm"
+            android:windowSoftInputMode="stateAlwaysHidden">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <service

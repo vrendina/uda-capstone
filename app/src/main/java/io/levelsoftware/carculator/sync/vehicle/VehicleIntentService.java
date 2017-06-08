@@ -35,12 +35,12 @@ import java.util.HashSet;
 import java.util.List;
 
 import io.levelsoftware.carculator.BuildConfig;
-import io.levelsoftware.carculator.NetworkManager;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.data.CarculatorContract;
 import io.levelsoftware.carculator.model.Make;
 import io.levelsoftware.carculator.model.Model;
 import io.levelsoftware.carculator.sync.BaseIntentService;
+import io.levelsoftware.carculator.util.NetworkManager;
 import io.levelsoftware.carculator.util.NetworkUtils;
 import io.levelsoftware.carculator.util.PreferenceUtils;
 import okhttp3.OkHttpClient;

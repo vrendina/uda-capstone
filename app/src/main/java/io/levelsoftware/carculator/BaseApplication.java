@@ -18,6 +18,8 @@ package io.levelsoftware.carculator;
 
 import android.app.Application;
 
+import io.levelsoftware.carculator.util.NetworkManager;
+
 public abstract class BaseApplication extends Application {
     abstract void configureLogging();
 
@@ -26,5 +28,6 @@ public abstract class BaseApplication extends Application {
         super.onCreate();
 
         configureLogging();
+        NetworkManager.initializeNetworkManager();
     }
 }

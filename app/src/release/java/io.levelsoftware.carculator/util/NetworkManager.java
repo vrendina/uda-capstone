@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator;
-
-import com.facebook.stetho.okhttp3.StethoInterceptor;
+package io.levelsoftware.carculator.util;
 
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 public class NetworkManager {
 
@@ -27,13 +24,7 @@ public class NetworkManager {
     private static OkHttpClient client;
 
     private NetworkManager() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-
-        client = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .addInterceptor(new StethoInterceptor())
-                .build();
+        client = new OkHttpClient();
     }
 
     public static void initializeNetworkManager() {
@@ -48,5 +39,4 @@ public class NetworkManager {
         }
         return client;
     }
-
 }

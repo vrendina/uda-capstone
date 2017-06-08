@@ -29,6 +29,9 @@
 
     <!-- Activity Themes -->
     <style name="BaseActivity" parent="CarculatorTheme.NoActionBar" />
+    <style name="BaseActivity.Splash">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
     <style name="BaseActivity.QuoteList" />
     <style name="BaseActivity.VehicleList" />
     <style name="BaseActivity.QuoteForm">
