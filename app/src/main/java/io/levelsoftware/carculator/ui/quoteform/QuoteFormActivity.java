@@ -55,6 +55,8 @@ public class QuoteFormActivity extends AppCompatActivity
     private FirebaseAuth auth;
     private FirebaseUser user;
 
+    QuoteFormPagerAdapter pagerAdapter;
+
     private KeyculatorBroadcastReceiver keyboardBroadcastReceiver;
 
     @Override
@@ -85,7 +87,7 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     private void setupTabs() {
-        QuoteFormPagerAdapter pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this);
+        pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this);
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -129,19 +131,12 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-    @Override public void onPageSelected(int position) {}
+    @Override public void onPageSelected(int position) {
+        pagerAdapter.pageSelected(position);
+    }
 
     @Override
-    public void onPageScrollStateChanged(int state) {
-
-        // Hide the keyboard when switching tabs
-//        if (state == ViewPager.SCROLL_STATE_IDLE)
-//        {
-////            coordinatorLayout.requestFocus();
-//            ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE))
-//                    .hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
-//        }
-    }
+    public void onPageScrollStateChanged(int state) {}
 
     @Override
     public void keyboardOpened() {

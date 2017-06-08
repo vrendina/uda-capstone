@@ -22,11 +22,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import io.levelsoftware.carculator.R;
+import timber.log.Timber;
 
 public class QuoteFormPagerAdapter extends FragmentPagerAdapter {
 
     private String[] pages;
     private String[] keys;
+
+    QuoteFormDealerFragment dealerFragment;
+    QuoteFormFragment formFragment;
 
     Context context;
 
@@ -43,15 +47,30 @@ public class QuoteFormPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         String key = keys[position];
 
+        Timber.d("Called getItem " + position);
         if(key.equals(context.getString(R.string.tab_key_dealer))) {
-            return new QuoteFormDealerFragment();
+            if(dealerFragment == null) {
+                dealerFragment = new QuoteFormDealerFragment();
+            }
+            return dealerFragment;
         }
 
         if(key.equals(context.getString(R.string.tab_key_quote))) {
-            return new QuoteFormLeaseFragment();
+            if(formFragment == null) {
+                formFragment = new QuoteFormLeaseFragment();
+            }
+            return formFragment;
         }
 
         return null;
+    }
+
+    public void pageSelected(int position) {
+        String key = keys[position];
+
+        if (key.equals(context.getString(R.string.tab_key_dealer))) {
+            formFragment.hideKeyboard();
+        }
     }
 
     @Override

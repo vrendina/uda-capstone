@@ -94,7 +94,7 @@ public abstract class QuoteFormFragment extends Fragment
             Rect rect = new Rect(0, 0, field.getWidth(), field.getHeight());
             field.requestRectangleOnScreen(rect, false);
 
-            keyculator.showKeyboard((field.getValue() == null) ? null : field.getValue().getStringValue());
+            showKeyboard((field.getValue() == null) ? null : field.getValue().getStringValue());
         }
     }
 
@@ -103,16 +103,16 @@ public abstract class QuoteFormFragment extends Fragment
         // If the user taps on the form container, hide the keyboard
         if(hasFocus && view == container) {
             if(keyculator.keyboardIsActive() || keyculator.keyboardIsEntering()) {
-                hideKeyboard();
+                keyculator.hideKeyboard();
             }
         }
     }
 
-    protected void showKeyboard() {
-        keyculator.showKeyboard();
+    protected void showKeyboard(@Nullable String value) {
+        keyculator.showKeyboard(value);
     }
     protected void hideKeyboard() {
-        keyculator.hideKeyboard();
+        container.requestFocus();
     }
 
     @Override public void keyboardOpened() {}
@@ -125,13 +125,4 @@ public abstract class QuoteFormFragment extends Fragment
             field.setValue(result);
         }
     }
-
-    //    @Override
-//    public void keyboardResult(@Nullable BigDecimal result) {
-//        FormField field = fields.get(focused);
-//        if(field != null) {
-//            field.setValue((result == null) ? null : result.toPlainString());
-//        }
-//        Timber.d("Got keyboard result: " + result);
-//    }
 }
