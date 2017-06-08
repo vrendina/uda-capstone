@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2015-2017 Level Software LLC.
   ~
@@ -15,8 +16,8 @@
   -->
 
 <resources>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="appbar_padding_top">8dp</dimen>
+    <item name="money_factor_max" type="dimen" format="float">0.02</item>
+    <item name="tax_rate_max" type="dimen" format="float">50</item>
+    <item name="term_max" type="dimen" format="float">120</item>
+    <item name="term_min" type="dimen" format="float">12</item>
 </resources>

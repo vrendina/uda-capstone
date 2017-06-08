@@ -23,6 +23,7 @@
     <string name="content_description_edmunds">Data Provided by Edmunds.com</string>
     <string name="content_description_settings">Settings</string>
 
+    <string name="currency_symbol">$</string>
     <string name="section_format">Hello World from section: %1s</string>
 
     <string name="action_settings">Settings</string>

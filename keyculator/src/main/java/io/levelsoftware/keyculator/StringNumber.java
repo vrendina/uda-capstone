@@ -50,6 +50,10 @@ public class StringNumber implements Parcelable {
         decomposeNumber(number.toPlainString());
     }
 
+    public StringNumber(float number) {
+        decomposeNumber("" + number);
+    }
+
     protected StringNumber(Parcel in) {
         characteristic = in.readString();
         mantissa = in.readString();
@@ -89,6 +93,7 @@ public class StringNumber implements Parcelable {
         return (decimal) ? characteristic + "." : characteristic;
     }
 
+
     @Nullable
     public BigDecimal getDecimalValue() {
         return (getStringValue() != null) ? new BigDecimal(getStringValue()) : null;
@@ -97,6 +102,17 @@ public class StringNumber implements Parcelable {
     @Nullable
     public BigInteger getIntegerCharacteristic() {
         return (getCharacteristic() != null) ? new BigInteger(getCharacteristic()) : null;
+    }
+
+    /**
+     * Get the integer value of the mantissa. Note that this method will strip any proceeding zeros
+     * so a mantissa of 0001 will become 1 with this method.
+     *
+     * @return value of the mantissa as a BigInteger
+     */
+    @Nullable
+    public BigInteger getIntegerMantissa() {
+        return (getMantissa() != null) ? new BigInteger(getMantissa()) : null;
     }
 
     private void decomposeNumber(@NonNull String number) {

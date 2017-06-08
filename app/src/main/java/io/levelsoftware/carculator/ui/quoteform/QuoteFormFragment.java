@@ -19,6 +19,7 @@ package io.levelsoftware.carculator.ui.quoteform;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
@@ -28,12 +29,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import java.math.BigDecimal;
-
 import butterknife.BindView;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.ui.FormField;
 import io.levelsoftware.keyculator.Keyculator;
+import io.levelsoftware.keyculator.StringNumber;
 import timber.log.Timber;
 
 
@@ -46,6 +46,7 @@ public abstract class QuoteFormFragment extends Fragment
     @BindView(R.id.scroll_view) ScrollView scrollView;
 
     protected SparseArray<FormField> fields = new SparseArray<>();
+    private int focused;
 
     public QuoteFormFragment() {}
 
@@ -87,11 +88,13 @@ public abstract class QuoteFormFragment extends Fragment
     public void fieldFocusChanged(@IdRes int id, boolean hasFocus) {
         Timber.v("Focus changed for " + id + " has focus: " + hasFocus);
         if(hasFocus) {
-            showKeyboard();
+            focused = id;
 
             FormField field = fields.get(id);
             Rect rect = new Rect(0, 0, field.getWidth(), field.getHeight());
             field.requestRectangleOnScreen(rect, false);
+
+            keyculator.showKeyboard((field.getValue() == null) ? null : field.getValue().getStringValue());
         }
     }
 
@@ -116,7 +119,19 @@ public abstract class QuoteFormFragment extends Fragment
     @Override public void keyboardClosed() {}
 
     @Override
-    public void keyboardResult(BigDecimal result) {
-        Timber.d("Got keyboard result: " + result);
+    public void keyboardResult(@NonNull StringNumber result) {
+        FormField field = fields.get(focused);
+        if(field != null) {
+            field.setValue(result);
+        }
     }
+
+    //    @Override
+//    public void keyboardResult(@Nullable BigDecimal result) {
+//        FormField field = fields.get(focused);
+//        if(field != null) {
+//            field.setValue((result == null) ? null : result.toPlainString());
+//        }
+//        Timber.d("Got keyboard result: " + result);
+//    }
 }

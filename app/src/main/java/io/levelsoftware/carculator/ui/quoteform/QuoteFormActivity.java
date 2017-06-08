@@ -18,6 +18,7 @@ package io.levelsoftware.carculator.ui.quoteform;
 
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
@@ -32,13 +33,12 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.math.BigDecimal;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.keyculator.Keyculator;
 import io.levelsoftware.keyculator.KeyculatorBroadcastReceiver;
+import io.levelsoftware.keyculator.StringNumber;
 import timber.log.Timber;
 
 public class QuoteFormActivity extends AppCompatActivity
@@ -144,13 +144,16 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     @Override
-    public void keyboardOpened() {}
+    public void keyboardOpened() {
+        Timber.d("Activity got keyboard opened.");
+    }
 
     @Override
-    public void keyboardClosed() {}
+    public void keyboardClosed() {
+        Timber.d("Activity got keyboard closed.");
+    }
 
     @Override
-    public void keyboardResult(BigDecimal result) {}
-
+    public void keyboardResult(@NonNull StringNumber result) {}
 }
 
