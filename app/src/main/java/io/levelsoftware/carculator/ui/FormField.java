@@ -153,7 +153,20 @@ public class FormField extends FrameLayout
                 return new StringNumber(maximum);
             }
 
-            BigDecimal rounded = decimal.setScale(decimals, BigDecimal.ROUND_HALF_EVEN).stripTrailingZeros();
+            BigDecimal rounded = decimal.setScale(decimals, BigDecimal.ROUND_HALF_EVEN);
+
+            // If there is a mantissa and it is non-zero don't strip the zeros for currency
+            if(flagIsSet(INPUT_TYPE_CURRENCY)) {
+                BigInteger mantissa = value.getIntegerMantissa();
+
+                if(mantissa == null) {
+                    rounded = rounded.stripTrailingZeros();
+                } else if (mantissa.compareTo(BigInteger.ZERO) == 0) {
+                    rounded = rounded.stripTrailingZeros();
+                }
+            } else {
+                rounded = rounded.stripTrailingZeros();
+            }
 
             if(rounded.compareTo(BigDecimal.ZERO) == 0) {
                 return new StringNumber("0");
@@ -182,6 +195,10 @@ public class FormField extends FrameLayout
                     setCursorPosition();
                 }
             });
+
+        // If we lose focus, update the display to reflect the validated value since we are done editing
+        } else {
+            setValue(value);
         }
     }
 
@@ -192,10 +209,9 @@ public class FormField extends FrameLayout
             } else {
                 // Format the field based on the flags
                 NumberFormat formatter = FormatUtils.getFormatter();
-                formatter.setMaximumFractionDigits(decimals);
 
                 StringBuilder builder = new StringBuilder();
-                builder.append(formatter.format(value.getDecimalValue()));
+                builder.append(formatter.format(value.getIntegerCharacteristic()));
 
                 if(flagIsSet(INPUT_TYPE_DECIMAL)) {
                     // Show the currency symbol
@@ -206,15 +222,15 @@ public class FormField extends FrameLayout
                     }
 
                     // Show the decimal point if we typed one but haven't added any other digits
-                    if (rawValue.hasDecimalPoint() && rawValue.getMantissa() == null) {
+                    if (rawValue.hasDecimalPoint()) {
                         builder.append(".");
                     }
 
-                    // Append trailing zeros if we have them
-                    BigInteger mantissa = rawValue.getIntegerMantissa();
-                    if (mantissa != null && mantissa.compareTo(BigInteger.ZERO) == 0) {
-                        builder.append(".");
-                        builder.append(rawValue.getMantissa());
+                    // Show the value of the mantissa
+                    String mantissa = rawValue.getMantissa();
+                    if(mantissa != null) {
+                        int index = (decimals > mantissa.length()) ? mantissa.length() : decimals;
+                        builder.append(mantissa.substring(0, index));
                     }
 
                     // Show the percent sign at the end
