@@ -16,62 +16,24 @@
 
 package io.levelsoftware.carculator.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class Make {
-    @SerializedName("eid")
-    @Expose
-    private Integer eid;
     @SerializedName("name")
-    @Expose
-    private String name;
+    public String name;
+
     @SerializedName("niceName")
-    @Expose
-    private String niceName;
+    public String niceName;
+
     @SerializedName("models")
-    @Expose
-    private List<Model> models = null;
-
-    public Integer getEid() {
-        return eid;
-    }
-
-    public void setEid(Integer eid) {
-        this.eid = eid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNiceName() {
-        return niceName;
-    }
-
-    public void setNiceName(String niceName) {
-        this.niceName = niceName;
-    }
-
-    public List<Model> getModels() {
-        return models;
-    }
-
-    public void setModels(List<Model> models) {
-        this.models = models;
-    }
+    public List<Model> models = null;
 
     @Override
     public String toString() {
         return "Make{" +
-                "eid=" + eid +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", niceName='" + niceName + '\'' +
                 ", models=" + models +
                 '}';
@@ -84,11 +46,17 @@ public class Make {
 
         Make make = (Make) o;
 
-        return eid.equals(make.eid);
+        if (name != null ? !name.equals(make.name) : make.name != null) return false;
+        //noinspection SimplifiableIfStatement
+        if (niceName != null ? !niceName.equals(make.niceName) : make.niceName != null) return false;
+        return models != null ? models.equals(make.models) : make.models == null;
     }
 
     @Override
     public int hashCode() {
-        return eid.hashCode();
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (niceName != null ? niceName.hashCode() : 0);
+        result = 31 * result + (models != null ? models.hashCode() : 0);
+        return result;
     }
 }

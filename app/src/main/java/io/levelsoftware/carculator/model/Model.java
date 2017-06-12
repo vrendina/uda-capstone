@@ -16,74 +16,36 @@
 
 package io.levelsoftware.carculator.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Model {
-    @SerializedName("eid")
-    @Expose
-    private Integer eid;
-    @SerializedName("year")
-    @Expose
-    private Integer year;
+    @SerializedName("id")
+    public String id;
+
     @SerializedName("name")
-    @Expose
-    private String name;
+    public String name;
+
     @SerializedName("niceName")
-    @Expose
-    private String niceName;
+    public String niceName;
+
+    @SerializedName("currentYear")
+    public Integer currentYear;
+
     @SerializedName("basePrice")
-    @Expose
-    private Integer basePrice;
+    public Integer basePrice;
 
-    public Integer getEid() {
-        return eid;
-    }
-
-    public void setEid(Integer eid) {
-        this.eid = eid;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNiceName() {
-        return niceName;
-    }
-
-    public void setNiceName(String niceName) {
-        this.niceName = niceName;
-    }
-
-    public Integer getBasePrice() {
-        return basePrice;
-    }
-
-    public void setBasePrice(Integer basePrice) {
-        this.basePrice = basePrice;
-    }
+    @SerializedName("photoPath")
+    public String photoPath;
 
     @Override
     public String toString() {
         return "Model{" +
-                "eid=" + eid +
-                ", year='" + year + '\'' +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", niceName='" + niceName + '\'' +
+                ", currentYear=" + currentYear +
                 ", basePrice=" + basePrice +
+                ", photoPath='" + photoPath + '\'' +
                 '}';
     }
 
@@ -94,11 +56,23 @@ public class Model {
 
         Model model = (Model) o;
 
-        return eid.equals(model.eid);
+        if (id != null ? !id.equals(model.id) : model.id != null) return false;
+        if (name != null ? !name.equals(model.name) : model.name != null) return false;
+        if (niceName != null ? !niceName.equals(model.niceName) : model.niceName != null) return false;
+        if (currentYear != null ? !currentYear.equals(model.currentYear) : model.currentYear != null) return false;
+        //noinspection SimplifiableIfStatement
+        if (basePrice != null ? !basePrice.equals(model.basePrice) : model.basePrice != null) return false;
+        return photoPath != null ? photoPath.equals(model.photoPath) : model.photoPath == null;
     }
 
     @Override
     public int hashCode() {
-        return eid.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (niceName != null ? niceName.hashCode() : 0);
+        result = 31 * result + (currentYear != null ? currentYear.hashCode() : 0);
+        result = 31 * result + (basePrice != null ? basePrice.hashCode() : 0);
+        result = 31 * result + (photoPath != null ? photoPath.hashCode() : 0);
+        return result;
     }
 }
