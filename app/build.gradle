@@ -15,10 +15,11 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 ext.version = [
         androidSupport: "25.3.1",
-        firebase      : "10.2.4",
+        firebase      : "10.2.6",
         butterKnife   : "8.5.1",
         timber        : "4.5.1",
         jobdispatcher : "0.6.0",
@@ -83,6 +84,8 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$version.firebase"
     compile "com.google.firebase:firebase-auth:$version.firebase"
     compile "com.google.firebase:firebase-database:$version.firebase"
+    compile "com.google.firebase:firebase-perf:$version.firebase"
+
     compile "com.firebase:firebase-jobdispatcher:$version.jobdispatcher"
 
     compile "org.apache.commons:commons-collections4:$version.collections"
