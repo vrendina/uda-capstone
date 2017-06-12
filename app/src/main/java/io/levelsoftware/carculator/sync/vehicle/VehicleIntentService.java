@@ -19,10 +19,10 @@ package io.levelsoftware.carculator.sync.vehicle;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -31,7 +31,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import io.levelsoftware.carculator.BuildConfig;
@@ -43,6 +42,7 @@ import io.levelsoftware.carculator.sync.BaseIntentService;
 import io.levelsoftware.carculator.util.NetworkManager;
 import io.levelsoftware.carculator.util.NetworkUtils;
 import io.levelsoftware.carculator.util.PreferenceUtils;
+import io.levelsoftware.carculator.util.ProviderUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -94,43 +94,33 @@ public class VehicleIntentService extends BaseIntentService {
 
     private void updateData() {
         if(NetworkUtils.networkIsAvailable(this)) {
-            Make[] makes = fetchNetworkData();
+            ArrayList<Make> makes = fetchNetworkData();
 
             if(makes != null) {
                 /*
                     Compare with existing data so we don't do unnecessary database operations.
                  */
-                Collection<Integer> existingVehicles = new HashSet<>();
-
-                Cursor cursor = getContentResolver().query(CarculatorContract.Vehicle.CONTENT_URI,
-                        new String[]{CarculatorContract.Vehicle.COLUMN_EID}, null, null, null);
-
-                if(cursor != null) {
-                    for(int i = 0; i < cursor.getCount(); i++) {
-                        if(cursor.moveToPosition(i)) {
-                            Integer eid = cursor.getInt(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_EID));
-                            existingVehicles.add(eid);
-                        }
-                    }
-                    cursor.close();
-                }
+                ArrayList<Model> existingModels = ProviderUtils.getModels(this);
+                ArrayList<Model> downloadedModels = new ArrayList<>();
 
                 List<ContentValues> contentValues = new ArrayList<>();
-                Collection<Integer> downloadedVehicles = new HashSet<>();
 
                 for(Make make: makes) {
-                    for(Model model: make.getModels()) {
-                        downloadedVehicles.add(model.getEid());
+                    for(Model model: make.models) {
+                        downloadedModels.add(model);
                         // If we don't already have this model in the database add it
-                        if(!existingVehicles.contains(model.getEid())) {
+                        if(!existingModels.contains(model)) {
                             ContentValues modelCv = new ContentValues();
-                            modelCv.put(CarculatorContract.Vehicle.COLUMN_EID, model.getEid());
-                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MAKE_EID, make.getEid());
-                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MAKE_NAME, make.getName());
-                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MAKE_NICE_NAME, make.getNiceName());
-                            modelCv.put(CarculatorContract.Vehicle.COLUMN_NAME, model.getName());
-                            modelCv.put(CarculatorContract.Vehicle.COLUMN_NICE_NAME, model.getNiceName());
-                            modelCv.put(CarculatorContract.Vehicle.COLUMN_YEAR, model.getYear());
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MAKE_NAME, make.name);
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MAKE_NICE_NAME, make.niceName);
+
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MODEL_ID, model.id);
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MODEL_NAME, model.name);
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_MODEL_NICE_NAME, model.niceName);
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_CURRENT_YEAR, model.currentYear);
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_BASE_PRICE, model.basePrice);
+                            modelCv.put(CarculatorContract.Vehicle.COLUMN_PHOTO_PATH, model.photoPath);
+
                             contentValues.add(modelCv);
                         }
                     }
@@ -139,11 +129,12 @@ public class VehicleIntentService extends BaseIntentService {
                 /*
                     Delete any data that has been removed from the source.
                  */
-                Collection<Integer> removeVehicles = CollectionUtils.subtract(existingVehicles, downloadedVehicles);
+                Collection<Model> removeVehicles = CollectionUtils.subtract(existingModels, downloadedModels);
 
                 int deleteCount = 0;
-                for(Integer key: removeVehicles) {
-                    deleteCount += getContentResolver().delete(CarculatorContract.Vehicle.buildModelUri(key), null, null);
+                for(Model model: removeVehicles) {
+                    deleteCount += getContentResolver()
+                            .delete(CarculatorContract.Vehicle.buildModelUri(model.id), null, null);
                 }
 
                 /*
@@ -164,8 +155,8 @@ public class VehicleIntentService extends BaseIntentService {
     }
 
     @Nullable
-    private Make[] fetchNetworkData() {
-        // Simulate long latency for network request (10 seconds)
+    private ArrayList<Make> fetchNetworkData() {
+        // Simulate long latency for network request if in debug mode (10 seconds)
         if(BuildConfig.DEBUG) {
             try {
                 Thread.sleep(10*1000);
@@ -194,7 +185,7 @@ public class VehicleIntentService extends BaseIntentService {
             if(response.isSuccessful()) {
                 Gson gson = new Gson();
                 try {
-                    return gson.fromJson(response.body().charStream(), Make[].class);
+                    return gson.fromJson(response.body().charStream(), new TypeToken<ArrayList<Make>>(){}.getType());
                 } catch (Exception e) {
                     Timber.e(e, "Problem processing vehicle JSON data");
                     sendStatusBroadcast(STATUS_ERROR_DATA_PROCESSING, e.toString());

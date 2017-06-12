@@ -51,13 +51,14 @@ public class VehicleListContainerViewHolder extends RecyclerView.ViewHolder {
 
         adapter = new VehicleListNestedAdapter(make);
         nestedRecyclerView.setAdapter(adapter);
+        nestedRecyclerView.setHasFixedSize(true);
 
-        int logoResourceId = context.getResources().getIdentifier("make_" + make.getNiceName(),
+        int logoResourceId = context.getResources().getIdentifier("make_" + make.niceName,
                 "drawable", BuildConfig.APPLICATION_ID);
 
         makeLogoImageView.setImageResource(logoResourceId);
-        makeTextView.setText(make.getName());
+        makeTextView.setText(make.name);
         
-        linearLayout.setContentDescription(make.getName());
+        linearLayout.setContentDescription(make.name);
     }
 }

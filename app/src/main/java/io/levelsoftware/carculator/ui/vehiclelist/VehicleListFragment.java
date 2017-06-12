@@ -48,6 +48,7 @@ import io.levelsoftware.carculator.sync.BaseIntentService;
 import io.levelsoftware.carculator.sync.SyncBroadcastReceiver;
 import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
 import io.levelsoftware.carculator.util.NetworkUtils;
+import io.levelsoftware.carculator.util.ProviderUtils;
 
 
 public class VehicleListFragment extends Fragment implements
@@ -91,6 +92,35 @@ public class VehicleListFragment extends Fragment implements
 
         adaper = new VehicleListContainerAdapter();
         recyclerView.setAdapter(adaper);
+//        recyclerView.addOnScrollListener(new OnScrollListener() {
+//
+//            int distance = 0;
+//
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//                if(newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+//                    Timber.d("Dragging!!");
+//                }
+//
+//                if(newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+//                    Timber.d("Total distance travelled: " + distance);
+//                    distance = 0;
+//                }
+//
+//                if(newState == RecyclerView.SCROLL_STATE_SETTLING) {
+//                    Timber.d("Settling");
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                distance += dy;
+//            }
+//        });
+
 
         showVehicleList(false);
         hideStatusImage();
@@ -101,6 +131,7 @@ public class VehicleListFragment extends Fragment implements
 
         bindReceivers();
         getActivity().getSupportLoaderManager().initLoader(KEY_VEHICLE_LOADER, null, this);
+
 
         return view;
     }
@@ -124,9 +155,8 @@ public class VehicleListFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder =      CarculatorContract.Vehicle.COLUMN_MAKE_NAME      + " ASC, " +
-                                CarculatorContract.Vehicle.COLUMN_YEAR           + " DESC, " +
-                                CarculatorContract.Vehicle.COLUMN_NAME           + " ASC";
+        String sortOrder =      CarculatorContract.Vehicle.COLUMN_MAKE_NAME      + " COLLATE NOCASE ASC, " +
+                                CarculatorContract.Vehicle.COLUMN_MODEL_NAME     + " COLLATE NOCASE ASC";
 
         return new CursorLoader(getActivity(),
                 CarculatorContract.Vehicle.CONTENT_URI,
@@ -151,15 +181,23 @@ public class VehicleListFragment extends Fragment implements
         if(count > 0) {
             setSwipeRefreshLayoutState(false, false);
 
-            adaper.setCursor(data);
+            adaper.setData(ProviderUtils.getMakes(data));
             adaper.filter(searchQuery);
+
+            // For some reason the RecyclerView starts scrolled down slightly
+            recyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.smoothScrollBy(0,-Integer.MAX_VALUE);
+                }
+            });
             showVehicleList(true);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        adaper.setCursor(null);
+        adaper.setData(null);
     }
 
     private void loadVehicleData() {
@@ -247,17 +285,17 @@ public class VehicleListFragment extends Fragment implements
 
         switch(code) {
             case BaseIntentService.STATUS_ERROR_NO_NETWORK:
-                showErrorSnackbar(R.string.error_no_network);
+                showErrorSnackbar(R.string.error_no_network, false);
                 showStatusImage(R.drawable.ic_logo_no_network);
                 break;
 
             case BaseIntentService.STATUS_ERROR_NETWORK_ISSUE:
-                showErrorSnackbar(R.string.error_network_error);
+                showErrorSnackbar(R.string.error_network_error, true);
                 showStatusImage(R.drawable.ic_logo_no_network);
                 break;
 
             default:
-                showErrorSnackbar(R.string.error_data);
+                showErrorSnackbar(R.string.error_data, true);
                 showStatusImage(R.drawable.ic_logo_error);
         }
     }
@@ -270,16 +308,19 @@ public class VehicleListFragment extends Fragment implements
         }
     }
 
-    private void showErrorSnackbar(@StringRes int messageId) {
+    private void showErrorSnackbar(@StringRes int messageId, boolean showRetry) {
         View view = getView();
         if(view != null) {
             errorSnackbar = Snackbar.make(view, messageId, Snackbar.LENGTH_INDEFINITE);
-            errorSnackbar.setAction(R.string.retry, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loadVehicleData();
-                }
-            });
+
+            if(showRetry) {
+                errorSnackbar.setAction(R.string.retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadVehicleData();
+                    }
+                });
+            }
 
             errorSnackbar.getView().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.snackbarBackground));
             errorSnackbar.setActionTextColor(ContextCompat.getColor(getContext(), R.color.snackbarActionText));
@@ -299,4 +340,8 @@ public class VehicleListFragment extends Fragment implements
             }
         }
     }
+
+
+
+
 }

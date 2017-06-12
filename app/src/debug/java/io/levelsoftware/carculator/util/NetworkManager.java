@@ -24,7 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class NetworkManager {
 
     private static NetworkManager manager;
-    private static OkHttpClient client;
+    private OkHttpClient client;
 
     private NetworkManager() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -43,10 +43,10 @@ public class NetworkManager {
     }
 
     public static OkHttpClient getClient() {
-        if(client == null) {
+        if(manager == null) {
             initializeNetworkManager();
         }
-        return client;
+        return manager.client;
     }
 
 }

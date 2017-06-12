@@ -17,6 +17,7 @@
 package io.levelsoftware.carculator.data;
 
 import android.net.Uri;
+import android.provider.BaseColumns;
 
 import io.levelsoftware.carculator.BuildConfig;
 
@@ -25,7 +26,7 @@ public class CarculatorContract {
     public static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID;
     public static final Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final class Vehicle {
+    public static final class Vehicle implements BaseColumns {
         public static final String PATH = "vehicle";
         public static final String TABLE_NAME = PATH;
 
@@ -33,23 +34,23 @@ public class CarculatorContract {
                 .appendPath(PATH)
                 .build();
 
-        public static final String COLUMN_EID = "eid";
-        public static final String COLUMN_MAKE_EID = "makeEid";
         public static final String COLUMN_MAKE_NAME = "makeName";
         public static final String COLUMN_MAKE_NICE_NAME ="makeNiceName";
-        public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_NICE_NAME = "niceName";
-        public static final String COLUMN_YEAR = "year";
+        public static final String COLUMN_MODEL_ID = "modelId";
+        public static final String COLUMN_MODEL_NAME = "modelName";
+        public static final String COLUMN_MODEL_NICE_NAME = "modelNiceName";
+        public static final String COLUMN_CURRENT_YEAR = "currentYear";
+        public static final String COLUMN_PHOTO_PATH = "photoPath";
         public static final String COLUMN_BASE_PRICE = "basePrice";
 
         /**
          * Fetch Uri for a vehicle using the Edmunds model id
          *
-         * @param eid Edmunds id for the requested model
+         * @param id Edmunds id for the requested model
          * @return Uri
          */
-        public static Uri buildModelUri(long eid) {
-            return CONTENT_URI.buildUpon().appendPath(Long.toString(eid)).build();
+        public static Uri buildModelUri(String id) {
+            return CONTENT_URI.buildUpon().appendPath(id).build();
         }
     }
 }

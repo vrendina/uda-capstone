@@ -33,15 +33,16 @@ public class CarculatorDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + CarculatorContract.Vehicle.TABLE_NAME + " ("
-                + CarculatorContract.Vehicle.COLUMN_EID             + " INTEGER NOT NULL,"
-                + CarculatorContract.Vehicle.COLUMN_MAKE_EID        + " INTEGER NOT NULL,"
+                + CarculatorContract.Vehicle._ID                    + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + CarculatorContract.Vehicle.COLUMN_MAKE_NAME       + " TEXT NOT NULL,"
                 + CarculatorContract.Vehicle.COLUMN_MAKE_NICE_NAME  + " TEXT NOT NULL,"
-                + CarculatorContract.Vehicle.COLUMN_NAME            + " TEXT NOT NULL,"
-                + CarculatorContract.Vehicle.COLUMN_NICE_NAME       + " TEXT NOT NULL,"
-                + CarculatorContract.Vehicle.COLUMN_YEAR            + " INTEGER NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_MODEL_ID        + " TEXT NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_MODEL_NAME      + " TEXT NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_MODEL_NICE_NAME + " TEXT NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_CURRENT_YEAR    + " INTEGER NOT NULL,"
+                + CarculatorContract.Vehicle.COLUMN_PHOTO_PATH      + " TEXT,"
                 + CarculatorContract.Vehicle.COLUMN_BASE_PRICE      + " TEXT,"
-                + " PRIMARY KEY(" + CarculatorContract.Vehicle.COLUMN_EID + "));");
+                + " UNIQUE (" + CarculatorContract.Vehicle.COLUMN_MODEL_ID  + ") ON CONFLICT REPLACE);");
     }
 
     @Override

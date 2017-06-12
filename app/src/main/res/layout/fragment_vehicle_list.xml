@@ -39,15 +39,15 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
-            app:spanCount="1"
-            tools:listitem="@layout/list_item_vehicle_element" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
+                app:spanCount="1"
+                tools:listitem="@layout/list_item_vehicle_element" />
 
-</android.support.v4.widget.SwipeRefreshLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

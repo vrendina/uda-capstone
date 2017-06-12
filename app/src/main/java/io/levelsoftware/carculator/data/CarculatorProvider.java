@@ -76,7 +76,7 @@ public class CarculatorProvider extends ContentProvider {
 
                 cursor = db.query(CarculatorContract.Vehicle.TABLE_NAME,
                         projection,
-                        CarculatorContract.Vehicle.COLUMN_EID + " = ? ",
+                        CarculatorContract.Vehicle.COLUMN_MODEL_ID + " = ? ",
                         selectionArgs,
                         null,
                         null,
@@ -154,7 +154,7 @@ public class CarculatorProvider extends ContentProvider {
 
                 numRowsDeleted = db.delete(
                         CarculatorContract.Vehicle.TABLE_NAME,
-                        CarculatorContract.Vehicle.COLUMN_EID + " = ? ",
+                        CarculatorContract.Vehicle.COLUMN_MODEL_ID + " = ? ",
                         selectionArgs);
                 break;
 

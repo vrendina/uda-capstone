@@ -16,8 +16,9 @@
 
 package io.levelsoftware.carculator.ui.vehiclelist;
 
-import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -29,7 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 
 import io.levelsoftware.carculator.R;
-import io.levelsoftware.carculator.data.CarculatorContract;
 import io.levelsoftware.carculator.model.Make;
 import io.levelsoftware.carculator.model.Model;
 import timber.log.Timber;
@@ -38,8 +38,11 @@ import timber.log.Timber;
 public class VehicleListContainerAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Make[] data;
-    private Make[] filteredData;
+
+    private ArrayList<Make> data;
+    private LinkedHashMap<Integer, Make> filtered = new LinkedHashMap<>();
+
+    private LinkedHashMap<String, Pair<Make, Model>> searchable = new LinkedHashMap<>();
 
     private static final int VIEW_TYPE_DATA = 0;
     private static final int VIEW_TYPE_FOOTER = 1;
@@ -62,121 +65,104 @@ public class VehicleListContainerAdapter extends
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof VehicleListContainerViewHolder && position < filteredData.length) {
-            ((VehicleListContainerViewHolder) holder).setMake(filteredData[position]);
+        if(holder instanceof VehicleListContainerViewHolder) {
+            Integer[] keys = filtered.keySet().toArray(new Integer[filtered.keySet().size()]);
+            ((VehicleListContainerViewHolder) holder).setMake(filtered.get(keys[position]));
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (position == filteredData.length) ? VIEW_TYPE_FOOTER : VIEW_TYPE_DATA;
+        return (position == filtered.size()) ? VIEW_TYPE_FOOTER : VIEW_TYPE_DATA;
     }
 
     @Override
     public int getItemCount() {
-        if(filteredData != null) {
-            return (filteredData.length == 0) ? 0 : filteredData.length + 1;
-        }
-        return 0;
+        return (filtered.size() == 0) ? 0 : filtered.size() + 1;
     }
 
-    public void setCursor(Cursor cursor) {
-        if(cursor != null && cursor.getCount() > 0) {
+    public void setData(ArrayList<Make> data) {
+        this.data = data;
 
-            LinkedHashMap<Make, ArrayList<Model>> dataBuilder = new LinkedHashMap<>();
+        if(data != null) {
+            for (Make make : data) {
+                for (Model model : make.models) {
+                    String readableVehicleString = make.name + " " + model.name;
+                    String searchableString = readableVehicleString
+                            .replaceAll("[^A-Za-z0-9\\s]", "").toLowerCase(Locale.ENGLISH);
 
-            for(int i = 0; i<cursor.getCount(); i++) {
-                cursor.moveToPosition(i);
-
-                Make make = new Make();
-                make.setEid(cursor.getInt(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_MAKE_EID)));
-
-                if (!dataBuilder.containsKey(make)) {
-                    make.setName(cursor.getString(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_MAKE_NAME)));
-                    make.setNiceName(cursor.getString(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_MAKE_NICE_NAME)));
-                    dataBuilder.put(make, new ArrayList<Model>());
+                    searchable.put(searchableString, new Pair<>(make, model));
                 }
-
-                Model model = new Model();
-                model.setEid(cursor.getInt(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_EID)));
-                model.setName(cursor.getString(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_NAME)));
-                model.setNiceName(cursor.getString(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_NICE_NAME)));
-                model.setYear(cursor.getInt(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_YEAR)));
-                model.setBasePrice(cursor.getInt(cursor.getColumnIndex(CarculatorContract.Vehicle.COLUMN_BASE_PRICE)));
-
-                dataBuilder.get(make).add(model);
             }
-
-            for(Make make: dataBuilder.keySet()) {
-                make.setModels(dataBuilder.get(make));
-            }
-            data = dataBuilder.keySet().toArray(new Make[dataBuilder.keySet().size()]);
-            filteredData = data.clone();
-
-            notifyDataSetChanged();
         }
+        notifyDataSetChanged();
     }
+
 
     // TODO: Performance optimization
     public void filter(@NonNull String query) {
         Timber.d("Query string: '" + query + "'");
         if(TextUtils.isEmpty(query.replaceAll("[^A-Za-z0-9]", ""))) {
-            filteredData = data.clone();
+            updateFilteredData(null);
         } else {
             // Split the query string based on whitespace and use an AND operator on each element
             String[] queries = query.split("\\s");
 
-//            ArrayList<String> suggestions = new ArrayList<>();
-            LinkedHashMap<Make, ArrayList<Model>> dataBuilder = new LinkedHashMap<>();
+            ArrayList<String> matches = new ArrayList<>();
 
-            for (Make make : data) {
-                for (Model model : make.getModels()) {
-                    String readableVehicleString = model.getYear() + " " + make.getName() + " " + model.getName();
-                    String vehicleString = readableVehicleString.replaceAll("[^A-Za-z0-9]", "").toLowerCase(Locale.ENGLISH);
+            for(String s: searchable.keySet()) {
+                // Match all parts of the query string
+                for (int i = 0; i < queries.length; i++) {
+                    // Remove special characters and convert to lowercase
+                    String q = queries[i].replaceAll("[^A-Za-z0-9]", "").toLowerCase(Locale.ENGLISH);
 
-                    // Match all parts of the query string
-                    for(int i = 0; i < queries.length; i++) {
-                        String q = queries[i].replaceAll("[^A-Za-z0-9]", "").toLowerCase(Locale.ENGLISH);
-
-                        if(vehicleString.contains(q)) {
-                            // If we have matched all of the queries then add the make to the list
-                            if(i == queries.length - 1) {
-//                                suggestions.add(readableVehicleString);
-
-                                Make filteredMake = new Make();
-                                filteredMake.setEid(make.getEid());
-
-                                if (!dataBuilder.containsKey(filteredMake)) {
-                                    filteredMake.setName(make.getName());
-                                    filteredMake.setNiceName(make.getNiceName());
-                                    dataBuilder.put(filteredMake, new ArrayList<Model>());
-                                }
-                                dataBuilder.get(filteredMake).add(model);
-
-                                Timber.d(readableVehicleString);
-                            }
-                            continue;
-                        }
-                        // If we don't match part of the query break out of the loop
+                    if(!s.contains(q)) {
                         break;
+                    } else {
+                        // If we have matched all of the components add to list
+                        if(i == queries.length - 1) {
+                            matches.add(s);
+                        }
                     }
                 }
             }
 
-            for(Make make: dataBuilder.keySet()) {
-                make.setModels(dataBuilder.get(make));
-            }
-
-            filteredData = dataBuilder.keySet().toArray(new Make[dataBuilder.keySet().size()]);
+            updateFilteredData(matches);
         }
-
-        notifyDataSetChanged();
     }
 
     private class FooterViewHolder extends RecyclerView.ViewHolder {
         public FooterViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    private void updateFilteredData(@Nullable ArrayList<String> matches) {
+        filtered = new LinkedHashMap<>();
+        if(matches == null) {
+            for(Make make: data) {
+                filtered.put(make.niceName.hashCode(), make);
+            }
+        } else {
+            for(String key: matches) {
+
+                Pair match = searchable.get(key);
+
+                Make make = (Make) match.first;
+                Model model = (Model) match.second;
+
+                if(!filtered.containsKey(make.niceName.hashCode())) {
+                    Make filteredMake = new Make();
+                    filteredMake.niceName = make.niceName;
+                    filteredMake.name = make.name;
+                    filteredMake.models = new ArrayList<>();
+                    filtered.put(filteredMake.niceName.hashCode(), filteredMake);
+                }
+                filtered.get(make.niceName.hashCode()).models.add(model);
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
 }

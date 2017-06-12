@@ -32,7 +32,7 @@ public class Model {
     public Integer currentYear;
 
     @SerializedName("basePrice")
-    public Integer basePrice;
+    public String basePrice;
 
     @SerializedName("photoPath")
     public String photoPath;

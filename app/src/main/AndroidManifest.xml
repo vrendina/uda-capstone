@@ -36,10 +36,10 @@
         <activity android:name=".ui.SplashActivity"
             android:noHistory="true"
             android:theme="@style/BaseActivity.Splash">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <activity
@@ -57,10 +57,10 @@
             android:parentActivityName=".ui.quotelist.QuoteListActivity"
             android:theme="@style/BaseActivity.VehicleList">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <activity
             android:name=".ui.quoteform.QuoteFormActivity"

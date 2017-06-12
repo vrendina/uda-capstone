@@ -47,14 +47,14 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     public void setVehicle(Model model, Make make) {
-        nameTextView.setText(model.getYear() + " " + model.getName());
+        nameTextView.setText(model.name);
 
-        if(model.getBasePrice() != null && model.getBasePrice() != 0) {
-            basePriceTextView.setText(model.getBasePrice().toString());
+        if(model.basePrice != null) {
+            basePriceTextView.setText(model.basePrice);
             basePriceTextView.setVisibility(View.VISIBLE);
         }
 
-        linearLayout.setContentDescription(model.getYear() + " " + make.getName() + " " + model.getName());
+        linearLayout.setContentDescription(make.name + " " + model.name);
     }
     
     public void showDivider(boolean visible) {
