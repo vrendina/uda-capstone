@@ -67,9 +67,8 @@ public class VehicleListFragment extends Fragment implements
     private SyncBroadcastReceiver syncReceiver;
     private BroadcastReceiver networkReceiver;
 
+    String searchQuery;
     private VehicleListContainerAdapter adaper;
-
-    private String searchQuery = "";
 
     private Snackbar errorSnackbar;
 
@@ -105,12 +104,10 @@ public class VehicleListFragment extends Fragment implements
         showVehicleList(false);
         hideStatusImage();
 
-        if(savedInstanceState != null) {
-            searchQuery = savedInstanceState.getString(getString(R.string.intent_key_search_query));
-        }
-
         bindReceivers();
         getActivity().getSupportLoaderManager().initLoader(KEY_VEHICLE_LOADER, getArguments(), this);
+
+        searchQuery = getArguments().getString(getString(R.string.intent_key_search_query));
 
         return view;
     }
@@ -119,12 +116,6 @@ public class VehicleListFragment extends Fragment implements
     public void onDestroyView() {
         super.onDestroyView();
         unbindReceivers();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putString(getString(R.string.intent_key_search_query), searchQuery);
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -323,19 +314,19 @@ public class VehicleListFragment extends Fragment implements
     }
 
     public void filter(@Nullable String query) {
-        this.searchQuery = query;
-        if(query != null && count > 0) {
-            adaper.filter(query);
+        if(query != null) {
+            if(!query.equals(searchQuery)) {
+                adaper.filter(query);
 
-            if(adaper.getItemCount() == 0) {
-                showStatusImage(R.drawable.ic_logo_no_results);
-            } else {
-                hideStatusImage();
+                if (adaper.getItemCount() == 0) {
+                    showStatusImage(R.drawable.ic_logo_no_results);
+                } else {
+                    hideStatusImage();
+                }
+
+                searchQuery = query;
             }
         }
     }
-
-
-
 
 }

@@ -28,7 +28,8 @@
             android:scaleType="fitCenter"
             android:layout_margin="32dp"
             android:padding="32dp"
-            android:tint="@color/backgroundStatusIcon" />
+            android:tint="@color/backgroundStatusIcon"
+            android:contentDescription="@string/content_description_status"/>
 
         <android.support.v4.widget.SwipeRefreshLayout
             xmlns:android="http://schemas.android.com/apk/res/android"

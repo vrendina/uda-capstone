@@ -16,7 +16,6 @@
 
 package io.levelsoftware.carculator.ui.vehiclelist;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
@@ -37,7 +36,6 @@ import timber.log.Timber;
 
 public class VehicleListContainerAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
 
     private ArrayList<Make> data;
     private LinkedHashMap<Integer, Make> filtered = new LinkedHashMap<>();
@@ -98,11 +96,10 @@ public class VehicleListContainerAdapter extends
         notifyDataSetChanged();
     }
 
-
-    // TODO: Performance optimization
-    public void filter(@NonNull String query) {
+    public void filter(String query) {
         Timber.d("Query string: '" + query + "'");
-        if(TextUtils.isEmpty(query.replaceAll("[^A-Za-z0-9]", ""))) {
+
+        if(query == null || TextUtils.isEmpty(query.replaceAll("[^A-Za-z0-9]", ""))) {
             updateFilteredData(null);
         } else {
             // Split the query string based on whitespace and use an AND operator on each element

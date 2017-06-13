@@ -22,27 +22,34 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.ui.quoteform.QuoteFormActivity;
+import io.levelsoftware.carculator.util.KeyboardUtils;
 
 public class VehicleListActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.image_view_search) ImageView searchImageView;
+    @BindView(R.id.edit_text_search) EditText searchEditText;
 
     private VehicleListFragment listFragment;
     private BroadcastReceiver clickReceiver;
 
-    private String searchQuery = "";
+    private String searchQuery;
     private String quoteType;
 
     @Override
@@ -58,21 +65,17 @@ public class VehicleListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if(savedInstanceState != null) {
-            searchQuery = savedInstanceState.getString(getString(R.string.intent_key_search_query));
-        }
-
         quoteType = getIntent().getStringExtra(getString(R.string.intent_key_quote_type));
         if(quoteType == null) {
             quoteType = getString(R.string.quote_type_lease);
         }
 
-        Bundle arguments = new Bundle();
-        arguments.putString(getString(R.string.intent_key_quote_type), quoteType);
-        listFragment = VehicleListFragment.newInstance(arguments);
+        if(savedInstanceState != null) {
+            searchQuery = savedInstanceState.getString(getString(R.string.intent_key_search_query));
+        }
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, listFragment).commit();
+        setupFragment();
+        setupSearch();
     }
 
     @Override
@@ -91,35 +94,6 @@ public class VehicleListActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(getString(R.string.intent_key_search_query), searchQuery);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_vehicle_list, menu);
-
-        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setQueryHint(getString(R.string.search_hint));
-
-        if(!TextUtils.isEmpty(searchQuery)) {
-            searchMenuItem.expandActionView();
-            searchView.setQuery(searchQuery, true);
-            searchView.requestFocus();
-        }
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override public boolean onQueryTextSubmit(String query) {return false;}
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                setSearchQuery(newText);
-                return true;
-            }
-        });
-
-        return true;
     }
 
     private void bindClickReceiver() {
@@ -142,8 +116,64 @@ public class VehicleListActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(clickReceiver);
     }
 
-    private void setSearchQuery(String searchQuery) {
-        this.searchQuery = searchQuery;
-        listFragment.filter(searchQuery);
+    private void setupFragment() {
+        Bundle arguments = new Bundle();
+        arguments.putString(getString(R.string.intent_key_quote_type), quoteType);
+        arguments.putString(getString(R.string.intent_key_search_query), searchQuery);
+
+        listFragment = VehicleListFragment.newInstance(arguments);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, listFragment).commit();
+    }
+
+    private void setupSearch() {
+        searchImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(searchEditText.getText().length() == 0 && !searchEditText.hasFocus()) {
+                    searchEditText.requestFocus();
+                    KeyboardUtils.showSoftKeyboard(getApplicationContext());
+                }
+
+                if(searchEditText.getText().length() > 0) {
+                    searchEditText.setText("");
+                }
+            }
+        });
+
+        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchEditText.clearFocus();
+                    KeyboardUtils.closeSoftKeyboard(getApplicationContext(), searchEditText);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchQuery = s.toString();
+                listFragment.filter(searchQuery);
+                updateSearchState();
+            }
+        });
+
+        updateSearchState();
+    }
+
+    private void updateSearchState() {
+        if(TextUtils.isEmpty(searchQuery)) {
+            searchImageView.setImageResource(R.drawable.ic_search_gray_24dp);
+        } else {
+            searchImageView.setImageResource(R.drawable.ic_close_gray_24dp);
+        }
     }
 }

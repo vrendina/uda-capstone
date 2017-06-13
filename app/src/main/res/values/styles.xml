@@ -89,6 +89,11 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="BaseTextAppearance.SingleLine.Search">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/primaryDark</item>
+    </style>
+
     <style name="BaseTextAppearance.SingleLine.SectionHeader">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/primaryDark</item>
