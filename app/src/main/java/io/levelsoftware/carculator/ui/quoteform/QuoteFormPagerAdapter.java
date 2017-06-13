@@ -69,7 +69,9 @@ public class QuoteFormPagerAdapter extends FragmentPagerAdapter {
         String key = keys[position];
 
         if (key.equals(context.getString(R.string.tab_key_dealer))) {
-            formFragment.hideKeyboard();
+            if(formFragment != null) {
+                formFragment.hideKeyboard();
+            }
         }
     }
 
