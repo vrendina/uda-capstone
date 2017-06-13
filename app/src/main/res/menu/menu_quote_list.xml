@@ -24,9 +24,9 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_compare"
-        android:icon="@drawable/ic_compare_arrows_gray_24dp"
-        android:title="@string/action_compare"
-        app:showAsAction="ifRoom" />
+    <!--<item-->
+        <!--android:id="@+id/action_compare"-->
+        <!--android:icon="@drawable/ic_compare_arrows_gray_24dp"-->
+        <!--android:title="@string/action_compare"-->
+        <!--app:showAsAction="ifRoom" />-->
 </menu>
