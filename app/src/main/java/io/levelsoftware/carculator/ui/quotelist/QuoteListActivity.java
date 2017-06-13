@@ -18,7 +18,6 @@ package io.levelsoftware.carculator.ui.quotelist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,17 +27,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
 import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
+import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
 
 public class QuoteListActivity extends AppCompatActivity {
@@ -51,9 +45,6 @@ public class QuoteListActivity extends AppCompatActivity {
     private String[] tabNames;
     private String[] tabKeys;
 
-    private FirebaseAuth auth;
-    private FirebaseUser user;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +56,6 @@ public class QuoteListActivity extends AppCompatActivity {
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-        auth = FirebaseAuth.getInstance();
 
         setupSync();
         setupTabs();
@@ -123,23 +112,7 @@ public class QuoteListActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        user = auth.getCurrentUser();
-
-        if(user == null) {
-            auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()) {
-                        user = auth.getCurrentUser();
-                        Timber.d("New user created -- " + user.getUid());
-                    } else {
-                        Timber.e(task.getException(), "User not able to log in from quote list");
-                    }
-                }
-            });
-        } else {
-            Timber.d("User logged in " + user.getUid());
-        }
+        Timber.d("Got user: " + UserUtils.getUid());
     }
 
     @Override
