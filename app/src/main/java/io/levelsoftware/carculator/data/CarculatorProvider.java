@@ -43,8 +43,8 @@ public class CarculatorProvider extends ContentProvider {
         matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Vehicle.PATH,
                 CODE_VEHICLE);
 
-        // content://io.levelsoftware.carculator/vehicle/#
-        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Vehicle.PATH + "/#",
+        // content://io.levelsoftware.carculator/vehicle/*
+        matcher.addURI(CarculatorContract.CONTENT_AUTHORITY, CarculatorContract.Vehicle.PATH + "/*",
                 CODE_VEHICLE_WITH_ID);
     }
     
