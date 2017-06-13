@@ -22,8 +22,8 @@ import java.util.Locale;
 
 public class FormatUtils {
 
-    private static FormatUtils formatUtils;
-    private static NumberFormat formatter;
+    private static FormatUtils utils;
+    private NumberFormat formatter;
 
     private FormatUtils() {
         formatter = NumberFormat.getInstance(Locale.getDefault());
@@ -31,16 +31,16 @@ public class FormatUtils {
     }
 
     private static void initializeFormatUtils() {
-        if(formatUtils == null) {
-            formatUtils = new FormatUtils();
+        if(utils == null) {
+            utils = new FormatUtils();
         }
     }
 
     public static NumberFormat getFormatter() {
-        if(formatter == null) {
+        if(utils.formatter == null) {
             initializeFormatUtils();
         }
-        return formatter;
+        return utils.formatter;
     }
 
 }
