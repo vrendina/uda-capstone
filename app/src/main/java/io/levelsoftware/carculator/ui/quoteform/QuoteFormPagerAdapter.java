@@ -17,6 +17,7 @@
 package io.levelsoftware.carculator.ui.quoteform;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -29,17 +30,18 @@ public class QuoteFormPagerAdapter extends FragmentPagerAdapter {
     private String[] pages;
     private String[] keys;
 
-    QuoteFormDealerFragment dealerFragment;
-    QuoteFormFragment formFragment;
+    protected QuoteFormDealerFragment dealerFragment;
+    protected QuoteFormFragment formFragment;
 
     Context context;
 
-    public QuoteFormPagerAdapter(FragmentManager manager, Context context) {
+    public QuoteFormPagerAdapter(FragmentManager manager, Context context, Intent intent) {
         super(manager);
 
         this.context = context;
         this.pages = context.getResources().getStringArray(R.array.quote_entry_tab_names);
         this.keys = context.getResources().getStringArray(R.array.quote_entry_tab_keys);
+
     }
 
 

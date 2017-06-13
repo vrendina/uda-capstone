@@ -149,10 +149,7 @@ public class VehicleListContainerAdapter extends
                 Model model = (Model) match.second;
 
                 if(!filtered.containsKey(make.niceName.hashCode())) {
-                    Make filteredMake = new Make();
-                    filteredMake.niceName = make.niceName;
-                    filteredMake.name = make.name;
-                    filteredMake.models = new ArrayList<>();
+                    Make filteredMake = new Make(make.name, make.niceName, new ArrayList<Model>());
                     filtered.put(filteredMake.niceName.hashCode(), filteredMake);
                 }
                 filtered.get(make.niceName.hashCode()).models.add(model);

@@ -32,7 +32,6 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.Make;
 import io.levelsoftware.carculator.model.Model;
-import timber.log.Timber;
 
 class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -42,6 +41,9 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
     @BindView(R.id.image_view_model_picture) ImageView modelImageView;
     @BindView(R.id.image_view_divider) ImageView dividerImagerView;
 
+    private Make make;
+    private Model model;
+
     public VehicleListNestedViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
@@ -49,6 +51,9 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     public void setVehicle(Model model, Make make) {
+        this.model = model;
+        this.make = make;
+
         nameTextView.setText(model.name);
 
         if(model.basePrice != null) {
@@ -76,15 +81,13 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
 
     @Override
     public void onClick(View view) {
-        Timber.d("Clicked on view at position -- " + getAdapterPosition());
-
         Context context = view.getContext();
         // Send click broadcast up to activity
         Intent intent = new Intent();
         intent.setAction(context.getString(R.string.broadcast_click_vehicle));
 
-//        intent.putExtra(getString(R.string.key_status_code), code);
-//        intent.putExtra(getString(R.string.key_status_message), message);
+        intent.putExtra(context.getString(R.string.intent_key_quote_make), make);
+        intent.putExtra(context.getString(R.string.intent_key_quote_model), model);
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }

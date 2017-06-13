@@ -16,9 +16,12 @@
 
 package io.levelsoftware.carculator.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Model {
+public class Model implements Parcelable {
     @SerializedName("id")
     public String id;
 
@@ -36,6 +39,51 @@ public class Model {
 
     @SerializedName("photoPath")
     public String photoPath;
+
+    public Model() {}
+
+    public Model(String id, String name, String niceName, Integer currentYear, String basePrice, String photoPath) {
+        this.id = id;
+        this.name = name;
+        this.niceName = niceName;
+        this.currentYear = currentYear;
+        this.basePrice = basePrice;
+        this.photoPath = photoPath;
+    }
+
+    protected Model(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        niceName = in.readString();
+        basePrice = in.readString();
+        photoPath = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(niceName);
+        dest.writeString(basePrice);
+        dest.writeString(photoPath);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Model> CREATOR = new Creator<Model>() {
+        @Override
+        public Model createFromParcel(Parcel in) {
+            return new Model(in);
+        }
+
+        @Override
+        public Model[] newArray(int size) {
+            return new Model[size];
+        }
+    };
 
     @Override
     public String toString() {

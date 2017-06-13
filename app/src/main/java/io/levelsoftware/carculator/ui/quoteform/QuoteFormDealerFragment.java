@@ -29,7 +29,12 @@ import io.levelsoftware.carculator.R;
 
 public class QuoteFormDealerFragment extends Fragment {
 
-    public QuoteFormDealerFragment() {}
+    public static QuoteFormDealerFragment newInstance(Bundle arguments) {
+        QuoteFormDealerFragment fragment = new QuoteFormDealerFragment();
+        fragment.setArguments(arguments);
+
+        return fragment;
+    }
 
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

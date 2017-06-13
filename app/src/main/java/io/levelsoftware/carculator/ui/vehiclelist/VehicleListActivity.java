@@ -37,6 +37,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.model.Make;
+import io.levelsoftware.carculator.model.Model;
 import io.levelsoftware.carculator.ui.quoteform.QuoteFormActivity;
 import io.levelsoftware.carculator.util.KeyboardUtils;
 
@@ -100,9 +102,15 @@ public class VehicleListActivity extends AppCompatActivity {
         clickReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
+                Make make = intent.getParcelableExtra(getString(R.string.intent_key_quote_make));
+                Model model = intent.getParcelableExtra(getString(R.string.intent_key_quote_model));
+
                 Intent quoteIntent = new Intent(VehicleListActivity.this, QuoteFormActivity.class);
 
                 quoteIntent.putExtra(getString(R.string.intent_key_quote_type), quoteType);
+                quoteIntent.putExtra(getString(R.string.intent_key_quote_make), make);
+                quoteIntent.putExtra(getString(R.string.intent_key_quote_model), model);
 
                 startActivity(quoteIntent);
             }

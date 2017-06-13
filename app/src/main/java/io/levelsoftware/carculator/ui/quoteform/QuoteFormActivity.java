@@ -27,9 +27,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
@@ -46,9 +43,6 @@ public class QuoteFormActivity extends AppCompatActivity
     @BindView(R.id.text_view_toolbar_price) TextView toolbarPriceTextView;
     @BindView(R.id.text_view_toolbar_price_label) TextView toolbarPriceLabelTextView;
 
-    private FirebaseAuth auth;
-    private FirebaseUser user;
-
     QuoteFormPagerAdapter pagerAdapter;
 
     @Override
@@ -64,8 +58,6 @@ public class QuoteFormActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        auth = FirebaseAuth.getInstance();
-
         setupTabs();
         setupToolbar();
     }
@@ -77,7 +69,7 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     private void setupTabs() {
-        pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this);
+        pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this, getIntent());
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

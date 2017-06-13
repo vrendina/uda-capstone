@@ -29,6 +29,13 @@ import io.levelsoftware.carculator.R;
 
 public class QuoteFormLeaseFragment extends QuoteFormFragment {
 
+    public static QuoteFormLeaseFragment newInstance(Bundle arguments) {
+        QuoteFormLeaseFragment fragment = new QuoteFormLeaseFragment();
+        fragment.setArguments(arguments);
+
+        return fragment;
+    }
+
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -38,12 +45,6 @@ public class QuoteFormLeaseFragment extends QuoteFormFragment {
 
         setupFields();
         setupKeyboard();
-
-        if(savedInstanceState != null) {
-
-        }
-        initializeData(null);
-
 
         return view;
     }
