@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
@@ -55,6 +57,16 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
         }
 
         linearLayout.setContentDescription(make.name + " " + model.name);
+
+        if(model.photoPath != null) {
+            String imageUrl = "https://media.ed.edmunds-media.com" + model.photoPath + "185.jpg";
+
+            Glide.with(modelImageView.getContext())
+                    .load(imageUrl)
+                    .centerCrop()
+                    .crossFade()
+                    .into(modelImageView);
+        }
     }
     
     public void showDivider(boolean visible) {

@@ -97,6 +97,9 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:$version.okhttp"
     compile "com.google.code.gson:gson:$version.gson"
 
+    compile 'com.github.bumptech.glide:glide:3.8.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:1.5.0@aar'
+
     debugCompile "com.facebook.stetho:stetho:$version.stetho"
     debugCompile "com.facebook.stetho:stetho-okhttp3:$version.stetho"
     debugCompile "com.squareup.okhttp3:logging-interceptor:$version.okhttp"
