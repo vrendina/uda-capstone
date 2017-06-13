@@ -51,8 +51,18 @@ import timber.log.Timber;
 
 public class VehicleIntentService extends BaseIntentService {
 
+    private static final boolean SIMULATE_LATENCY = false;
+
     private static final String CONTENT_URL = "https://uda-capstone.firebaseapp.com/vehicles.json";
-    private static final int MINIMUM_UPDATE_INTERVAL = 1000 * 60 * 2 ; // 2 minutes
+    private static int MINIMUM_UPDATE_INTERVAL;
+
+    static {
+        if(BuildConfig.DEBUG) {
+            MINIMUM_UPDATE_INTERVAL = 1000 * 30 ; // 30 seconds
+        } else {
+            MINIMUM_UPDATE_INTERVAL = 1000 * 60 * 60 * 24 * 7; // 1 week
+        }
+    }
 
     private static final String SERVICE_NAME = "VehicleService";
     private static boolean isRunning;
@@ -122,9 +132,17 @@ public class VehicleIntentService extends BaseIntentService {
                             modelCv.put(CarculatorContract.Vehicle.COLUMN_PHOTO_PATH, model.photoPath);
 
                             contentValues.add(modelCv);
+
+                            Timber.d("Adding model: " + model.toString());
                         }
                     }
                 }
+
+                /*
+                    Add only new data to the database.
+                 */
+                int insertCount = getContentResolver().bulkInsert(CarculatorContract.Vehicle.CONTENT_URI,
+                        contentValues.toArray(new ContentValues[contentValues.size()]));
 
                 /*
                     Delete any data that has been removed from the source.
@@ -135,13 +153,10 @@ public class VehicleIntentService extends BaseIntentService {
                 for(Model model: removeVehicles) {
                     deleteCount += getContentResolver()
                             .delete(CarculatorContract.Vehicle.buildModelUri(model.id), null, null);
+
+                    Timber.d("Deleting model: " + model.toString());
                 }
 
-                /*
-                    Add only new data to the database.
-                 */
-                int insertCount = getContentResolver().bulkInsert(CarculatorContract.Vehicle.CONTENT_URI,
-                        contentValues.toArray(new ContentValues[contentValues.size()]));
 
                 Timber.d("Inserted " + insertCount + " new model(s)");
                 Timber.d("Deleted " + deleteCount + " model(s)");
@@ -157,7 +172,7 @@ public class VehicleIntentService extends BaseIntentService {
     @Nullable
     private ArrayList<Make> fetchNetworkData() {
         // Simulate long latency for network request if in debug mode (10 seconds)
-        if(BuildConfig.DEBUG) {
+        if(BuildConfig.DEBUG && SIMULATE_LATENCY) {
             try {
                 Thread.sleep(10*1000);
             } catch (InterruptedException e) {
