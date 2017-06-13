@@ -39,6 +39,12 @@ public class QuoteFormLeaseFragment extends QuoteFormFragment {
         setupFields();
         setupKeyboard();
 
+        if(savedInstanceState != null) {
+
+        }
+        initializeData(null);
+
+
         return view;
     }
 

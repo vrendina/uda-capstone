@@ -26,6 +26,16 @@
     <string name="currency_symbol">$</string>
     <string name="section_format">Hello World from section: %1s</string>
 
+    <string name="intent_key_status_code" translatable="false">status_code</string>
+    <string name="intent_key_status_message" translatable="false">status_message</string>
+    <string name="intent_key_search_query" translatable="false">search_query</string>
+    <string name="intent_key_quote_type" translatable="false">quote_type</string>
+    <string name="intent_key_quote_make" translatable="false">quote_make</string>
+    <string name="intent_key_quote_model" translatable="false">quote_model</string>
+
+    <string name="quote_type_lease" translatable="false">lease</string>
+    <string name="quote_type_loan" translatable="false">loan</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_compare">Compare Quotes</string>
     <string name="action_search">Search Vehicles</string>
@@ -43,6 +53,11 @@
     <string name="tab_quote">Quote</string>
     <string name="tab_dealer">Dealer</string>
 
+    <string name="tab_key_loan" translatable="false">@string/quote_type_loan</string>
+    <string name="tab_key_lease" translatable="false">@string/quote_type_lease</string>
+    <string name="tab_key_quote" translatable="false">quote</string>
+    <string name="tab_key_dealer" translatable="false">dealer</string>
+
     <string-array name="quote_list_tab_names">
         <item>@string/tab_loan</item>
         <item>@string/tab_lease</item>
@@ -52,13 +67,6 @@
         <item>@string/tab_quote</item>
         <item>@string/tab_dealer</item>
     </string-array>
-
-    <string name="key_quote_type" translatable="false">quote_type</string>
-
-    <string name="tab_key_loan" translatable="false">loan</string>
-    <string name="tab_key_lease" translatable="false">lease</string>
-    <string name="tab_key_quote" translatable="false">quote</string>
-    <string name="tab_key_dealer" translatable="false">dealer</string>
 
     <string-array name="quote_list_tab_keys">
         <item>@string/tab_key_loan</item>
@@ -70,11 +78,8 @@
         <item>@string/tab_key_dealer</item>
     </string-array>
 
-    <string name="intent_key_status_code" translatable="false">status_code</string>
-    <string name="intent_key_status_message" translatable="false">status_message</string>
-    <string name="intent_key_search_query" translatable="false">search_query</string>
-    <string name="intent_key_form_field_id" translatable="false">form_field_id</string>
-    <string name="intent_key_form_field_focused" translatable="false">form_field_focused</string>
+    <!--<string name="intent_key_form_field_id" translatable="false">form_field_id</string>-->
+    <!--<string name="intent_key_form_field_focused" translatable="false">form_field_focused</string>-->
 
     <string name="pref_vehicle_last_update" translatable="false">vehicle_last_update</string>
     <string name="job_sync_vehicle" translatable="false">job_vehicle_sync</string>

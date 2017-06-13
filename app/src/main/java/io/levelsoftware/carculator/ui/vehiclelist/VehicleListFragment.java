@@ -40,6 +40,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
@@ -76,6 +78,13 @@ public class VehicleListFragment extends Fragment implements
 
     public VehicleListFragment() {}
 
+    public static VehicleListFragment newInstance(Bundle arguments) {
+        VehicleListFragment fragment = new VehicleListFragment();
+        fragment.setArguments(arguments);
+
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,35 +101,6 @@ public class VehicleListFragment extends Fragment implements
 
         adaper = new VehicleListContainerAdapter();
         recyclerView.setAdapter(adaper);
-//        recyclerView.addOnScrollListener(new OnScrollListener() {
-//
-//            int distance = 0;
-//
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//                if(newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-//                    Timber.d("Dragging!!");
-//                }
-//
-//                if(newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-//                    Timber.d("Total distance travelled: " + distance);
-//                    distance = 0;
-//                }
-//
-//                if(newState == RecyclerView.SCROLL_STATE_SETTLING) {
-//                    Timber.d("Settling");
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                distance += dy;
-//            }
-//        });
-
 
         showVehicleList(false);
         hideStatusImage();
@@ -130,8 +110,7 @@ public class VehicleListFragment extends Fragment implements
         }
 
         bindReceivers();
-        getActivity().getSupportLoaderManager().initLoader(KEY_VEHICLE_LOADER, null, this);
-
+        getActivity().getSupportLoaderManager().initLoader(KEY_VEHICLE_LOADER, getArguments(), this);
 
         return view;
     }
@@ -155,12 +134,27 @@ public class VehicleListFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        String quoteType = args.getString(getString(R.string.intent_key_quote_type),
+                getString(R.string.quote_type_lease));
+
         String sortOrder =      CarculatorContract.Vehicle.COLUMN_MAKE_NAME      + " COLLATE NOCASE ASC, " +
                                 CarculatorContract.Vehicle.COLUMN_MODEL_NAME     + " COLLATE NOCASE ASC";
 
+        String selection = null;
+        String[] selectionArgs = null;
+
+        // Only show vehicles from last 2 years if creating a lease quote
+        if(quoteType.equals(getString(R.string.quote_type_lease))) {
+            selection = CarculatorContract.Vehicle.COLUMN_CURRENT_YEAR + " > ?";
+
+            int year = Calendar.getInstance().get(Calendar.YEAR) - 2;
+            selectionArgs = new String[]{String.valueOf(year)};
+        }
+
         return new CursorLoader(getActivity(),
                 CarculatorContract.Vehicle.CONTENT_URI,
-                null, null, null, sortOrder);
+                null, selection, selectionArgs, sortOrder);
     }
 
     @Override

@@ -49,11 +49,10 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <fragment
-        android:id="@+id/fragment_vehicle_list"
-        android:name="io.levelsoftware.carculator.ui.vehiclelist.VehicleListFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_vehicle_list" />
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 </LinearLayout>
 

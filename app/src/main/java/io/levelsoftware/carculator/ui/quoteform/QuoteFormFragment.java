@@ -84,6 +84,10 @@ public abstract class QuoteFormFragment extends Fragment
         keyculator.setEventListener(this);
     }
 
+    protected void initializeData(String quoteId) {
+
+    }
+
     @Override
     public void fieldFocusChanged(@IdRes int id, boolean hasFocus) {
         Timber.v("Focus changed for " + id + " has focus: " + hasFocus);

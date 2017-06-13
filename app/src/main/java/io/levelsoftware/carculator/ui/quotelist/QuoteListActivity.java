@@ -27,6 +27,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
@@ -45,6 +47,8 @@ public class QuoteListActivity extends AppCompatActivity {
     private String[] tabNames;
     private String[] tabKeys;
 
+    private FirebaseDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,9 @@ public class QuoteListActivity extends AppCompatActivity {
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        db = FirebaseDatabase.getInstance();
+        db.setPersistenceEnabled(true);
 
         setupSync();
         setupTabs();
@@ -102,7 +109,7 @@ public class QuoteListActivity extends AppCompatActivity {
                 Timber.v("Adding new quote for quote type: " + tabNames[tabIndex]);
 
                 Intent intent = new Intent(QuoteListActivity.this, VehicleListActivity.class);
-                intent.putExtra(getString(R.string.key_quote_type), tabKeys[tabIndex]);
+                intent.putExtra(getString(R.string.intent_key_quote_type), tabKeys[tabIndex]);
                 startActivity(intent);
             }
         });

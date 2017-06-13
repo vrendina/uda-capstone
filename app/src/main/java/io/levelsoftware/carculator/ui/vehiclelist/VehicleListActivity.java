@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +43,7 @@ public class VehicleListActivity extends AppCompatActivity {
     private BroadcastReceiver clickReceiver;
 
     private String searchQuery = "";
+    private String quoteType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +58,21 @@ public class VehicleListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        listFragment = (VehicleListFragment) fragmentManager.findFragmentById(R.id.fragment_vehicle_list);
-
         if(savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(getString(R.string.intent_key_search_query));
         }
+
+        quoteType = getIntent().getStringExtra(getString(R.string.intent_key_quote_type));
+        if(quoteType == null) {
+            quoteType = getString(R.string.quote_type_lease);
+        }
+
+        Bundle arguments = new Bundle();
+        arguments.putString(getString(R.string.intent_key_quote_type), quoteType);
+        listFragment = VehicleListFragment.newInstance(arguments);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, listFragment).commit();
     }
 
     @Override
@@ -118,6 +127,9 @@ public class VehicleListActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Intent quoteIntent = new Intent(VehicleListActivity.this, QuoteFormActivity.class);
+
+                quoteIntent.putExtra(getString(R.string.intent_key_quote_type), quoteType);
+
                 startActivity(quoteIntent);
             }
         };
