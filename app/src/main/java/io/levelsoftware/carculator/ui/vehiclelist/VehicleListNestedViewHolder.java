@@ -59,7 +59,7 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
         linearLayout.setContentDescription(make.name + " " + model.name);
 
         if(model.photoPath != null) {
-            String imageUrl = "https://media.ed.edmunds-media.com" + model.photoPath + "185.jpg";
+            String imageUrl = "https://media.ed.edmunds-media.com" + model.photoPath + "150.jpg";
 
             Glide.with(modelImageView.getContext())
                     .load(imageUrl)
