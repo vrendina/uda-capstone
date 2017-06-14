@@ -23,10 +23,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
@@ -47,7 +49,7 @@ public class QuoteListActivity extends AppCompatActivity {
     private String[] tabNames;
     private String[] tabKeys;
 
-    private FirebaseDatabase db;
+    DatabaseReference db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +63,14 @@ public class QuoteListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        UserUtils.getInstance().signInAnonymously();
-        Timber.v("User logged in: " + UserUtils.getInstance().getUid());
+        String uid = UserUtils.getInstance().getUid();
+        if(!TextUtils.isEmpty(uid)) {
+            Timber.v("User logged in: " + uid);
 
-        db = FirebaseDatabase.getInstance();
-        db.setPersistenceEnabled(true);
+            db = FirebaseDatabase.getInstance().getReference()
+                    .child(getString(R.string.database_tree_quotes))
+                    .child(uid);
+        }
 
         setupSync();
         setupTabs();
