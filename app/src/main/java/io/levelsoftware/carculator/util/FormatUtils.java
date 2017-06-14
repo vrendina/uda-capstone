@@ -22,25 +22,15 @@ import java.util.Locale;
 
 public class FormatUtils {
 
-    private static FormatUtils utils;
-    private NumberFormat formatter;
+    private static NumberFormat formatter;
 
-    private FormatUtils() {
+    static {
         formatter = NumberFormat.getInstance(Locale.getDefault());
         formatter.setRoundingMode(RoundingMode.HALF_EVEN);
     }
 
-    private static void initializeFormatUtils() {
-        if(utils == null) {
-            utils = new FormatUtils();
-        }
-    }
-
     public static NumberFormat getFormatter() {
-        if(utils.formatter == null) {
-            initializeFormatUtils();
-        }
-        return utils.formatter;
+        return formatter;
     }
 
 }
