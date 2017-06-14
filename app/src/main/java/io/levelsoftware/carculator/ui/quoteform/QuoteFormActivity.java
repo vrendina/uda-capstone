@@ -40,6 +40,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.model.Make;
+import io.levelsoftware.carculator.model.Model;
 import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
 import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
@@ -65,6 +67,9 @@ public class QuoteFormActivity extends AppCompatActivity
     private String quoteId;
     private String quoteType;
 
+    private Make make;
+    private Model model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +91,8 @@ public class QuoteFormActivity extends AppCompatActivity
 
         // If we didn't get an existing quote, create a new one
         if(TextUtils.isEmpty(quoteId)) {
+            model = getIntent().getParcelableExtra(getString(R.string.intent_key_quote_model));
+            make = getIntent().getParcelableExtra(getString(R.string.intent_key_quote_make));
             createQuote();
         }
 
@@ -141,7 +148,7 @@ public class QuoteFormActivity extends AppCompatActivity
 
         Map<String, Object> childUpdates = new HashMap<>();
 
-        childUpdates.put(quotePath + "/test", "Testing Offline 2");
+        childUpdates.put(quotePath + "/test", model.niceName);
 
         db.updateChildren(childUpdates);
     }

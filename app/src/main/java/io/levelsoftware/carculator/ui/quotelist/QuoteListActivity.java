@@ -83,8 +83,15 @@ public class QuoteListActivity extends AppCompatActivity {
     }
 
     private void setupTabs() {
-        QuoteListFragment loanFragment = QuoteListFragment.newInstance(getString(R.string.quote_type_loan));
-        QuoteListFragment leaseFragment = QuoteListFragment.newInstance(getString(R.string.quote_type_lease));
+
+        Bundle loanArgs = new Bundle();
+        loanArgs.putString(getString(R.string.intent_key_quote_type), getString(R.string.quote_type_loan));
+
+        Bundle leaseArgs = new Bundle();
+        leaseArgs.putString(getString(R.string.intent_key_quote_type), getString(R.string.quote_type_lease));
+
+        QuoteListFragment loanFragment = QuoteListFragment.newInstance(loanArgs);
+        QuoteListFragment leaseFragment = QuoteListFragment.newInstance(leaseArgs);
 
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(loanFragment);

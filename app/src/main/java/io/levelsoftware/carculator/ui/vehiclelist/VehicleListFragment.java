@@ -171,7 +171,7 @@ public class VehicleListFragment extends Fragment implements
             setSwipeRefreshLayoutState(false, false);
 
             adaper.setData(ProviderUtils.getMakes(data));
-            adaper.filter(searchQuery);
+            filter(searchQuery);
 
             // For some reason the RecyclerView starts scrolled down slightly
             recyclerView.post(new Runnable() {
@@ -280,6 +280,7 @@ public class VehicleListFragment extends Fragment implements
             case BaseIntentService.STATUS_ERROR_NO_NETWORK:
                 showErrorSnackbar(R.string.error_no_network, false);
                 showStatusImage(R.drawable.ic_logo_no_network);
+                setSwipeRefreshLayoutState(false, false);
                 break;
 
             case BaseIntentService.STATUS_ERROR_NETWORK_ISSUE:
@@ -332,19 +333,15 @@ public class VehicleListFragment extends Fragment implements
     }
 
     public void filter(@Nullable String query) {
-        if(query != null) {
-            if(!query.equals(searchQuery)) {
-                adaper.filter(query);
+        adaper.filter(query);
 
-                if (adaper.getItemCount() == 0) {
-                    showStatusImage(R.drawable.ic_logo_no_results);
-                } else {
-                    hideStatusImage();
-                }
-
-                searchQuery = query;
-            }
+        if (adaper.getItemCount() == 0 && count > 0) {
+            showStatusImage(R.drawable.ic_logo_no_results);
+        } else if(count > 0) {
+            hideStatusImage();
         }
+
+        searchQuery = query;
     }
 
 }

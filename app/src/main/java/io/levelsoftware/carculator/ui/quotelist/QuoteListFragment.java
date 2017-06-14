@@ -44,12 +44,13 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
     private DatabaseReference db;
     private String quoteType;
 
+    private boolean listenerAttached;
+
     public QuoteListFragment() {}
 
-    public static QuoteListFragment newInstance(String quoteType) {
+    public static QuoteListFragment newInstance(Bundle arguments) {
         QuoteListFragment fragment = new QuoteListFragment();
-        fragment.quoteType = quoteType;
-        fragment.db = FirebaseDatabase.getInstance().getReference();
+        fragment.setArguments(arguments);
 
         return fragment;
     }
@@ -60,26 +61,52 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
         View view = inflater.inflate(R.layout.fragment_quote_list, container, false);
         ButterKnife.bind(this, view);
 
-        sectionLabel.setText("Quote type: " + quoteType);
+        db = FirebaseDatabase.getInstance().getReference();
 
-        addDataListener();
+        quoteType = getArguments().getString(getString(R.string.intent_key_quote_type));
+
+        sectionLabel.setText("Quote type: " + quoteType);
 
         return view;
     }
 
-    private void addDataListener() {
-        Timber.d("BINDING DATA LISTENER("+ quoteType +")");
+    @Override
+    public void onStart() {
+        super.onStart();
+        setupDataListener(true);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        setupDataListener(false);
+    }
+
+    private void setupDataListener(boolean attach) {
         String uid = UserUtils.getInstance().getUid();
+
         if(!TextUtils.isEmpty(uid)) {
-            db.child(getString(R.string.database_tree_quotes))
-                    .child(uid)
-                    .child(quoteType)
-                    .addValueEventListener(this);
+            DatabaseReference reference = db.child(getString(R.string.database_tree_quotes))
+                                            .child(uid)
+                                            .child(quoteType);
+
+            if(attach && !listenerAttached) {
+                Timber.d("Attached value event listener for: " + quoteType);
+                listenerAttached = true;
+                reference.addValueEventListener(this);
+            } else {
+                if(listenerAttached) {
+                    Timber.d("Removing value event listener for: " + quoteType);
+                    reference.removeEventListener(this);
+                    listenerAttached = false;
+                }
+            }
         }
     }
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
+        Timber.d("Called onDataChange for " + quoteType);
         for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
             Timber.d("Got data ("+ quoteType +"): " + snapshot.getValue().toString());
         }
