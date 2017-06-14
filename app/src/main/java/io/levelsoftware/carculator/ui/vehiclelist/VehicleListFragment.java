@@ -51,6 +51,7 @@ import io.levelsoftware.carculator.sync.SyncBroadcastReceiver;
 import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
 import io.levelsoftware.carculator.util.NetworkUtils;
 import io.levelsoftware.carculator.util.ProviderUtils;
+import io.levelsoftware.carculator.util.UserUtils;
 
 
 public class VehicleListFragment extends Fragment implements
@@ -218,6 +219,10 @@ public class VehicleListFragment extends Fragment implements
             @Override
             public void onReceive(Context context, Intent intent) {
                 if(NetworkUtils.networkIsAvailable(context)) {
+                    // Try to sign the user in when network becomes available
+                    UserUtils.getInstance().signInAnonymously();
+
+                    // Load the vehicle data
                     if(shouldLoadVehicleData()) {
                         loadVehicleData();
                     }
