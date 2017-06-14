@@ -16,11 +16,15 @@
 
 package io.levelsoftware.carculator.ui.vehiclelist;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +35,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,10 +46,16 @@ import io.levelsoftware.carculator.model.Make;
 import io.levelsoftware.carculator.model.Model;
 import io.levelsoftware.carculator.ui.quoteform.QuoteFormActivity;
 import io.levelsoftware.carculator.util.KeyboardUtils;
+import io.levelsoftware.carculator.util.UserUtils;
+import timber.log.Timber;
 
 public class VehicleListActivity extends AppCompatActivity {
 
+    public static final int REQUEST_VEHICLE_LIST = 100;
+    public static final int RESULT_ERROR = 500;
+
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.container) FrameLayout container;
     @BindView(R.id.image_view_search) ImageView searchImageView;
     @BindView(R.id.edit_text_search) EditText searchEditText;
 
@@ -76,6 +87,9 @@ public class VehicleListActivity extends AppCompatActivity {
             searchQuery = savedInstanceState.getString(getString(R.string.intent_key_search_query));
         }
 
+        UserUtils.getInstance().signInAnonymously();
+        Timber.v("User logged in: " + UserUtils.getInstance().getUid());
+
         setupFragment();
         setupSearch();
     }
@@ -84,6 +98,26 @@ public class VehicleListActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         bindClickReceiver();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_VEHICLE_LIST) {
+            switch(resultCode) {
+                case Activity.RESULT_OK:
+                    finish();
+                    break;
+
+                case RESULT_ERROR:
+                    showErrorSnackbar(R.string.error_database);
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
     @Override
@@ -112,7 +146,7 @@ public class VehicleListActivity extends AppCompatActivity {
                 quoteIntent.putExtra(getString(R.string.intent_key_quote_make), make);
                 quoteIntent.putExtra(getString(R.string.intent_key_quote_model), model);
 
-                startActivity(quoteIntent);
+                startActivityForResult(quoteIntent, REQUEST_VEHICLE_LIST);
             }
         };
 
@@ -139,7 +173,7 @@ public class VehicleListActivity extends AppCompatActivity {
         searchImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(searchEditText.getText().length() == 0 && !searchEditText.hasFocus()) {
+                if(searchEditText.getText().length() == 0) {
                     searchEditText.requestFocus();
                     KeyboardUtils.showSoftKeyboard(getApplicationContext());
                 }
@@ -183,5 +217,17 @@ public class VehicleListActivity extends AppCompatActivity {
         } else {
             searchImageView.setImageResource(R.drawable.ic_close_gray_24dp);
         }
+    }
+
+    private void showErrorSnackbar(@StringRes int messageId) {
+            Snackbar errorSnackbar = Snackbar.make(container, messageId, Snackbar.LENGTH_LONG);
+
+//            errorSnackbar.setAction(R.string.dismiss, new View.OnClickListener() {
+//                @Override public void onClick(View v) {}
+//            });
+
+            errorSnackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarBackground));
+            errorSnackbar.setActionTextColor(ContextCompat.getColor(this, R.color.snackbarActionText));
+            errorSnackbar.show();
     }
 }

@@ -61,6 +61,9 @@ public class QuoteListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+        UserUtils.getInstance().signInAnonymously();
+        Timber.v("User logged in: " + UserUtils.getInstance().getUid());
+
         db = FirebaseDatabase.getInstance();
         db.setPersistenceEnabled(true);
 
@@ -113,13 +116,6 @@ public class QuoteListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Timber.d("Got user: " + UserUtils.getUid());
     }
 
     @Override

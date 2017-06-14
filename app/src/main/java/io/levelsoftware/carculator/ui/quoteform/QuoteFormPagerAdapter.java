@@ -22,13 +22,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+
 import io.levelsoftware.carculator.R;
-import timber.log.Timber;
 
 public class QuoteFormPagerAdapter extends FragmentPagerAdapter {
 
     private String[] pages;
     private String[] keys;
+
+    private ArrayList<Fragment> fragments;
 
     protected QuoteFormDealerFragment dealerFragment;
     protected QuoteFormFragment formFragment;
@@ -49,7 +52,6 @@ public class QuoteFormPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         String key = keys[position];
 
-        Timber.d("Called getItem " + position);
         if(key.equals(context.getString(R.string.tab_key_dealer))) {
             if(dealerFragment == null) {
                 dealerFragment = new QuoteFormDealerFragment();

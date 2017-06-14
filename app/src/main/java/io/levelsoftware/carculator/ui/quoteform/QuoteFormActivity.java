@@ -16,20 +16,27 @@
 
 package io.levelsoftware.carculator.ui.quoteform;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
+import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
 
 public class QuoteFormActivity extends AppCompatActivity
@@ -45,6 +52,11 @@ public class QuoteFormActivity extends AppCompatActivity
 
     QuoteFormPagerAdapter pagerAdapter;
 
+    DatabaseReference db;
+
+    private String quoteId;
+    private String quoteType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +70,51 @@ public class QuoteFormActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        db = FirebaseDatabase.getInstance().getReference();
+
+        quoteType = getIntent().getStringExtra(getString(R.string.intent_key_quote_type));
+        quoteId = getIntent().getStringExtra(getString(R.string.intent_key_quote_id));
+
+        // If we didn't get an existing quote, create a new one
+        if(TextUtils.isEmpty(quoteId)) {
+            createQuote();
+        }
+
         setupTabs();
         setupToolbar();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Timber.d("Pressed back button");
+
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         viewPager.removeOnPageChangeListener(this);
+    }
+
+    private void createQuote() {
+        String userId = UserUtils.getInstance().getUid();
+        Timber.d("Attempting to create new quote of type '"+ quoteType +"' for user: " + userId);
+
+        if(userId != null) {
+            quoteId = db.child(getString(R.string.database_tree_quotes))
+                    .child(userId)
+                    .child(quoteType)
+                    .push().getKey();
+
+            Timber.d("Created new quote with id: " + quoteId);
+        } else {
+            Timber.e(new Exception(), "User was not authenticated before creating quote");
+
+            setResult(VehicleListActivity.RESULT_ERROR);
+            finish();
+        }
     }
 
     private void setupTabs() {
@@ -97,7 +146,12 @@ public class QuoteFormActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

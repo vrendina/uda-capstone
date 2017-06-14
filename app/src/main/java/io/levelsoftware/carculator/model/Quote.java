@@ -18,7 +18,7 @@ package io.levelsoftware.carculator.model;
 
 public class Quote {
 
-    String testData;
+    public String testData;
 
     public Quote() {}
 

@@ -32,42 +32,46 @@ public class UserUtils {
     private static UserUtils utils;
 
     private FirebaseAuth auth;
-    private FirebaseUser user;
 
     // This variable is needed to prevent duplicate anonymous login
     private boolean isLoggingIn;
 
     private UserUtils() {
         auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
     }
 
-    private static void initialize() {
-        utils = new UserUtils();
+    public static UserUtils getInstance() {
+        if(utils == null) {
+            utils = new UserUtils();
+        }
+        return utils;
     }
 
     @Nullable
-    public static String getUid() {
-        if(utils == null) {
-            initialize();
+    public String getUid() {
+        if(auth.getCurrentUser() == null) {
+            signInAnonymously();
         }
-
-        utils.signInUser();
-        return (utils.user != null) ? utils.user.getUid() : null;
+        return (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
     }
 
+    @Nullable
+    public FirebaseUser getUser() {
+        if(auth.getCurrentUser() == null) {
+            signInAnonymously();
+        }
+        return auth.getCurrentUser();
+    }
 
-    private void signInUser() {
-        if(!isLoggingIn && user == null) {
+    public void signInAnonymously() {
+        if(!isLoggingIn && auth.getCurrentUser() == null) {
             isLoggingIn = true;
             auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
-                        user = auth.getCurrentUser();
-
-                        if(user != null) {
-                            Timber.d("New user created -- " + user.getUid());
+                        if(auth.getCurrentUser() != null) {
+                            Timber.d("New user created -- " + auth.getCurrentUser().getUid());
                         }
                     } else {
                         Timber.e(task.getException(), "Problem with user sign in");
