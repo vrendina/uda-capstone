@@ -49,10 +49,8 @@ public class UserUtils {
 
     @Nullable
     public String getUid() {
-        if(auth.getCurrentUser() == null) {
-            signInAnonymously();
-        }
-        return (auth.getCurrentUser() != null) ? auth.getCurrentUser().getUid() : null;
+        FirebaseUser user = getUser();
+        return (user != null) ? user.getUid() : null;
     }
 
     @Nullable
