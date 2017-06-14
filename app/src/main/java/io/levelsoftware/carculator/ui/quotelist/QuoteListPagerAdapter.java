@@ -16,32 +16,37 @@
 
 package io.levelsoftware.carculator.ui.quotelist;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import java.util.ArrayList;
+
+import io.levelsoftware.carculator.R;
 
 
 public class QuoteListPagerAdapter extends FragmentPagerAdapter {
 
     private String[] pageTitles;
-    private String[] pageKeys;
+    private ArrayList<Fragment> fragments;
 
     public QuoteListPagerAdapter(FragmentManager fragmentManager,
-                                 String[] pageTitles, String[] pageKeys) {
+                                 Context context, ArrayList<Fragment> fragments) {
         super(fragmentManager);
 
-        this.pageTitles = pageTitles;
-        this.pageKeys = pageKeys;
+        this.pageTitles = context.getResources().getStringArray(R.array.quote_list_tab_names);
+        this.fragments = fragments;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return QuoteListFragment.newInstance(pageKeys[position]);
+        return fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return pageTitles.length;
+        return fragments.size();
     }
 
     @Override

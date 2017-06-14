@@ -34,6 +34,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +61,7 @@ public class QuoteFormActivity extends AppCompatActivity
 
     DatabaseReference db;
 
+    private String userId;
     private String quoteId;
     private String quoteType;
 
@@ -76,6 +79,7 @@ public class QuoteFormActivity extends AppCompatActivity
         }
 
         db = FirebaseDatabase.getInstance().getReference();
+        userId = UserUtils.getInstance().getUid();
 
         quoteType = getIntent().getStringExtra(getString(R.string.intent_key_quote_type));
         quoteId = getIntent().getStringExtra(getString(R.string.intent_key_quote_id));
@@ -97,6 +101,7 @@ public class QuoteFormActivity extends AppCompatActivity
             return;
         }
 
+        saveQuote();
         setResult(Activity.RESULT_OK);
         finish();
     }
@@ -108,14 +113,14 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     private void createQuote() {
-        String userId = UserUtils.getInstance().getUid();
         Timber.d("Attempting to create new quote of type '"+ quoteType +"' for user: " + userId);
 
         if(userId != null) {
             quoteId = db.child(getString(R.string.database_tree_quotes))
                     .child(userId)
                     .child(quoteType)
-                    .push().getKey();
+                    .push()
+                    .getKey();
 
             Timber.d("Created new quote with id: " + quoteId);
         } else {
@@ -124,6 +129,21 @@ public class QuoteFormActivity extends AppCompatActivity
             setResult(VehicleListActivity.RESULT_ERROR);
             finish();
         }
+    }
+
+    private void saveQuote() {
+        Timber.d("Called save quote");
+
+        String quotePath = "/" + getString(R.string.database_tree_quotes) +
+                "/" + userId +
+                "/" + quoteType +
+                "/" + quoteId;
+
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put(quotePath + "/test", "Testing Offline 2");
+
+        db.updateChildren(childUpdates);
     }
 
     private void setupTabs() {

@@ -27,7 +27,6 @@
     <string name="content_description_status">Status</string>
 
     <string name="currency_symbol">$</string>
-    <string name="section_format">Hello World from section: %1s</string>
 
     <string name="intent_key_status_code" translatable="false">status_code</string>
     <string name="intent_key_status_message" translatable="false">status_message</string>
@@ -65,11 +64,6 @@
     <string name="tab_quote">Quote</string>
     <string name="tab_dealer">Dealer</string>
 
-    <string name="tab_key_loan" translatable="false">@string/quote_type_loan</string>
-    <string name="tab_key_lease" translatable="false">@string/quote_type_lease</string>
-    <string name="tab_key_quote" translatable="false">quote</string>
-    <string name="tab_key_dealer" translatable="false">dealer</string>
-
     <string-array name="quote_list_tab_names">
         <item>@string/tab_loan</item>
         <item>@string/tab_lease</item>
@@ -78,11 +72,6 @@
     <string-array name="quote_entry_tab_names">
         <item>@string/tab_quote</item>
         <item>@string/tab_dealer</item>
-    </string-array>
-
-    <string-array name="quote_list_tab_keys">
-        <item>@string/tab_key_loan</item>
-        <item>@string/tab_key_lease</item>
     </string-array>
 
     <string name="pref_vehicle_last_update" translatable="false">vehicle_last_update</string>

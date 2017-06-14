@@ -20,23 +20,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
 import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
-import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
 
 public class QuoteListActivity extends AppCompatActivity {
@@ -45,11 +43,6 @@ public class QuoteListActivity extends AppCompatActivity {
     @BindView(R.id.view_pager) ViewPager viewPager;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     @BindView(R.id.fab) FloatingActionButton floatingActionButton;
-
-    private String[] tabNames;
-    private String[] tabKeys;
-
-    DatabaseReference db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +54,6 @@ public class QuoteListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-
-        String uid = UserUtils.getInstance().getUid();
-        if(!TextUtils.isEmpty(uid)) {
-            Timber.v("User logged in: " + uid);
-
-            db = FirebaseDatabase.getInstance().getReference()
-                    .child(getString(R.string.database_tree_quotes))
-                    .child(uid);
         }
 
         setupSync();
@@ -99,11 +83,15 @@ public class QuoteListActivity extends AppCompatActivity {
     }
 
     private void setupTabs() {
-        tabNames = getResources().getStringArray(R.array.quote_list_tab_names);
-        tabKeys = getResources().getStringArray(R.array.quote_list_tab_keys);
+        QuoteListFragment loanFragment = QuoteListFragment.newInstance(getString(R.string.quote_type_loan));
+        QuoteListFragment leaseFragment = QuoteListFragment.newInstance(getString(R.string.quote_type_lease));
+
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(loanFragment);
+        fragments.add(leaseFragment);
 
         QuoteListPagerAdapter pagerAdapter = new QuoteListPagerAdapter(getSupportFragmentManager(),
-                tabNames, tabKeys);
+                this, fragments);
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -112,12 +100,22 @@ public class QuoteListActivity extends AppCompatActivity {
     private void setupFab() {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 int tabIndex = viewPager.getCurrentItem();
-                Timber.v("Adding new quote for quote type: " + tabNames[tabIndex]);
-
                 Intent intent = new Intent(QuoteListActivity.this, VehicleListActivity.class);
-                intent.putExtra(getString(R.string.intent_key_quote_type), tabKeys[tabIndex]);
+
+                switch (tabIndex) {
+                    case 0:
+                        intent.putExtra(getString(R.string.intent_key_quote_type),
+                                getString(R.string.quote_type_loan));
+                        break;
+
+                    case 1:
+                        intent.putExtra(getString(R.string.intent_key_quote_type),
+                                getString(R.string.quote_type_lease));
+                        break;
+                }
+
                 startActivity(intent);
             }
         });
