@@ -221,11 +221,6 @@ public class VehicleListActivity extends AppCompatActivity {
 
     private void showErrorSnackbar(@StringRes int messageId) {
             Snackbar errorSnackbar = Snackbar.make(container, messageId, Snackbar.LENGTH_LONG);
-
-//            errorSnackbar.setAction(R.string.dismiss, new View.OnClickListener() {
-//                @Override public void onClick(View v) {}
-//            });
-
             errorSnackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarBackground));
             errorSnackbar.setActionTextColor(ContextCompat.getColor(this, R.color.snackbarActionText));
             errorSnackbar.show();

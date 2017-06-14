@@ -136,23 +136,26 @@ public class VehicleListContainerAdapter extends
 
     private void updateFilteredData(@Nullable ArrayList<String> matches) {
         filtered = new LinkedHashMap<>();
-        if(matches == null) {
-            for(Make make: data) {
-                filtered.put(make.niceName.hashCode(), make);
-            }
-        } else {
-            for(String key: matches) {
 
-                Pair match = searchable.get(key);
-
-                Make make = (Make) match.first;
-                Model model = (Model) match.second;
-
-                if(!filtered.containsKey(make.niceName.hashCode())) {
-                    Make filteredMake = new Make(make.name, make.niceName, new ArrayList<Model>());
-                    filtered.put(filteredMake.niceName.hashCode(), filteredMake);
+        if(data != null) {
+            if (matches == null) {
+                for (Make make : data) {
+                    filtered.put(make.niceName.hashCode(), make);
                 }
-                filtered.get(make.niceName.hashCode()).models.add(model);
+            } else {
+                for (String key : matches) {
+
+                    Pair match = searchable.get(key);
+
+                    Make make = (Make) match.first;
+                    Model model = (Model) match.second;
+
+                    if (!filtered.containsKey(make.niceName.hashCode())) {
+                        Make filteredMake = new Make(make.name, make.niceName, new ArrayList<Model>());
+                        filtered.put(filteredMake.niceName.hashCode(), filteredMake);
+                    }
+                    filtered.get(make.niceName.hashCode()).models.add(model);
+                }
             }
         }
 

@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
@@ -35,10 +36,12 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -310,6 +313,16 @@ public class VehicleListFragment extends Fragment implements
                         loadVehicleData();
                     }
                 });
+            } else {
+                // Center align the text if we aren't showing a retry button
+                TextView textView = (TextView) errorSnackbar.getView()
+                        .findViewById(android.support.design.R.id.snackbar_text);
+                if(textView!=null) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+                        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    }
+                    textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                }
             }
 
             errorSnackbar.getView().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.snackbarBackground));
