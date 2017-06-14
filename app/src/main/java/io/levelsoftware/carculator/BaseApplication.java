@@ -18,6 +18,8 @@ package io.levelsoftware.carculator;
 
 import android.app.Application;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import io.levelsoftware.carculator.util.NetworkManager;
 
 public abstract class BaseApplication extends Application {
@@ -29,5 +31,6 @@ public abstract class BaseApplication extends Application {
 
         configureLogging();
         NetworkManager.initializeNetworkManager();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 }
