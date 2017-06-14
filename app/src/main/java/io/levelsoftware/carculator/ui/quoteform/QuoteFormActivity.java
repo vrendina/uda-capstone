@@ -19,6 +19,7 @@ package io.levelsoftware.carculator.ui.quoteform;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,8 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +53,9 @@ public class QuoteFormActivity extends AppCompatActivity
     @BindView(R.id.text_view_toolbar_price) TextView toolbarPriceTextView;
     @BindView(R.id.text_view_toolbar_price_label) TextView toolbarPriceLabelTextView;
 
-    QuoteFormPagerAdapter pagerAdapter;
+    private QuoteFormPagerAdapter pagerAdapter;
+    private QuoteFormFragment formFragment;
+    private QuoteFormDealerFragment dealerFragment;
 
     DatabaseReference db;
 
@@ -86,7 +91,11 @@ public class QuoteFormActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Timber.d("Pressed back button");
+        // Close the keyboard on back button press if it is open
+        if(formFragment.keyboardVisible()) {
+            formFragment.hideKeyboard();
+            return;
+        }
 
         setResult(Activity.RESULT_OK);
         finish();
@@ -118,7 +127,18 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     private void setupTabs() {
-        pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this, getIntent());
+        if(quoteType.equals(getString(R.string.quote_type_lease))) {
+            formFragment = QuoteFormLeaseFragment.newInstance(null);
+        } else if(quoteType.equals(getString(R.string.quote_type_loan))) {
+            formFragment = QuoteFormLoanFragment.newInstance(null);
+        }
+        dealerFragment = QuoteFormDealerFragment.newInstance(null);
+
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(formFragment);
+        fragments.add(dealerFragment);
+
+        pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this, fragments);
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -158,7 +178,7 @@ public class QuoteFormActivity extends AppCompatActivity
     @Override public void onPageScrollStateChanged(int state) {}
     @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
     @Override public void onPageSelected(int position) {
-        pagerAdapter.pageSelected(position);
+        formFragment.hideKeyboard();
     }
 
 

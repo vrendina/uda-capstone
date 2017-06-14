@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015-2017 Level Software LLC.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/form_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true">
+
+            <TextView
+                style="@style/BaseTextAppearance.SingleLine.SectionHeader.QuoteForm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unimplemented"/>
+
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="0dp"-->
+                <!--android:layout_marginBottom="4dp"-->
+                <!--app:cardCornerRadius="0dp">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:baselineAligned="false">-->
+
+                    <!--&lt;!&ndash; Left Column &ndash;&gt;-->
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_gravity="top">-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_negotiated_price"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_negotiated_price"-->
+                            <!--app:inputType="currency|decimal" />-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_tax_rate"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_tax_rate"-->
+                            <!--app:inputType="percentage|decimal"-->
+                            <!--app:decimals="@integer/tax_rate_decimals"-->
+                            <!--app:max="@dimen/tax_rate_max" />-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_term"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_lease_term"-->
+                            <!--app:inputType="integer"-->
+                            <!--app:max="@dimen/term_max"-->
+                            <!--app:min="@dimen/term_min"/>-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_down_payment"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_down_payment"-->
+                            <!--app:inputType="currency|decimal" />-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_trade_in_owed"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_trade_in_owed"-->
+                            <!--app:inputType="currency|decimal" />-->
+
+                    <!--</LinearLayout>-->
+
+                    <!--&lt;!&ndash; Right Column &ndash;&gt;-->
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_gravity="top">-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_residual_value"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_residual_value"-->
+                            <!--app:inputType="currency|decimal" />-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_money_factor"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_money_factor"-->
+                            <!--app:inputType="decimal"-->
+                            <!--app:decimals="@integer/money_factor_decimals"-->
+                            <!--app:max="@dimen/money_factor_max"/>-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_incentives"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_dealer_incentives"-->
+                            <!--app:inputType="currency|decimal"/>-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_trade_in_value"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_trade_in_value"-->
+                            <!--app:inputType="currency|decimal"/>-->
+
+
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
+
+            <!--<TextView-->
+                <!--style="@style/BaseTextAppearance.SingleLine.SectionHeader.QuoteForm"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/form_section_fees"/>-->
+
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="0dp"-->
+                <!--android:layout_marginBottom="4dp"-->
+                <!--app:cardCornerRadius="0dp">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:baselineAligned="false">-->
+
+                    <!--&lt;!&ndash; Left Column &ndash;&gt;-->
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_gravity="top">-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_title_fee"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_title_fee"-->
+                            <!--app:inputType="currency|decimal" />-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_acquisition_fee"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_acquisition_fee"-->
+                            <!--app:inputType="currency|decimal" />-->
+
+                    <!--</LinearLayout>-->
+
+                    <!--&lt;!&ndash; Right Column &ndash;&gt;-->
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_gravity="top">-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_doc_fee"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_doc_fee"-->
+                            <!--app:inputType="currency|decimal"/>-->
+
+                        <!--<io.levelsoftware.carculator.ui.FormField-->
+                            <!--android:id="@+id/form_field_other_fee"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:padding="16dp"-->
+                            <!--app:hint="@string/form_field_other_fee"-->
+                            <!--app:inputType="currency|decimal"/>-->
+
+                    <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <io.levelsoftware.keyculator.Keyculator
+        android:id="@+id/keyculator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"/>
+
+</FrameLayout>

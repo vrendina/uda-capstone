@@ -17,7 +17,6 @@
 package io.levelsoftware.carculator.ui.quoteform;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -28,66 +27,28 @@ import io.levelsoftware.carculator.R;
 
 public class QuoteFormPagerAdapter extends FragmentPagerAdapter {
 
-    private String[] pages;
-    private String[] keys;
-
+    private String[] pageTitles;
     private ArrayList<Fragment> fragments;
 
-    protected QuoteFormDealerFragment dealerFragment;
-    protected QuoteFormFragment formFragment;
-
-    Context context;
-
-    public QuoteFormPagerAdapter(FragmentManager manager, Context context, Intent intent) {
+    public QuoteFormPagerAdapter(FragmentManager manager, Context context, ArrayList<Fragment> fragments) {
         super(manager);
 
-        this.context = context;
-        this.pages = context.getResources().getStringArray(R.array.quote_entry_tab_names);
-        this.keys = context.getResources().getStringArray(R.array.quote_entry_tab_keys);
-
+        this.pageTitles = context.getResources().getStringArray(R.array.quote_entry_tab_names);
+        this.fragments = fragments;
     }
-
 
     @Override
     public Fragment getItem(int position) {
-        String key = keys[position];
-
-        if(key.equals(context.getString(R.string.tab_key_dealer))) {
-            if(dealerFragment == null) {
-                dealerFragment = new QuoteFormDealerFragment();
-            }
-            return dealerFragment;
-        }
-
-        if(key.equals(context.getString(R.string.tab_key_quote))) {
-            if(formFragment == null) {
-                formFragment = new QuoteFormLeaseFragment();
-            }
-            return formFragment;
-        }
-
-        return null;
-    }
-
-    public void pageSelected(int position) {
-        String key = keys[position];
-
-        if (key.equals(context.getString(R.string.tab_key_dealer))) {
-            if(formFragment != null) {
-                formFragment.hideKeyboard();
-            }
-        }
+        return fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        if(pages.length == keys.length) {
-            return keys.length;
-        } throw new IllegalStateException("Key length must match page title length");
+        return fragments.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return pages[position];
+        return pageTitles[position];
     }
 }

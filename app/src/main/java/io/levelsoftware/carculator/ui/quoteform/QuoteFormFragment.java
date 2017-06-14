@@ -108,6 +108,10 @@ public abstract class QuoteFormFragment extends Fragment
         }
     }
 
+    protected boolean keyboardVisible() {
+        return keyculator.keyboardIsActive() || keyculator.keyboardIsEntering();
+    }
+
     protected void showKeyboard(@Nullable String value) {
         keyculator.showKeyboard(value);
     }

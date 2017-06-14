@@ -18,6 +18,8 @@
     <string name="app_name">Carculator</string>
     <string name="content_provider" translatable="false">io.levelsoftware.carculator</string>
 
+    <string name="unimplemented">Unimplemented</string>
+
     <string name="content_description_logo">Logo</string>
     <string name="content_description_model_picture">Model Picture</string>
     <string name="content_description_edmunds">Data Provided by Edmunds.com</string>
@@ -82,14 +84,6 @@
         <item>@string/tab_key_loan</item>
         <item>@string/tab_key_lease</item>
     </string-array>
-
-    <string-array name="quote_entry_tab_keys">
-        <item>@string/tab_key_quote</item>
-        <item>@string/tab_key_dealer</item>
-    </string-array>
-
-    <!--<string name="intent_key_form_field_id" translatable="false">form_field_id</string>-->
-    <!--<string name="intent_key_form_field_focused" translatable="false">form_field_focused</string>-->
 
     <string name="pref_vehicle_last_update" translatable="false">vehicle_last_update</string>
     <string name="job_sync_vehicle" translatable="false">job_vehicle_sync</string>
