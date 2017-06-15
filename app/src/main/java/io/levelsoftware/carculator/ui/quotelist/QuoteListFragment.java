@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.model.quote.Quote;
 import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
 
@@ -67,19 +68,22 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
 
         sectionLabel.setText("Quote type: " + quoteType);
 
+        setupDataListener(true);
+
+
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        setupDataListener(true);
+//        setupDataListener(true);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        setupDataListener(false);
+        //setupDataListener(false);
     }
 
     private void setupDataListener(boolean attach) {
@@ -108,7 +112,12 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
     public void onDataChange(DataSnapshot dataSnapshot) {
         Timber.d("Called onDataChange for " + quoteType);
         for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-            Timber.d("Got data ("+ quoteType +"): " + snapshot.getValue().toString());
+
+            Quote quote = snapshot.getValue(Quote.class);
+            Timber.d("Deserialized quote: " + quote.toString());
+
+//            Make make = snapshot.child("vehicle").child("make").getValue(Make.class);
+//            Timber.d("The value of deserialized make is: " + make.toString());
         }
     }
 

@@ -42,6 +42,9 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.Make;
 import io.levelsoftware.carculator.model.Model;
+import io.levelsoftware.carculator.model.quote.Fee;
+import io.levelsoftware.carculator.model.quote.Quote;
+import io.levelsoftware.carculator.model.quote.Vehicle;
 import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
 import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
@@ -148,7 +151,14 @@ public class QuoteFormActivity extends AppCompatActivity
 
         Map<String, Object> childUpdates = new HashMap<>();
 
-        childUpdates.put(quotePath + "/test", model.niceName);
+        Vehicle vehicle = new Vehicle(make, model);
+        Quote quote = new Quote(vehicle);
+
+        quote.price = "24569.25";
+        quote.fees = new ArrayList<>();
+        quote.fees.add(new Fee("Documentation", "25.69", true, true));
+
+        childUpdates.put(quotePath, quote.toMap());
 
         db.updateChildren(childUpdates);
     }

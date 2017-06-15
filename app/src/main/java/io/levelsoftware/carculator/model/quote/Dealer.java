@@ -14,12 +14,32 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.model;
+package io.levelsoftware.carculator.model.quote;
 
-public class Quote {
+import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.gson.annotations.SerializedName;
 
-    public String testData;
+import java.util.HashMap;
+import java.util.Map;
 
-    public Quote() {}
+@IgnoreExtraProperties
+public class Dealer {
+
+    @SerializedName("id")
+    public Long id;
+
+    @SerializedName("notes")
+    public String notes;
+
+    public Dealer() {}
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("id", id);
+        result.put("notes", notes);
+
+        return result;
+    }
 
 }

@@ -19,10 +19,15 @@ package io.levelsoftware.carculator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@IgnoreExtraProperties
 public class Make implements Parcelable {
     @SerializedName("name")
     public String name;
@@ -30,6 +35,7 @@ public class Make implements Parcelable {
     @SerializedName("niceName")
     public String niceName;
 
+    @Exclude
     @SerializedName("models")
     public List<Model> models = null;
 
@@ -45,6 +51,15 @@ public class Make implements Parcelable {
         name = in.readString();
         niceName = in.readString();
         models = in.createTypedArrayList(Model.CREATOR);
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("name", name);
+        result.put("niceName", niceName);
+
+        return result;
     }
 
     @Override

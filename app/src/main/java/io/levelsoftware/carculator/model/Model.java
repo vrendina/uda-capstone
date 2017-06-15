@@ -19,8 +19,13 @@ package io.levelsoftware.carculator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+import java.util.Map;
+
+@IgnoreExtraProperties
 public class Model implements Parcelable {
     @SerializedName("id")
     public String id;
@@ -55,6 +60,7 @@ public class Model implements Parcelable {
         id = in.readString();
         name = in.readString();
         niceName = in.readString();
+        currentYear = in.readInt();
         basePrice = in.readString();
         photoPath = in.readString();
     }
@@ -64,8 +70,22 @@ public class Model implements Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(niceName);
+        dest.writeInt((currentYear == null) ? 0 : currentYear);
         dest.writeString(basePrice);
         dest.writeString(photoPath);
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("id", id);
+        result.put("name", name);
+        result.put("niceName", niceName);
+        result.put("currentYear", currentYear);
+        result.put("basePrice", basePrice);
+        result.put("photoPath", photoPath);
+
+        return result;
     }
 
     @Override
