@@ -18,14 +18,10 @@
     <string name="app_name">Carculator</string>
     <string name="content_provider" translatable="false">io.levelsoftware.carculator</string>
 
-    <string name="status_quote_list">Add a %1$s Quote to Get Started</string>
-    <string name="status_quote_loan">Loan</string>
-    <string name="status_quote_lease">Lease</string>
-
     <string name="unimplemented">Unimplemented</string>
 
     <string name="content_description_logo">Logo</string>
-    <string name="content_description_model_picture">Model Picture</string>
+    <string name="content_description_vehicle_picture">Vehicle Picture</string>
     <string name="content_description_edmunds">Data Provided by Edmunds.com</string>
     <string name="content_description_settings">Settings</string>
     <string name="content_description_status">Status</string>
@@ -105,5 +101,8 @@
     <string name="form_field_acquisition_fee">Acquisition</string>
     <string name="form_field_other_fee">Other</string>
 
+    <string name="edmunds_base_media_url" translatable="false">https://media.ed.edmunds-media.com</string>
+    <string name="edmunds_media_thumb_suffix" translatable="false">150.jpg</string>
+    <string name="edmunds_media_full_suffix" translatable="false">815.jpg</string>
 
 </resources>

@@ -26,8 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +33,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,8 +48,6 @@ import timber.log.Timber;
 
 public class QuoteListFragment extends Fragment implements ValueEventListener {
 
-    @BindView(R.id.container_status) LinearLayout statusContainer;
-    @BindView(R.id.text_view_status) TextView statusTextView;
     @BindView(R.id.image_view_status) ImageView statusImageView;
 
     @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
@@ -86,16 +86,6 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
                 ContextCompat.getColor(getContext(), R.color.accent),
                 ContextCompat.getColor(getContext(), R.color.accent)
         );
-
-        String readableQuoteType;
-        if(quoteType.equals(getString(R.string.quote_type_lease))) {
-            readableQuoteType = getString(R.string.status_quote_lease);
-        } else {
-            readableQuoteType = getString(R.string.status_quote_loan);
-        }
-
-        String statusText = getString(R.string.status_quote_list, readableQuoteType);
-        statusTextView.setHint(statusText);
 
         adapter = new QuoteListContainerAdapter();
         recyclerView.setAdapter(adapter);
@@ -139,15 +129,33 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
     }
 
     @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
+    public void onDataChange(DataSnapshot snapshot) {
         Timber.d("Called onDataChange for " + quoteType);
 
-        for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-            Quote quote = snapshot.getValue(Quote.class);
+        HashMap<String, ArrayList<Quote>> data = new LinkedHashMap<>();
 
-            Timber.d("Deserialized quote: " + quote.toString());
-
+        // Reverse the order of the quotes so they are sorted newest->oldest
+        ArrayList<Quote> reversedQuotes = new ArrayList<>();
+        for(DataSnapshot s: snapshot.getChildren()) {
+            reversedQuotes.add(0, s.getValue(Quote.class));
         }
+
+        for(Quote quote: reversedQuotes) {
+            if(!data.containsKey(quote.vehicle.model.id)) {
+                data.put(quote.vehicle.model.id, new ArrayList<Quote>());
+            }
+
+            ArrayList<Quote> quotes = data.get(quote.vehicle.model.id);
+            quotes.add(quote);
+        }
+
+        if(data.size() > 0) {
+            statusImageView.setVisibility(View.GONE);
+        } else {
+            statusImageView.setVisibility(View.VISIBLE);
+        }
+
+        adapter.setData(data);
     }
 
     @Override public void onCancelled(DatabaseError databaseError) {}

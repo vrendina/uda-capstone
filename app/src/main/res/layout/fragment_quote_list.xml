@@ -20,32 +20,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/container_status"
+
+    <ImageView
+        android:id="@+id/image_view_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="32dp">
+        android:scaleType="fitCenter"
+        android:padding="64dp"
+        android:tint="@color/backgroundStatusIcon"
+        app:srcCompat="@drawable/ic_logo_white"
+        android:contentDescription="@string/app_name"/>
 
-        <TextView
-            android:id="@+id/text_view_status"
-            style="@style/BaseTextAppearance.SingleLine.Status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-
-        <ImageView
-            android:id="@+id/image_view_status"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:layout_margin="16dp"
-            android:padding="16dp"
-            android:tint="@color/backgroundStatusIcon"
-            app:srcCompat="@drawable/ic_logo_white"
-            android:contentDescription="@string/app_name"/>
-
-    </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

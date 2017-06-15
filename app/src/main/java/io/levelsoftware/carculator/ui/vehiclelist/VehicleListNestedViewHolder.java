@@ -41,11 +41,14 @@ public class VehicleListNestedViewHolder extends RecyclerView.ViewHolder impleme
     @BindView(R.id.image_view_divider) ImageView dividerImagerView;
 
     private Vehicle vehicle;
+    private Context context;
 
     public VehicleListNestedViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
         view.setOnClickListener(this);
+
+        context = view.getContext();
     }
 
     public void setVehicle(Vehicle vehicle) {
@@ -61,7 +64,9 @@ public class VehicleListNestedViewHolder extends RecyclerView.ViewHolder impleme
         linearLayout.setContentDescription(vehicle.make.name + " " + vehicle.model.name);
 
         if(vehicle.model.photoPath != null) {
-            String imageUrl = "https://media.ed.edmunds-media.com" + vehicle.model.photoPath + "150.jpg";
+            String imageUrl = context.getString(R.string.edmunds_base_media_url)
+                    + vehicle.model.photoPath
+                    + context.getString(R.string.edmunds_media_thumb_suffix);
 
             Glide.with(modelImageView.getContext())
                     .load(imageUrl)
@@ -78,7 +83,6 @@ public class VehicleListNestedViewHolder extends RecyclerView.ViewHolder impleme
 
     @Override
     public void onClick(View view) {
-        Context context = view.getContext();
         // Send click broadcast up to activity
         Intent intent = new Intent();
         intent.setAction(context.getString(R.string.broadcast_click_vehicle));

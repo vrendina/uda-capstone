@@ -22,13 +22,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
 
 public class QuoteListContainerAdapter extends RecyclerView.Adapter<QuoteListContainerViewHolder> {
 
-    private ArrayList<ArrayList<Quote>> data = new ArrayList<>();
+    private HashMap<String, ArrayList<Quote>> data = new LinkedHashMap<>();
+    private String[] keys;
 
     @Override
     public QuoteListContainerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,16 +43,18 @@ public class QuoteListContainerAdapter extends RecyclerView.Adapter<QuoteListCon
 
     @Override
     public void onBindViewHolder(QuoteListContainerViewHolder holder, int position) {
-        holder.setQuotes(data.get(position));
+        holder.setQuotes(data.get(keys[position]));
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return (keys == null) ? 0 : keys.length;
     }
 
-    public void setData(ArrayList<ArrayList<Quote>> data) {
+    public void setData(HashMap<String, ArrayList<Quote>> data) {
         this.data = data;
+        keys = data.keySet().toArray(new String[data.keySet().size()]);
+
         notifyDataSetChanged();
     }
 }
