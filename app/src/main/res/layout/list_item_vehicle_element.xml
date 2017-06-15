@@ -71,7 +71,7 @@
                     android:paddingEnd="16dp"
                     android:paddingStart="0dp"
                     android:paddingRight="16dp"
-                    tools:text="2017 3 Series"/>
+                    tools:text="3 Series"/>
 
                 <TextView
                     android:id="@+id/text_view_base_price"
@@ -84,7 +84,7 @@
                     android:paddingStart="0dp"
                     android:paddingRight="16dp"
                     android:visibility="gone"
-                    tools:text="Starting from $34,359"/>
+                    tools:text="New models from $34,359"/>
 
             </LinearLayout>
 

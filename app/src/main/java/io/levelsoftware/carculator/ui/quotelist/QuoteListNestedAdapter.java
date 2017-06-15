@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.levelsoftware.carculator.ui.vehiclelist;
+package io.levelsoftware.carculator.ui.quotelist;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,39 +22,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import io.levelsoftware.carculator.R;
-import io.levelsoftware.carculator.model.Make;
-import io.levelsoftware.carculator.model.quote.Vehicle;
+import io.levelsoftware.carculator.model.quote.Quote;
 
-public class VehicleListNestedAdapter extends RecyclerView.Adapter<VehicleListNestedViewHolder> {
+public class QuoteListNestedAdapter extends RecyclerView.Adapter<QuoteListNestedViewHolder> {
 
-    private Make make;
+    private ArrayList<Quote> quotes;
 
-    public VehicleListNestedAdapter(@NonNull Make make) {
-        this.make = make;
+    public QuoteListNestedAdapter(@NonNull ArrayList<Quote> quotes) {
+        this.quotes = quotes;
     }
 
     @Override
-    public VehicleListNestedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public QuoteListNestedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_vehicle_element, parent, false);
+        View view = inflater.inflate(R.layout.list_item_quote_element, parent, false);
 
-        return new VehicleListNestedViewHolder(view);
+        return new QuoteListNestedViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(VehicleListNestedViewHolder holder, int position) {
-        holder.setVehicle(new Vehicle(make, make.models.get(position)));
+    public void onBindViewHolder(QuoteListNestedViewHolder holder, int position) {
+        holder.setQuote(quotes.get(position));
+
         // Show the divider unless we are at the last position
         holder.showDivider(position != getItemCount() - 1);
     }
 
     @Override
     public int getItemCount() {
-        if(make != null && make.models != null) {
-            return make.models.size();
+        if(quotes != null) {
+            return quotes.size();
         }
         return 0;
     }
-
 }

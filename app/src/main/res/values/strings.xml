@@ -18,6 +18,10 @@
     <string name="app_name">Carculator</string>
     <string name="content_provider" translatable="false">io.levelsoftware.carculator</string>
 
+    <string name="status_quote_list">Add a %1$s Quote to Get Started</string>
+    <string name="status_quote_loan">Loan</string>
+    <string name="status_quote_lease">Lease</string>
+
     <string name="unimplemented">Unimplemented</string>
 
     <string name="content_description_logo">Logo</string>

@@ -94,5 +94,23 @@ public class Quote {
         return result;
     }
 
-
+    @Override
+    public String toString() {
+        return "Quote{" +
+                "vehicle=" + vehicle +
+                ", price='" + price + '\'' +
+                ", residual='" + residual + '\'' +
+                ", taxRate='" + taxRate + '\'' +
+                ", moneyFactor='" + moneyFactor + '\'' +
+                ", interestRate='" + interestRate + '\'' +
+                ", term='" + term + '\'' +
+                ", rebate='" + rebate + '\'' +
+                ", downPayment='" + downPayment + '\'' +
+                ", tradeValue='" + tradeValue + '\'' +
+                ", tradeOwed='" + tradeOwed + '\'' +
+                ", fees=" + fees +
+                ", created='" + created + '\'' +
+                ", edited=" + edited +
+                '}';
+    }
 }

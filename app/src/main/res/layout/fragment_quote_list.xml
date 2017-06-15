@@ -14,19 +14,57 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="io.levelsoftware.carculator.ui.quotelist.QuoteListActivity">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/container_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="32dp">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/text_view_status"
+            style="@style/BaseTextAppearance.SingleLine.Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/image_view_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:tint="@color/backgroundStatusIcon"
+            app:srcCompat="@drawable/ic_logo_white"
+            android:contentDescription="@string/app_name"/>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:scrollbars="none"
+            app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
+            app:spanCount="1"
+            tools:listitem="@layout/list_item_vehicle_element" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</FrameLayout>

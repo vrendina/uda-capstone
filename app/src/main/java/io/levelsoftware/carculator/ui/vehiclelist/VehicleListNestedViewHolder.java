@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Vehicle;
 
-class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     @BindView(R.id.linear_layout) LinearLayout linearLayout;
     @BindView(R.id.text_view_model_name) TextView nameTextView;
