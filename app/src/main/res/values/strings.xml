@@ -32,8 +32,7 @@
     <string name="intent_key_status_message" translatable="false">status_message</string>
     <string name="intent_key_search_query" translatable="false">search_query</string>
     <string name="intent_key_quote_type" translatable="false">quote_type</string>
-    <string name="intent_key_quote_make" translatable="false">quote_make</string>
-    <string name="intent_key_quote_model" translatable="false">quote_model</string>
+    <string name="intent_key_quote_vehicle" translatable="false">quote_vehicle</string>
     <string name="intent_key_quote_id" translatable="false">quote_id</string>
 
     <string name="quote_type_lease" translatable="false">lease</string>

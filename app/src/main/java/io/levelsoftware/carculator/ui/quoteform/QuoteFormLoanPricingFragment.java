@@ -17,6 +17,7 @@
 package io.levelsoftware.carculator.ui.quoteform;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,12 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.keyculator.StringNumber;
 
-public class QuoteFormLoanFragment extends QuoteFormFragment {
+public class QuoteFormLoanPricingFragment extends QuoteFormPricingFragment {
 
-    public static QuoteFormLoanFragment newInstance(Bundle arguments) {
-        QuoteFormLoanFragment fragment = new QuoteFormLoanFragment();
+    public static QuoteFormLoanPricingFragment newInstance(Bundle arguments) {
+        QuoteFormLoanPricingFragment fragment = new QuoteFormLoanPricingFragment();
         fragment.setArguments(arguments);
 
         return fragment;
@@ -47,4 +49,8 @@ public class QuoteFormLoanFragment extends QuoteFormFragment {
     }
 
 
+    @Override
+    public void fieldValueChanged(@IdRes int id, StringNumber value) {
+
+    }
 }

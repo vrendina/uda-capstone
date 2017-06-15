@@ -18,7 +18,6 @@ package io.levelsoftware.carculator.ui.quoteform;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 
 
-public class QuoteFormDealerFragment extends Fragment {
+public class QuoteFormDealerFragment extends QuoteFormFragment {
 
     public static QuoteFormDealerFragment newInstance(Bundle arguments) {
         QuoteFormDealerFragment fragment = new QuoteFormDealerFragment();

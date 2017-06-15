@@ -30,8 +30,7 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
-import io.levelsoftware.carculator.model.Make;
-import io.levelsoftware.carculator.model.Model;
+import io.levelsoftware.carculator.model.quote.Vehicle;
 
 class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -41,8 +40,7 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
     @BindView(R.id.image_view_model_picture) ImageView modelImageView;
     @BindView(R.id.image_view_divider) ImageView dividerImagerView;
 
-    private Make make;
-    private Model model;
+    private Vehicle vehicle;
 
     public VehicleListNestedViewHolder(View view) {
         super(view);
@@ -50,21 +48,20 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
         view.setOnClickListener(this);
     }
 
-    public void setVehicle(Model model, Make make) {
-        this.model = model;
-        this.make = make;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
 
-        nameTextView.setText(model.name);
+        nameTextView.setText(vehicle.model.name);
 
-        if(model.basePrice != null) {
-            basePriceTextView.setText(model.basePrice);
+        if(vehicle.model.basePrice != null) {
+            basePriceTextView.setText(vehicle.model.basePrice);
             basePriceTextView.setVisibility(View.VISIBLE);
         }
 
-        linearLayout.setContentDescription(make.name + " " + model.name);
+        linearLayout.setContentDescription(vehicle.make.name + " " + vehicle.model.name);
 
-        if(model.photoPath != null) {
-            String imageUrl = "https://media.ed.edmunds-media.com" + model.photoPath + "150.jpg";
+        if(vehicle.model.photoPath != null) {
+            String imageUrl = "https://media.ed.edmunds-media.com" + vehicle.model.photoPath + "150.jpg";
 
             Glide.with(modelImageView.getContext())
                     .load(imageUrl)
@@ -86,8 +83,7 @@ class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements Vie
         Intent intent = new Intent();
         intent.setAction(context.getString(R.string.broadcast_click_vehicle));
 
-        intent.putExtra(context.getString(R.string.intent_key_quote_make), make);
-        intent.putExtra(context.getString(R.string.intent_key_quote_model), model);
+        intent.putExtra(context.getString(R.string.intent_key_quote_vehicle), vehicle);
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }

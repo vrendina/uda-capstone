@@ -16,11 +16,11 @@
 
 package io.levelsoftware.carculator.model.quote;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @IgnoreExtraProperties
@@ -60,7 +60,13 @@ public class Quote {
     public String tradeOwed;
 
     @SerializedName("fees")
-    public List<Fee> fees;
+    public Map<String, Fee> fees;
+
+    @SerializedName("created")
+    public String created;
+
+    @Exclude
+    public boolean edited;
 
     public Quote() {}
 
@@ -83,25 +89,10 @@ public class Quote {
         result.put("tradeValue", tradeValue);
         result.put("tradeOwed", tradeOwed);
         result.put("fees", fees);
+        result.put("created", created);
 
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Quote{" +
-                "vehicle=" + vehicle +
-                ", price='" + price + '\'' +
-                ", residual='" + residual + '\'' +
-                ", taxRate='" + taxRate + '\'' +
-                ", moneyFactor='" + moneyFactor + '\'' +
-                ", interestRate='" + interestRate + '\'' +
-                ", term='" + term + '\'' +
-                ", rebate='" + rebate + '\'' +
-                ", downPayment='" + downPayment + '\'' +
-                ", tradeValue='" + tradeValue + '\'' +
-                ", tradeOwed='" + tradeOwed + '\'' +
-                ", fees=" + fees +
-                '}';
-    }
+
 }

@@ -40,12 +40,10 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
-import io.levelsoftware.carculator.model.Make;
-import io.levelsoftware.carculator.model.Model;
-import io.levelsoftware.carculator.model.quote.Fee;
 import io.levelsoftware.carculator.model.quote.Quote;
 import io.levelsoftware.carculator.model.quote.Vehicle;
 import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
+import io.levelsoftware.carculator.util.DateUtils;
 import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
 
@@ -56,12 +54,11 @@ public class QuoteFormActivity extends AppCompatActivity
     @BindView(R.id.view_pager) ViewPager viewPager;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
 
-    @BindView(R.id.linear_layout_toolbar_price) LinearLayout toolbarPriceLinearLayout;
+    @BindView(R.id.linear_layout_toolbar_price) LinearLayout toolbarPrice;
     @BindView(R.id.text_view_toolbar_price) TextView toolbarPriceTextView;
     @BindView(R.id.text_view_toolbar_price_label) TextView toolbarPriceLabelTextView;
 
-    private QuoteFormPagerAdapter pagerAdapter;
-    private QuoteFormFragment formFragment;
+    private QuoteFormPricingFragment pricingFragment;
     private QuoteFormDealerFragment dealerFragment;
 
     DatabaseReference db;
@@ -70,8 +67,7 @@ public class QuoteFormActivity extends AppCompatActivity
     private String quoteId;
     private String quoteType;
 
-    private Make make;
-    private Model model;
+    private Quote quote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,34 +82,31 @@ public class QuoteFormActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        db = FirebaseDatabase.getInstance().getReference();
-        userId = UserUtils.getInstance().getUid();
-
         quoteType = getIntent().getStringExtra(getString(R.string.intent_key_quote_type));
-        quoteId = getIntent().getStringExtra(getString(R.string.intent_key_quote_id));
-
-        // If we didn't get an existing quote, create a new one
-        if(TextUtils.isEmpty(quoteId)) {
-            model = getIntent().getParcelableExtra(getString(R.string.intent_key_quote_model));
-            make = getIntent().getParcelableExtra(getString(R.string.intent_key_quote_make));
-            createQuote();
-        }
 
         setupTabs();
+        setupQuote();
         setupToolbar();
     }
 
     @Override
     public void onBackPressed() {
         // Close the keyboard on back button press if it is open
-        if(formFragment.keyboardVisible()) {
-            formFragment.hideKeyboard();
+        if(pricingFragment.keyboardVisible()) {
+            pricingFragment.hideKeyboard();
             return;
         }
 
-        saveQuote();
-        setResult(Activity.RESULT_OK);
-        finish();
+        // Save the quote if it has changes, otherwise return to select a vehicle
+        if(quote.edited) {
+            saveQuote();
+            setResult(Activity.RESULT_OK);
+            finish();
+        } else {
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        }
+
     }
 
     @Override
@@ -122,7 +115,21 @@ public class QuoteFormActivity extends AppCompatActivity
         viewPager.removeOnPageChangeListener(this);
     }
 
-    private void createQuote() {
+    private void setupQuote() {
+        db = FirebaseDatabase.getInstance().getReference();
+
+        userId = UserUtils.getInstance().getUid();
+        quoteId = getIntent().getStringExtra(getString(R.string.intent_key_quote_id));
+
+        // If we didn't get an existing quote, create a new one
+        if(TextUtils.isEmpty(quoteId)) {
+            createNewQuote();
+        } else {
+            loadExistingQuote();
+        }
+    }
+
+    private void createNewQuote() {
         Timber.d("Attempting to create new quote of type '"+ quoteType +"' for user: " + userId);
 
         if(userId != null) {
@@ -131,6 +138,11 @@ public class QuoteFormActivity extends AppCompatActivity
                     .child(quoteType)
                     .push()
                     .getKey();
+
+            Vehicle vehicle = getIntent().getParcelableExtra(getString(R.string.intent_key_quote_vehicle));
+            quote = new Quote(vehicle);
+
+            setQuote(quote);
 
             Timber.d("Created new quote with id: " + quoteId);
         } else {
@@ -141,8 +153,21 @@ public class QuoteFormActivity extends AppCompatActivity
         }
     }
 
+    private void loadExistingQuote() {
+        Timber.d("Attempting to load existing quote with id: "+ quoteId);
+    }
+
+    private void setQuote(Quote quote) {
+        pricingFragment.setQuote(quote);
+        dealerFragment.setQuote(quote);
+    }
+
     private void saveQuote() {
-        Timber.d("Called save quote");
+        Timber.d("Saving quote object: " + quote.toString());
+
+        if(TextUtils.isEmpty(quote.created)) {
+            quote.created = DateUtils.getDateString();
+        }
 
         String quotePath = "/" + getString(R.string.database_tree_quotes) +
                 "/" + userId +
@@ -151,31 +176,24 @@ public class QuoteFormActivity extends AppCompatActivity
 
         Map<String, Object> childUpdates = new HashMap<>();
 
-        Vehicle vehicle = new Vehicle(make, model);
-        Quote quote = new Quote(vehicle);
-
-        quote.price = "24569.25";
-        quote.fees = new ArrayList<>();
-        quote.fees.add(new Fee("Documentation", "25.69", true, true));
-
         childUpdates.put(quotePath, quote.toMap());
 
         db.updateChildren(childUpdates);
     }
 
     private void setupTabs() {
-        if(quoteType.equals(getString(R.string.quote_type_lease))) {
-            formFragment = QuoteFormLeaseFragment.newInstance(null);
-        } else if(quoteType.equals(getString(R.string.quote_type_loan))) {
-            formFragment = QuoteFormLoanFragment.newInstance(null);
+        if(quoteType.equals(getString(R.string.quote_type_loan))) {
+            pricingFragment = QuoteFormLoanPricingFragment.newInstance(null);
+        } else {
+            pricingFragment = QuoteFormLeasePricingFragment.newInstance(null);
         }
         dealerFragment = QuoteFormDealerFragment.newInstance(null);
 
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(formFragment);
+        fragments.add(pricingFragment);
         fragments.add(dealerFragment);
 
-        pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this, fragments);
+        QuoteFormPagerAdapter pagerAdapter = new QuoteFormPagerAdapter(getSupportFragmentManager(), this, fragments);
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -183,7 +201,7 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     private void setupToolbar() {
-        toolbarPriceLinearLayout.setOnClickListener(new View.OnClickListener() {
+        toolbarPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggleToolbarDisplayMode();
@@ -215,7 +233,7 @@ public class QuoteFormActivity extends AppCompatActivity
     @Override public void onPageScrollStateChanged(int state) {}
     @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
     @Override public void onPageSelected(int position) {
-        formFragment.hideKeyboard();
+        pricingFragment.hideKeyboard();
     }
 
 

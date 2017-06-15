@@ -113,21 +113,32 @@ public class FormField extends FrameLayout
      *
      * @param rawValue value to set before going through validation
      */
-    public void setValue(@NonNull StringNumber rawValue) {
-        Timber.d("Called setValue with: " + rawValue);
+    public void setRawValue(@NonNull StringNumber rawValue) {
+        Timber.d("Called setRawValue with: " + rawValue);
         this.rawValue = rawValue;
         this.value = validate(rawValue);
         Timber.d("Got validated value of: " + value);
 
-        formattedValue = null;
-        editText.setText(null);
-        editText.append(getFormattedValue());
-        setCursorPosition();
+        listener.fieldValueChanged(getId(), value);
+
+        updateDisplay();
+    }
+
+    public void setValue(@NonNull StringNumber value) {
+        this.value = value;
     }
 
     @Nullable
     public StringNumber getValue() {
         return value;
+    }
+
+
+    private void updateDisplay() {
+        formattedValue = null;
+        editText.setText(null);
+        editText.append(getFormattedValue());
+        setCursorPosition();
     }
 
     private void setCursorPosition() {
@@ -198,7 +209,7 @@ public class FormField extends FrameLayout
 
         // If we lose focus, update the display to reflect the validated value since we are done editing
         } else {
-            setValue(value);
+            updateDisplay();
         }
     }
 
@@ -251,6 +262,7 @@ public class FormField extends FrameLayout
 
     public interface OnFormFieldEventListener {
         void fieldFocusChanged(@IdRes int id, boolean hasFocus);
+        void fieldValueChanged(@IdRes int id, StringNumber value);
     }
 
 }

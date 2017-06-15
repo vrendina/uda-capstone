@@ -19,18 +19,21 @@ package io.levelsoftware.carculator.ui.quoteform;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.model.quote.Quote;
+import io.levelsoftware.keyculator.StringNumber;
 
 
-public class QuoteFormLeaseFragment extends QuoteFormFragment {
+public class QuoteFormLeasePricingFragment extends QuoteFormPricingFragment {
 
-    public static QuoteFormLeaseFragment newInstance(Bundle arguments) {
-        QuoteFormLeaseFragment fragment = new QuoteFormLeaseFragment();
+    public static QuoteFormLeasePricingFragment newInstance(Bundle arguments) {
+        QuoteFormLeasePricingFragment fragment = new QuoteFormLeasePricingFragment();
         fragment.setArguments(arguments);
 
         return fragment;
@@ -50,8 +53,28 @@ public class QuoteFormLeaseFragment extends QuoteFormFragment {
     }
 
     @Override
-    public void fieldFocusChanged(@IdRes int id, boolean hasFocus) {
-        super.fieldFocusChanged(id, hasFocus);
+    protected void setQuote(Quote quote) {
+        super.setQuote(quote);
+
+        // If the quote doesn't have a created date saved, setup some defaults
+        if(TextUtils.isEmpty(quote.created)) {
+
+        }
+
+
+    }
+
+    @Override
+    public void fieldValueChanged(@IdRes int id, StringNumber value) {
+
+        quote.edited = true;
+
+        switch (id) {
+            case R.id.form_field_negotiated_price:
+                quote.price = value.getStringValue();
+                break;
+        }
+
     }
 
 }

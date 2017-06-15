@@ -24,14 +24,15 @@ import android.view.ViewGroup;
 
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.Make;
+import io.levelsoftware.carculator.model.quote.Vehicle;
 
 public class VehicleListNestedAdapter extends
         RecyclerView.Adapter<VehicleListNestedViewHolder> {
 
-    private Make data;
+    private Make make;
 
     public VehicleListNestedAdapter(@NonNull Make data) {
-        this.data = data;
+        this.make = data;
     }
 
     @Override
@@ -44,15 +45,15 @@ public class VehicleListNestedAdapter extends
 
     @Override
     public void onBindViewHolder(VehicleListNestedViewHolder holder, int position) {
-        holder.setVehicle(data.models.get(position), data);
+        holder.setVehicle(new Vehicle(make, make.models.get(position)));
         // Show the divider unless we are at the last position
         holder.showDivider(position != getItemCount() - 1);
     }
 
     @Override
     public int getItemCount() {
-        if(data != null && data.models != null) {
-            return data.models.size();
+        if(make != null && make.models != null) {
+            return make.models.size();
         }
         return 0;
     }
