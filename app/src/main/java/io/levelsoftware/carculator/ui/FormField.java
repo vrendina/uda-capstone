@@ -124,21 +124,18 @@ public class FormField extends FrameLayout
         updateDisplay();
     }
 
-    public void setValue(@NonNull StringNumber value) {
-        this.value = value;
-    }
-
     @Nullable
     public StringNumber getValue() {
         return value;
     }
 
-
     private void updateDisplay() {
+        textInputLayout.setHintAnimationEnabled(false);
         formattedValue = null;
         editText.setText(null);
         editText.append(getFormattedValue());
         setCursorPosition();
+        textInputLayout.setHintAnimationEnabled(true);
     }
 
     private void setCursorPosition() {
