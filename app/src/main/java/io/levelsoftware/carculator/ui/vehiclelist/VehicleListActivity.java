@@ -22,9 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -51,7 +48,6 @@ import timber.log.Timber;
 public class VehicleListActivity extends AppCompatActivity {
 
     public static final int REQUEST_VEHICLE_LIST = 100;
-    public static final int RESULT_ERROR = 500;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.container) FrameLayout container;
@@ -107,10 +103,6 @@ public class VehicleListActivity extends AppCompatActivity {
             switch(resultCode) {
                 case Activity.RESULT_OK:
                     finish();
-                    break;
-
-                case RESULT_ERROR:
-                    showErrorSnackbar(R.string.error_database);
                     break;
 
                 default:
@@ -214,12 +206,5 @@ public class VehicleListActivity extends AppCompatActivity {
         } else {
             searchImageView.setImageResource(R.drawable.ic_close_gray_24dp);
         }
-    }
-
-    private void showErrorSnackbar(@StringRes int messageId) {
-            Snackbar errorSnackbar = Snackbar.make(container, messageId, Snackbar.LENGTH_LONG);
-            errorSnackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarBackground));
-            errorSnackbar.setActionTextColor(ContextCompat.getColor(this, R.color.snackbarActionText));
-            errorSnackbar.show();
     }
 }

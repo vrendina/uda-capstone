@@ -18,8 +18,11 @@ package io.levelsoftware.carculator.ui.quoteform;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,7 +45,6 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
 import io.levelsoftware.carculator.model.quote.Vehicle;
-import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
 import io.levelsoftware.carculator.util.DateUtils;
 import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
@@ -61,12 +63,6 @@ public class QuoteFormActivity extends AppCompatActivity
     private QuoteFormPricingFragment pricingFragment;
     private QuoteFormDealerFragment dealerFragment;
 
-    DatabaseReference db;
-
-    private String userId;
-    private String quoteId;
-    private String quoteType;
-
     private Quote quote;
 
     @Override
@@ -82,10 +78,22 @@ public class QuoteFormActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        quoteType = getIntent().getStringExtra(getString(R.string.intent_key_quote_type));
+        if(savedInstanceState != null) {
+            quote = savedInstanceState.getParcelable(getString(R.string.intent_key_quote));
+        } else {
+            quote = getIntent().getParcelableExtra(getString(R.string.intent_key_quote));
+        }
+
+        // If we don't have a quote, create a new object
+        if(quote == null) {
+            Vehicle vehicle = getIntent().getParcelableExtra(getString(R.string.intent_key_quote_vehicle));
+            quote = new Quote(vehicle);
+            quote.type = getIntent().getStringExtra(getString(R.string.intent_key_quote_type));
+        }
 
         setupTabs();
-        setupQuote();
+        setQuote(quote);
+
         setupToolbar();
     }
 
@@ -99,14 +107,20 @@ public class QuoteFormActivity extends AppCompatActivity
 
         // Save the quote if it has changes, otherwise return to select a vehicle
         if(quote.edited) {
-            saveQuote();
-            setResult(Activity.RESULT_OK);
-            finish();
+            if(saveQuote()) {
+                setResult(Activity.RESULT_OK);
+                finish();
+            }
         } else {
             setResult(Activity.RESULT_CANCELED);
             finish();
         }
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(getString(R.string.intent_key_quote), quote);
     }
 
     @Override
@@ -115,74 +129,52 @@ public class QuoteFormActivity extends AppCompatActivity
         viewPager.removeOnPageChangeListener(this);
     }
 
-    private void setupQuote() {
-        db = FirebaseDatabase.getInstance().getReference();
-
-        userId = UserUtils.getInstance().getUid();
-        quoteId = getIntent().getStringExtra(getString(R.string.intent_key_quote_id));
-
-        // If we didn't get an existing quote, create a new one
-        if(TextUtils.isEmpty(quoteId)) {
-            createNewQuote();
-        } else {
-            loadExistingQuote();
-        }
-    }
-
-    private void createNewQuote() {
-        Timber.d("Attempting to create new quote of type '"+ quoteType +"' for user: " + userId);
-
-        if(userId != null) {
-            quoteId = db.child(getString(R.string.database_tree_quotes))
-                    .child(userId)
-                    .child(quoteType)
-                    .push()
-                    .getKey();
-
-            Vehicle vehicle = getIntent().getParcelableExtra(getString(R.string.intent_key_quote_vehicle));
-            quote = new Quote(vehicle);
-
-            setQuote(quote);
-
-            Timber.d("Created new quote with id: " + quoteId);
-        } else {
-            Timber.e(new Exception(), "User was not authenticated before creating quote");
-
-            setResult(VehicleListActivity.RESULT_ERROR);
-            finish();
-        }
-    }
-
-    private void loadExistingQuote() {
-        Timber.d("Attempting to load existing quote with id: "+ quoteId);
-    }
-
     private void setQuote(Quote quote) {
         pricingFragment.setQuote(quote);
         dealerFragment.setQuote(quote);
     }
 
-    private void saveQuote() {
-        Timber.d("Saving quote object: " + quote.toString());
+    private boolean saveQuote() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        String userId = UserUtils.getInstance().getUid();
 
-        if(TextUtils.isEmpty(quote.created)) {
-            quote.created = DateUtils.getDateString();
+        // If we don't have a quote id, the quote has not been saved previously
+        if(TextUtils.isEmpty(quote.id)) {
+            if(userId != null) {
+                quote.id = db.child(getString(R.string.database_tree_quotes))
+                        .child(userId)
+                        .child(quote.type)
+                        .push()
+                        .getKey();
+
+                quote.created = DateUtils.getDateString();
+
+            } else {
+                Timber.e(new Exception(), "User was not authenticated before creating quote");
+                showErrorSnackbar(R.string.error_database);
+
+                return false;
+            }
         }
 
+        // Write data to the database
         String quotePath = "/" + getString(R.string.database_tree_quotes) +
                 "/" + userId +
-                "/" + quoteType +
-                "/" + quoteId;
+                "/" + quote.type +
+                "/" + quote.id;
 
         Map<String, Object> childUpdates = new HashMap<>();
 
         childUpdates.put(quotePath, quote.toMap());
 
         db.updateChildren(childUpdates);
+        Timber.d("Saved quote object: " + quote.toString());
+
+        return true;
     }
 
     private void setupTabs() {
-        if(quoteType.equals(getString(R.string.quote_type_loan))) {
+        if(quote.type.equals(getString(R.string.quote_type_loan))) {
             pricingFragment = QuoteFormLoanPricingFragment.newInstance(null);
         } else {
             pricingFragment = QuoteFormLeasePricingFragment.newInstance(null);
@@ -236,6 +228,20 @@ public class QuoteFormActivity extends AppCompatActivity
         pricingFragment.hideKeyboard();
     }
 
+    private void showErrorSnackbar(@StringRes int messageId) {
+        Snackbar errorSnackbar = Snackbar.make(viewPager, messageId, Snackbar.LENGTH_INDEFINITE);
+
+        errorSnackbar.setAction(R.string.retry, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        errorSnackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarBackground));
+        errorSnackbar.setActionTextColor(ContextCompat.getColor(this, R.color.snackbarActionText));
+        errorSnackbar.show();
+    }
 
 }
 

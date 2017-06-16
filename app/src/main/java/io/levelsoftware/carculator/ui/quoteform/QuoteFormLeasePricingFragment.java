@@ -17,7 +17,6 @@
 package io.levelsoftware.carculator.ui.quoteform;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,7 +26,6 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
-import io.levelsoftware.keyculator.StringNumber;
 
 
 public class QuoteFormLeasePricingFragment extends QuoteFormPricingFragment {
@@ -57,24 +55,10 @@ public class QuoteFormLeasePricingFragment extends QuoteFormPricingFragment {
         super.setQuote(quote);
 
         // If the quote doesn't have a created date saved, setup some defaults
-        if(TextUtils.isEmpty(quote.created)) {
+        if(TextUtils.isEmpty(quote.created) && !quote.edited) {
 
         }
-
-
     }
 
-    @Override
-    public void fieldValueChanged(@IdRes int id, StringNumber value) {
-
-        quote.edited = true;
-
-        switch (id) {
-            case R.id.form_field_negotiated_price:
-                quote.price = value.getStringValue();
-                break;
-        }
-
-    }
 
 }

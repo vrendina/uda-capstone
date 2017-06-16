@@ -33,9 +33,9 @@
     <string name="intent_key_status_code" translatable="false">status_code</string>
     <string name="intent_key_status_message" translatable="false">status_message</string>
     <string name="intent_key_search_query" translatable="false">search_query</string>
+    <string name="intent_key_quote" translatable="false">quote</string>
     <string name="intent_key_quote_type" translatable="false">quote_type</string>
     <string name="intent_key_quote_vehicle" translatable="false">quote_vehicle</string>
-    <string name="intent_key_quote_id" translatable="false">quote_id</string>
 
     <string name="quote_type_lease" translatable="false">lease</string>
     <string name="quote_type_loan" translatable="false">loan</string>
@@ -58,7 +58,7 @@
     <string name="error_no_network">No Network</string>
     <string name="error_network_error">Network Error</string>
     <string name="error_data">Data Error</string>
-    <string name="error_database">@string/error_data</string>
+    <string name="error_database">Error Saving Quote</string>
 
     <string name="tab_loan">Buy</string>
     <string name="tab_lease">Lease</string>
@@ -80,7 +80,7 @@
 
     <string name="broadcast_sync_vehicle" translatable="false">io.levelsoftware.carculator.sync.VEHICLE_SYNC</string>
     <string name="broadcast_click_vehicle" translatable="false">io.levelsoftware.carculator.ui.CLICK_VEHICLE</string>
-    <string name="broadcast_field_focus" translatable="false">io.levelsoftware.carculator.ui.FIELD_FOCUS</string>
+    <string name="broadcast_click_quote" translatable="false">io.levelsoftware.carculator.ui.CLICK_QUOTE</string>
 
     <string name="form_section_pricing">Pricing</string>
 
@@ -89,7 +89,10 @@
     <string name="form_field_tax_rate">Tax Rate</string>
 
     <string name="form_field_money_factor">Money Factor</string>
+    <string name="form_field_interest_rate">Interest Rate</string>
+
     <string name="form_field_lease_term">Lease Term (mo)</string>
+    <string name="form_field_loan_term">Loan Term (mo)</string>
 
     <string name="form_field_dealer_incentives">Incentives</string>
     <string name="form_field_down_payment">Down Payment</string>

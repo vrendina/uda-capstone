@@ -19,4 +19,5 @@
     <integer name="default_currency_decimals">2</integer>
     <integer name="tax_rate_decimals">4</integer>
     <integer name="money_factor_decimals">6</integer>
+    <integer name="interest_rate_decimals">2</integer>
 </resources>

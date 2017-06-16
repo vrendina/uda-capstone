@@ -16,6 +16,9 @@
 
 package io.levelsoftware.carculator.model.quote;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
@@ -24,13 +27,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Quote {
+public class Quote implements Parcelable {
 
     @SerializedName("vehicle")
     public Vehicle vehicle;
 
-    @SerializedName("dealer")
-    public Dealer dealer;
+//    @SerializedName("dealer")
+//    public Dealer dealer;
 
     @SerializedName("price")
     public String price;
@@ -48,7 +51,7 @@ public class Quote {
     public String interestRate;
 
     @SerializedName("term")
-    public String term;
+    public Integer term;
 
     @SerializedName("rebate")
     public String rebate;
@@ -62,8 +65,8 @@ public class Quote {
     @SerializedName("tradeOwed")
     public String tradeOwed;
 
-    @SerializedName("fees")
-    public Map<String, Fee> fees;
+//    @SerializedName("fees")
+//    public Map<String, Fee> fees;
 
     @SerializedName("totalCost")
     public String totalCost;
@@ -80,17 +83,83 @@ public class Quote {
     @Exclude
     public boolean edited;
 
+    @Exclude
+    public String id;
+
+    @Exclude
+    public String type;
+
     public Quote() {}
 
     public Quote(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
+    protected Quote(Parcel in) {
+        vehicle = in.readParcelable(Vehicle.class.getClassLoader());
+        price = in.readString();
+        residual = in.readString();
+        taxRate = in.readString();
+        moneyFactor = in.readString();
+        interestRate = in.readString();
+        term = in.readInt();
+        rebate = in.readString();
+        downPayment = in.readString();
+        tradeValue = in.readString();
+        tradeOwed = in.readString();
+        totalCost = in.readString();
+        monthlyPayment = in.readString();
+        dueAtSigning = in.readString();
+        created = in.readString();
+        edited = in.readByte() != 0;
+        id = in.readString();
+        type = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(vehicle, flags);
+        dest.writeString(price);
+        dest.writeString(residual);
+        dest.writeString(taxRate);
+        dest.writeString(moneyFactor);
+        dest.writeString(interestRate);
+        dest.writeInt((term == null) ? 0 : term);
+        dest.writeString(rebate);
+        dest.writeString(downPayment);
+        dest.writeString(tradeValue);
+        dest.writeString(tradeOwed);
+        dest.writeString(totalCost);
+        dest.writeString(monthlyPayment);
+        dest.writeString(dueAtSigning);
+        dest.writeString(created);
+        dest.writeByte((byte) (edited ? 1 : 0));
+        dest.writeString(id);
+        dest.writeString(type);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Quote> CREATOR = new Creator<Quote>() {
+        @Override
+        public Quote createFromParcel(Parcel in) {
+            return new Quote(in);
+        }
+
+        @Override
+        public Quote[] newArray(int size) {
+            return new Quote[size];
+        }
+    };
+
     public Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<>();
 
         result.put("vehicle", (vehicle != null) ? vehicle.toMap() : null);
-        result.put("dealer", (dealer != null) ? dealer.toMap() : null);
+//        result.put("dealer", (dealer != null) ? dealer.toMap() : null);
         result.put("price", price);
         result.put("residual", residual);
         result.put("taxRate", taxRate);
@@ -101,7 +170,7 @@ public class Quote {
         result.put("downPayment", downPayment);
         result.put("tradeValue", tradeValue);
         result.put("tradeOwed", tradeOwed);
-        result.put("fees", fees);
+//        result.put("fees", fees);
         result.put("totalCost", totalCost);
         result.put("monthlyPayment", monthlyPayment);
         result.put("dueAtSigning", dueAtSigning);
@@ -114,23 +183,23 @@ public class Quote {
     public String toString() {
         return "Quote{" +
                 "vehicle=" + vehicle +
-                ", dealer=" + dealer +
                 ", price='" + price + '\'' +
                 ", residual='" + residual + '\'' +
                 ", taxRate='" + taxRate + '\'' +
                 ", moneyFactor='" + moneyFactor + '\'' +
                 ", interestRate='" + interestRate + '\'' +
-                ", term='" + term + '\'' +
+                ", term=" + term +
                 ", rebate='" + rebate + '\'' +
                 ", downPayment='" + downPayment + '\'' +
                 ", tradeValue='" + tradeValue + '\'' +
                 ", tradeOwed='" + tradeOwed + '\'' +
-                ", fees=" + fees +
                 ", totalCost='" + totalCost + '\'' +
                 ", monthlyPayment='" + monthlyPayment + '\'' +
                 ", dueAtSigning='" + dueAtSigning + '\'' +
                 ", created='" + created + '\'' +
                 ", edited=" + edited +
+                ", id='" + id + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

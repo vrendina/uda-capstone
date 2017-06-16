@@ -133,7 +133,11 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
         // Reverse the order of the quotes so they are sorted newest->oldest
         ArrayList<Quote> reversedQuotes = new ArrayList<>();
         for(DataSnapshot s: snapshot.getChildren()) {
-            reversedQuotes.add(0, s.getValue(Quote.class));
+            Quote quote = s.getValue(Quote.class);
+            quote.id = s.getKey();
+            quote.type = quoteType;
+
+            reversedQuotes.add(0, quote);
         }
 
         for(Quote quote: reversedQuotes) {

@@ -17,6 +17,8 @@
 package io.levelsoftware.carculator.ui.quotelist;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +29,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
-import timber.log.Timber;
 
 public class QuoteListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -55,9 +56,6 @@ public class QuoteListNestedViewHolder extends RecyclerView.ViewHolder implement
         dealerTextView.setText(context.getString(R.string.quote_no_dealer,
                 quote.vehicle.make.name, quote.vehicle.model.name));
 
-        if(quote.dealer != null) {
-            // Change the string to show the dealer name
-        }
 
         paymentTextView.setText("Not enough information to display pricing");
 
@@ -74,13 +72,12 @@ public class QuoteListNestedViewHolder extends RecyclerView.ViewHolder implement
     public void onClick(View view) {
         // Send click broadcast up to activity
 
-        Timber.d("Clicked on quote: " + quote.toString());
-//        Intent intent = new Intent();
-//        intent.setAction(context.getString(R.string.broadcast_click_vehicle));
-//
-//        intent.putExtra(context.getString(R.string.intent_key_quote_vehicle), vehicle);
-//
-//        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+        Intent intent = new Intent();
+        intent.setAction(context.getString(R.string.broadcast_click_quote));
+
+        intent.putExtra(context.getString(R.string.intent_key_quote), quote);
+
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
     }
 }

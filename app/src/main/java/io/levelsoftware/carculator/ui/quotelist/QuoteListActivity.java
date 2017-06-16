@@ -16,11 +16,15 @@
 
 package io.levelsoftware.carculator.ui.quotelist;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,7 +37,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.model.quote.Quote;
 import io.levelsoftware.carculator.sync.vehicle.VehicleIntentService;
+import io.levelsoftware.carculator.ui.quoteform.QuoteFormActivity;
 import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
 import timber.log.Timber;
 
@@ -43,6 +49,8 @@ public class QuoteListActivity extends AppCompatActivity {
     @BindView(R.id.view_pager) ViewPager viewPager;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     @BindView(R.id.fab) FloatingActionButton floatingActionButton;
+
+    private BroadcastReceiver clickReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +67,18 @@ public class QuoteListActivity extends AppCompatActivity {
         setupSync();
         setupTabs();
         setupFab();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bindClickReceiver();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unBindClickReceiver();
     }
 
     private void setupSync() {
@@ -83,7 +103,6 @@ public class QuoteListActivity extends AppCompatActivity {
     }
 
     private void setupTabs() {
-
         Bundle loanArgs = new Bundle();
         loanArgs.putString(getString(R.string.intent_key_quote_type), getString(R.string.quote_type_loan));
 
@@ -108,24 +127,45 @@ public class QuoteListActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int tabIndex = viewPager.getCurrentItem();
                 Intent intent = new Intent(QuoteListActivity.this, VehicleListActivity.class);
-
-                switch (tabIndex) {
-                    case 0:
-                        intent.putExtra(getString(R.string.intent_key_quote_type),
-                                getString(R.string.quote_type_loan));
-                        break;
-
-                    case 1:
-                        intent.putExtra(getString(R.string.intent_key_quote_type),
-                                getString(R.string.quote_type_lease));
-                        break;
-                }
+                intent.putExtra(getString(R.string.intent_key_quote_type), getQuoteTypeForTabPosition());
 
                 startActivity(intent);
             }
         });
+    }
+
+    private void bindClickReceiver() {
+        clickReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Quote quote = intent.getParcelableExtra(getString(R.string.intent_key_quote));
+
+                Intent quoteIntent = new Intent(QuoteListActivity.this, QuoteFormActivity.class);
+                quoteIntent.putExtra(getString(R.string.intent_key_quote), quote);
+
+                startActivity(quoteIntent);
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(clickReceiver,
+                new IntentFilter(getString(R.string.broadcast_click_quote)));
+    }
+
+    private void unBindClickReceiver() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(clickReceiver);
+    }
+
+    private String getQuoteTypeForTabPosition() {
+        int tabIndex = viewPager.getCurrentItem();
+
+        switch (tabIndex) {
+            case 0:
+                return getString(R.string.quote_type_loan);
+            case 1:
+                return getString(R.string.quote_type_lease);
+        }
+        return null;
     }
 
     @Override

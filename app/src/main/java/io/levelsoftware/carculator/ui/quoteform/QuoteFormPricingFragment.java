@@ -128,4 +128,49 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
             field.setRawValue(result);
         }
     }
+
+    @Override
+    public void fieldValueChanged(@IdRes int id, StringNumber value) {
+
+        quote.edited = true;
+
+        switch (id) {
+            case R.id.form_field_negotiated_price:
+                quote.price = value.getStringValue();
+                break;
+
+            case R.id.form_field_residual_value:
+                quote.residual = value.getStringValue();
+                break;
+
+            case R.id.form_field_money_factor:
+                quote.moneyFactor = value.getStringValue();
+                break;
+
+            case R.id.form_field_interest_rate:
+                quote.interestRate = value.getStringValue();
+                break;
+
+            case R.id.form_field_term:
+                try {
+                    quote.term = Integer.parseInt(value.getStringValue());
+                } catch (NumberFormatException e) {
+                    quote.term = null;
+                }
+                break;
+
+            case R.id.form_field_down_payment:
+                quote.downPayment = value.getStringValue();
+                break;
+
+            case R.id.form_field_trade_in_value:
+                quote.tradeValue = value.getStringValue();
+                break;
+
+            case R.id.form_field_trade_in_owed:
+                quote.tradeOwed = value.getStringValue();
+                break;
+        }
+    }
+
 }
