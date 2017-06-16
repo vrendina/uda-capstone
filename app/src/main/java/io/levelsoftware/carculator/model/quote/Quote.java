@@ -29,6 +29,9 @@ public class Quote {
     @SerializedName("vehicle")
     public Vehicle vehicle;
 
+    @SerializedName("dealer")
+    public Dealer dealer;
+
     @SerializedName("price")
     public String price;
 
@@ -62,6 +65,15 @@ public class Quote {
     @SerializedName("fees")
     public Map<String, Fee> fees;
 
+    @SerializedName("totalCost")
+    public String totalCost;
+
+    @SerializedName("monthlyPayment")
+    public String monthlyPayment;
+
+    @SerializedName("dueAtSigning")
+    public String dueAtSigning;
+
     @SerializedName("created")
     public String created;
 
@@ -77,7 +89,8 @@ public class Quote {
     public Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<>();
 
-        result.put("vehicle", vehicle.toMap());
+        result.put("vehicle", (vehicle != null) ? vehicle.toMap() : null);
+        result.put("dealer", (dealer != null) ? dealer.toMap() : null);
         result.put("price", price);
         result.put("residual", residual);
         result.put("taxRate", taxRate);
@@ -89,6 +102,9 @@ public class Quote {
         result.put("tradeValue", tradeValue);
         result.put("tradeOwed", tradeOwed);
         result.put("fees", fees);
+        result.put("totalCost", totalCost);
+        result.put("monthlyPayment", monthlyPayment);
+        result.put("dueAtSigning", dueAtSigning);
         result.put("created", created);
 
         return result;
@@ -98,6 +114,7 @@ public class Quote {
     public String toString() {
         return "Quote{" +
                 "vehicle=" + vehicle +
+                ", dealer=" + dealer +
                 ", price='" + price + '\'' +
                 ", residual='" + residual + '\'' +
                 ", taxRate='" + taxRate + '\'' +
@@ -109,6 +126,9 @@ public class Quote {
                 ", tradeValue='" + tradeValue + '\'' +
                 ", tradeOwed='" + tradeOwed + '\'' +
                 ", fees=" + fees +
+                ", totalCost='" + totalCost + '\'' +
+                ", monthlyPayment='" + monthlyPayment + '\'' +
+                ", dueAtSigning='" + dueAtSigning + '\'' +
                 ", created='" + created + '\'' +
                 ", edited=" + edited +
                 '}';

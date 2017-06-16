@@ -20,6 +20,8 @@
 
     <string name="unimplemented">Unimplemented</string>
 
+    <string name="quote_no_dealer">%1$s %2$s Quote</string>
+
     <string name="content_description_logo">Logo</string>
     <string name="content_description_vehicle_picture">Vehicle Picture</string>
     <string name="content_description_edmunds">Data Provided by Edmunds.com</string>

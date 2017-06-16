@@ -78,7 +78,7 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
         db = FirebaseDatabase.getInstance().getReference();
         quoteType = getArguments().getString(getString(R.string.intent_key_quote_type));
 
-        setupDataListener(true);
+        setupDataListener();
 
         swipeRefreshLayout.setEnabled(false);
         swipeRefreshLayout.setColorSchemeColors(
@@ -96,16 +96,17 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
     @Override
     public void onStart() {
         super.onStart();
-//        setupDataListener(true);
+
+        // If the user isn't logged in the first time we load up then the listener doesn't get set properly
+        setupDataListener();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        //setupDataListener(false);
     }
 
-    private void setupDataListener(boolean attach) {
+    private void setupDataListener() {
         String uid = UserUtils.getInstance().getUid();
 
         if(!TextUtils.isEmpty(uid)) {
@@ -114,16 +115,11 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
                                             .child(quoteType)
                                             .orderByChild("created");
 
-            if(attach && !listenerAttached) {
+            // Only attach the listener if it hasn't been attached yet
+            if(!listenerAttached) {
                 Timber.d("Attached value event listener for: " + quoteType);
                 listenerAttached = true;
                 query.addValueEventListener(this);
-            } else {
-                if(listenerAttached) {
-                    Timber.d("Removing value event listener for: " + quoteType);
-                    query.removeEventListener(this);
-                    listenerAttached = false;
-                }
             }
         }
     }
@@ -156,6 +152,7 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
         }
 
         adapter.setData(data);
+        recyclerView.smoothScrollToPosition(0);
     }
 
     @Override public void onCancelled(DatabaseError databaseError) {}

@@ -23,6 +23,8 @@
     <color name="extraDark">#303030</color>
     <color name="extraLight">#BDBDBD</color>
 
+    <color name="extraLightTranslucent">#CCF5F5F5</color>
+
     <color name="accentLight">#A584DD</color>
 
     <color name="windowBackground">#E7E7E7</color>

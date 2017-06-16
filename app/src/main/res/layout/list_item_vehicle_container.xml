@@ -30,7 +30,7 @@
 
         <ImageView
             android:id="@+id/image_view_make_logo"
-            android:layout_width="40dp"
+            android:layout_width="64dp"
             android:layout_height="40dp"
             android:layout_margin="16dp"
             android:scaleType="fitCenter"

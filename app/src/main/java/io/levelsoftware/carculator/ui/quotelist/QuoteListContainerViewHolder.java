@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -37,6 +38,8 @@ public class QuoteListContainerViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.container) LinearLayout container;
     @BindView(R.id.recycler_view) RecyclerView nestedRecyclerView;
     @BindView(R.id.image_view_model_picture) ImageView modelImageView;
+    @BindView(R.id.text_view_model_name) TextView modelTextView;
+    @BindView(R.id.text_view_best_offer) TextView bestOfferTextView;
 
     private Context context;
 
@@ -64,6 +67,9 @@ public class QuoteListContainerViewHolder extends RecyclerView.ViewHolder {
                     .crossFade()
                     .into(modelImageView);
         }
+
+        modelTextView.setText(vehicle.make.name + " " + vehicle.model.name);
+        bestOfferTextView.setText("Best offer $16,179");
 
         container.setContentDescription(vehicle.make.name + " " +
                 vehicle.model.name);

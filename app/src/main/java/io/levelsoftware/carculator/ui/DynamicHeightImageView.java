@@ -22,7 +22,7 @@ import android.util.AttributeSet;
 
 public class DynamicHeightImageView extends android.support.v7.widget.AppCompatImageView {
 
-    private static final float DEFAULT_ASPECT_RATIO = 2.0f;
+    private static final float DEFAULT_ASPECT_RATIO = 2.5f;
     private float aspectRatio = DEFAULT_ASPECT_RATIO;
 
     public DynamicHeightImageView(Context context) {

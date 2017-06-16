@@ -26,12 +26,14 @@
     android:foreground="?selectableItemBackground">
 
     <TextView
-        android:id="@+id/text_view_price"
-        android:layout_width="wrap_content"
+        android:id="@+id/text_view_total_price"
+        style="@style/BaseTextAppearance.SingleLine.QuoteListTotal"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:layout_gravity="center"
-        tools:text="$16,995"/>
+        android:gravity="center"
+        tools:text="$16,954"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,15 +45,19 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:paddingTop="24dp"
-            android:paddingBottom="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/text_view_dealer"
+                style="@style/BaseTextAppearance.QuoteListDealer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BaseTextAppearance.SingleLine.ModelListName"
                 android:paddingLeft="0dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="0dp"
@@ -59,7 +65,8 @@
                 tools:text="Herb Chambers BMW of Boston"/>
 
             <TextView
-                android:id="@+id/text_view_payment_sub"
+                android:id="@+id/text_view_payment"
+                style="@style/BaseTextAppearance.QuoteListPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="0dp"

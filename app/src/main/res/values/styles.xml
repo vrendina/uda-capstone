@@ -84,6 +84,16 @@
     <!-- Text Styles -->
     <style name="BaseTextAppearance" parent="TextAppearance.AppCompat"/>
 
+    <style name="BaseTextAppearance.QuoteListDealer">
+        <item name="android:textColor">@color/extraDark</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BaseTextAppearance.QuoteListPayment">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/extraLight</item>
+    </style>
+
     <style name="BaseTextAppearance.SingleLine">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -94,9 +104,19 @@
         <item name="android:textColor">@color/primaryDark</item>
     </style>
 
-    <style name="BaseTextAppearance.SingleLine.Status">
+    <style name="BaseTextAppearance.SingleLine.QuoteListTotal">
+        <item name="android:textColor">@color/extraDark</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/primaryDark</item>
+    </style>
+
+    <style name="BaseTextAppearance.SingleLine.QuoteListVehicle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/extraLightTranslucent</item>
+    </style>
+
+    <style name="BaseTextAppearance.SingleLine.QuoteListBestOffer">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/extraLightTranslucent</item>
     </style>
 
     <style name="BaseTextAppearance.SingleLine.SectionHeader">
