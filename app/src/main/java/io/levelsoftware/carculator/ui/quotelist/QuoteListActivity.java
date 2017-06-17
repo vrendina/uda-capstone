@@ -103,14 +103,26 @@ public class QuoteListActivity extends AppCompatActivity {
     }
 
     private void setupTabs() {
-        Bundle loanArgs = new Bundle();
-        loanArgs.putString(getString(R.string.intent_key_quote_type), getString(R.string.quote_type_loan));
+        // Restore fragments using tags assigned by the viewpager
+        QuoteListFragment loanFragment = (QuoteListFragment) getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + R.id.view_pager + ":0");
 
-        Bundle leaseArgs = new Bundle();
-        leaseArgs.putString(getString(R.string.intent_key_quote_type), getString(R.string.quote_type_lease));
+        QuoteListFragment leaseFragment = (QuoteListFragment) getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + R.id.view_pager + ":1");
 
-        QuoteListFragment loanFragment = QuoteListFragment.newInstance(loanArgs);
-        QuoteListFragment leaseFragment = QuoteListFragment.newInstance(leaseArgs);
+        if(loanFragment == null) {
+            Bundle loanArgs = new Bundle();
+            loanArgs.putString(getString(R.string.intent_key_quote_type), getString(R.string.quote_type_loan));
+
+            loanFragment = QuoteListFragment.newInstance(loanArgs);
+        }
+
+        if(leaseFragment == null) {
+            Bundle leaseArgs = new Bundle();
+            leaseArgs.putString(getString(R.string.intent_key_quote_type), getString(R.string.quote_type_lease));
+
+            leaseFragment = QuoteListFragment.newInstance(leaseArgs);
+        }
 
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(loanFragment);
