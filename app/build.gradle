@@ -105,6 +105,7 @@ dependencies {
     debugCompile "com.squareup.okhttp3:logging-interceptor:$version.okhttp"
 
     compile project(":keyculator")
+    compile project(":fincalc")
 }
 
 apply plugin: 'com.google.gms.google-services'

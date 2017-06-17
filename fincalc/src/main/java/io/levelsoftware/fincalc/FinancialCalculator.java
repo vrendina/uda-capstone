@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
-include ':app', ':keyculator', ':fincalc'
+package io.levelsoftware.fincalc;
+
+public class FinancialCalculator {
+}
