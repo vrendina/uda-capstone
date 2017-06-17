@@ -31,21 +31,21 @@ import android.widget.ScrollView;
 import butterknife.BindView;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
-import io.levelsoftware.carculator.ui.FormField;
+import io.levelsoftware.carculator.ui.NumberFormField;
 import io.levelsoftware.keyculator.Keyculator;
 import io.levelsoftware.keyculator.StringNumber;
 import timber.log.Timber;
 
 
 public abstract class QuoteFormPricingFragment extends QuoteFormFragment
-        implements FormField.OnFormFieldEventListener,
+        implements NumberFormField.OnFormFieldEventListener,
         View.OnFocusChangeListener, Keyculator.OnEventListener {
 
     @BindView(R.id.form_container) LinearLayout container;
     @BindView(R.id.keyculator) Keyculator keyculator;
     @BindView(R.id.scroll_view) ScrollView scrollView;
 
-    protected SparseArray<FormField> fields = new SparseArray<>();
+    protected SparseArray<NumberFormField> fields = new SparseArray<>();
     private int focused;
 
     public QuoteFormPricingFragment() {}
@@ -56,9 +56,9 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
     protected void collectFields(ViewGroup parent) {
         for(int i = 0; i<parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
-            if(child instanceof FormField) {
+            if(child instanceof NumberFormField) {
                 Timber.v("Found form field " + child.toString());
-                fields.put(child.getId(), (FormField) child);
+                fields.put(child.getId(), (NumberFormField) child);
             } else if(child instanceof ViewGroup) {
                 collectFields((ViewGroup) child);
             }
@@ -67,7 +67,7 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
 
     protected void attachListeners() {
         for(int i = 0; i<fields.size(); i++) {
-            FormField field = fields.get(fields.keyAt(i));
+            NumberFormField field = fields.get(fields.keyAt(i));
             field.setOnFormFieldEventListener(this);
         }
 
@@ -90,7 +90,7 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
         if(hasFocus) {
             focused = id;
 
-            FormField field = fields.get(id);
+            NumberFormField field = fields.get(id);
             Rect rect = new Rect(0, 0, field.getWidth(), field.getHeight());
             field.requestRectangleOnScreen(rect, false);
 
@@ -124,7 +124,7 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
 
     @Override
     public void keyboardResult(@NonNull StringNumber result) {
-        FormField field = fields.get(focused);
+        NumberFormField field = fields.get(focused);
         if(field != null) {
             field.setRawValue(result);
         }

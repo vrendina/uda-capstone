@@ -65,7 +65,7 @@
                         android:orientation="vertical"
                         android:layout_gravity="top">
 
-                        <io.levelsoftware.carculator.ui.FormField
+                        <io.levelsoftware.carculator.ui.NumberFormField
                             android:id="@+id/form_field_negotiated_price"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -74,7 +74,7 @@
                             app:inputType="currency|decimal" />
 
 
-                        <io.levelsoftware.carculator.ui.FormField
+                        <io.levelsoftware.carculator.ui.NumberFormField
                             android:id="@+id/form_field_term"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -84,7 +84,7 @@
                             app:max="@dimen/loan_term_max"
                             app:min="@dimen/loan_term_min"/>
 
-                        <io.levelsoftware.carculator.ui.FormField
+                        <io.levelsoftware.carculator.ui.NumberFormField
                             android:id="@+id/form_field_trade_in_owed"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -102,7 +102,7 @@
                         android:orientation="vertical"
                         android:layout_gravity="top">
 
-                        <io.levelsoftware.carculator.ui.FormField
+                        <io.levelsoftware.carculator.ui.NumberFormField
                             android:id="@+id/form_field_down_payment"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -121,7 +121,7 @@
                             <!--app:decimals="@integer/tax_rate_decimals"-->
                             <!--app:max="@dimen/tax_rate_max" />-->
 
-                        <io.levelsoftware.carculator.ui.FormField
+                        <io.levelsoftware.carculator.ui.NumberFormField
                             android:id="@+id/form_field_interest_rate"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -139,7 +139,7 @@
                         <!--app:hint="@string/form_field_dealer_incentives"-->
                         <!--app:inputType="currency|decimal"/>-->
 
-                        <io.levelsoftware.carculator.ui.FormField
+                        <io.levelsoftware.carculator.ui.NumberFormField
                             android:id="@+id/form_field_trade_in_value"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

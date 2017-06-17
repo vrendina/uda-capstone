@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="FormField">
+    <declare-styleable name="NumberFormField">
         <attr name="hint" format="string" />
         <attr name="inputType">
             <flag name="integer" value="2"/>

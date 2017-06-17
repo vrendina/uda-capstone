@@ -42,7 +42,7 @@ import io.levelsoftware.keyculator.StringNumber;
 import timber.log.Timber;
 
 
-public class FormField extends FrameLayout
+public class NumberFormField extends FrameLayout
     implements View.OnFocusChangeListener {
 
     @BindView(R.id.text_input_layout) TextInputLayout textInputLayout;
@@ -69,20 +69,20 @@ public class FormField extends FrameLayout
 
     private String formattedValue;
 
-    public FormField(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public NumberFormField(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FormField);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NumberFormField);
 
-        hint = typedArray.getString(R.styleable.FormField_hint);
-        inputType = typedArray.getInt(R.styleable.FormField_inputType, INPUT_TYPE_INTEGER);
-        max = typedArray.getFloat(R.styleable.FormField_max, 1000000);
-        min = typedArray.getFloat(R.styleable.FormField_min, 0);
+        hint = typedArray.getString(R.styleable.NumberFormField_hint);
+        inputType = typedArray.getInt(R.styleable.NumberFormField_inputType, INPUT_TYPE_INTEGER);
+        max = typedArray.getFloat(R.styleable.NumberFormField_max, 1000000);
+        min = typedArray.getFloat(R.styleable.NumberFormField_min, 0);
 
         if(flagIsSet(INPUT_TYPE_INTEGER)) {
             decimals = 0;
         } else {
-            decimals = typedArray.getInt(R.styleable.FormField_decimals, MAX_DECIMAL_PLACES);
+            decimals = typedArray.getInt(R.styleable.NumberFormField_decimals, MAX_DECIMAL_PLACES);
             if(flagIsSet(INPUT_TYPE_CURRENCY) && decimals == MAX_DECIMAL_PLACES) {
                 decimals = getResources().getInteger(R.integer.default_currency_decimals);
             }
@@ -92,7 +92,7 @@ public class FormField extends FrameLayout
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.view_form_field, this);
+        View view = inflater.inflate(R.layout.view_number_form_field, this);
 
         ButterKnife.bind(this, view);
     }
@@ -116,6 +116,9 @@ public class FormField extends FrameLayout
     public void setRawValue(@NonNull StringNumber rawValue) {
         this.rawValue = rawValue;
         this.value = validate(rawValue);
+
+        Timber.d("Set rawValue (raw): " + rawValue.toString());
+        Timber.d("Set rawValue (valid): " + value.toString());
 
         listener.fieldValueChanged(getId(), value);
 

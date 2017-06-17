@@ -95,6 +95,14 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if(pricingFragment.keyboardVisible()) {
+            pricingFragment.hideKeyboard();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         // Close the keyboard on back button press if it is open
         if(pricingFragment.keyboardVisible()) {
