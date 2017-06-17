@@ -24,8 +24,12 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.model.quote.Quote;
+import io.levelsoftware.keyculator.StringNumber;
 
 public class QuoteFormLoanPricingFragment extends QuoteFormPricingFragment {
+
+    public QuoteFormLoanPricingFragment() {}
 
     public static QuoteFormLoanPricingFragment newInstance(Bundle arguments) {
         QuoteFormLoanPricingFragment fragment = new QuoteFormLoanPricingFragment();
@@ -42,8 +46,20 @@ public class QuoteFormLoanPricingFragment extends QuoteFormPricingFragment {
 
         setupFields();
         setupKeyboard();
+        setupQuote();
 
         return view;
+    }
+
+    @Override
+    protected void setupQuote() {
+        super.setupQuote();
+
+        Quote quote = quoteManager.getQuote();
+
+        if(quote != null) {
+            fields.get(R.id.form_field_interest_rate).setInitialValue(new StringNumber(quote.interestRate));
+        }
     }
     
 }

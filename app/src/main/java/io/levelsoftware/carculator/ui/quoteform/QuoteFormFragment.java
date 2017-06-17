@@ -16,6 +16,7 @@
 
 package io.levelsoftware.carculator.ui.quoteform;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import io.levelsoftware.carculator.model.quote.Quote;
@@ -23,10 +24,28 @@ import io.levelsoftware.carculator.model.quote.Quote;
 
 public abstract class QuoteFormFragment extends Fragment {
 
-    protected Quote quote;
+    protected QuoteManager quoteManager;
 
-    protected void setQuote(Quote quote) {
-        this.quote = quote;
+    public QuoteFormFragment() {}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            quoteManager = (QuoteManager) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement QuoteManager interface");
+        }
+    }
+
+    // Compare if two strings are equivalent -- they could both be null and be equivalent
+    protected boolean same(String one, String two) {
+        return one == null && two == null || one != null && one.equals(two);
+    }
+
+    protected interface QuoteManager {
+        Quote getQuote();
     }
 
 }

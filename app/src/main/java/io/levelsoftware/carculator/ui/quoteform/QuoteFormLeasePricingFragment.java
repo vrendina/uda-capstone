@@ -18,7 +18,6 @@ package io.levelsoftware.carculator.ui.quoteform;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +25,12 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
+import io.levelsoftware.keyculator.StringNumber;
 
 
 public class QuoteFormLeasePricingFragment extends QuoteFormPricingFragment {
+
+    public QuoteFormLeasePricingFragment() {}
 
     public static QuoteFormLeasePricingFragment newInstance(Bundle arguments) {
         QuoteFormLeasePricingFragment fragment = new QuoteFormLeasePricingFragment();
@@ -46,19 +48,21 @@ public class QuoteFormLeasePricingFragment extends QuoteFormPricingFragment {
 
         setupFields();
         setupKeyboard();
+        setupQuote();
 
         return view;
     }
 
+
     @Override
-    protected void setQuote(Quote quote) {
-        super.setQuote(quote);
+    protected void setupQuote() {
+        super.setupQuote();
 
-        // If the quote doesn't have a created date saved, setup some defaults
-        if(TextUtils.isEmpty(quote.created) && !quote.edited) {
+        Quote quote = quoteManager.getQuote();
 
+        if(quote != null) {
+            fields.get(R.id.form_field_residual_value).setInitialValue(new StringNumber(quote.residual));
+            fields.get(R.id.form_field_money_factor).setInitialValue(new StringNumber(quote.moneyFactor));
         }
     }
-
-
 }

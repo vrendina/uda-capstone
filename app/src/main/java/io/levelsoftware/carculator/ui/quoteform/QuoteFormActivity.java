@@ -50,7 +50,7 @@ import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
 
 public class QuoteFormActivity extends AppCompatActivity
-        implements ViewPager.OnPageChangeListener {
+        implements ViewPager.OnPageChangeListener, QuoteFormFragment.QuoteManager {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.view_pager) ViewPager viewPager;
@@ -61,7 +61,6 @@ public class QuoteFormActivity extends AppCompatActivity
     @BindView(R.id.text_view_toolbar_price_label) TextView toolbarPriceLabelTextView;
 
     private QuoteFormPricingFragment pricingFragment;
-    private QuoteFormDealerFragment dealerFragment;
 
     private Quote quote;
 
@@ -92,8 +91,6 @@ public class QuoteFormActivity extends AppCompatActivity
         }
 
         setupTabs();
-        setQuote(quote);
-
         setupToolbar();
     }
 
@@ -127,11 +124,6 @@ public class QuoteFormActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         viewPager.removeOnPageChangeListener(this);
-    }
-
-    private void setQuote(Quote quote) {
-        pricingFragment.setQuote(quote);
-        dealerFragment.setQuote(quote);
     }
 
     private boolean saveQuote() {
@@ -174,12 +166,24 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     private void setupTabs() {
-        if(quote.type.equals(getString(R.string.quote_type_loan))) {
-            pricingFragment = QuoteFormLoanPricingFragment.newInstance(null);
-        } else {
-            pricingFragment = QuoteFormLeasePricingFragment.newInstance(null);
+        // Restore fragments using tags assigned by the viewpager
+        pricingFragment = (QuoteFormPricingFragment) getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + R.id.view_pager + ":0");
+
+        QuoteFormDealerFragment dealerFragment = (QuoteFormDealerFragment) getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + R.id.view_pager + ":1");
+
+        if(pricingFragment == null) {
+            if (quote.type.equals(getString(R.string.quote_type_loan))) {
+                pricingFragment = QuoteFormLoanPricingFragment.newInstance(null);
+            } else {
+                pricingFragment = QuoteFormLeasePricingFragment.newInstance(null);
+            }
         }
-        dealerFragment = QuoteFormDealerFragment.newInstance(null);
+
+        if(dealerFragment == null) {
+            dealerFragment = QuoteFormDealerFragment.newInstance(null);
+        }
 
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(pricingFragment);
@@ -243,5 +247,9 @@ public class QuoteFormActivity extends AppCompatActivity
         errorSnackbar.show();
     }
 
+    @Override
+    public Quote getQuote() {
+        return quote;
+    }
 }
 

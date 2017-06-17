@@ -30,6 +30,7 @@ import android.widget.ScrollView;
 
 import butterknife.BindView;
 import io.levelsoftware.carculator.R;
+import io.levelsoftware.carculator.model.quote.Quote;
 import io.levelsoftware.carculator.ui.FormField;
 import io.levelsoftware.keyculator.Keyculator;
 import io.levelsoftware.keyculator.StringNumber;
@@ -132,44 +133,77 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
     @Override
     public void fieldValueChanged(@IdRes int id, StringNumber value) {
 
-        quote.edited = true;
+        Quote quote = quoteManager.getQuote();
+        String string = value.getStringValue();
 
         switch (id) {
             case R.id.form_field_negotiated_price:
-                quote.price = value.getStringValue();
+                if(!same(quote.price, string)) {
+                    quote.price = string;
+                    quote.edited = true;
+                }
                 break;
 
             case R.id.form_field_residual_value:
-                quote.residual = value.getStringValue();
+                if(!same(quote.residual, string)) {
+                    quote.residual = string;
+                    quote.edited = true;
+                }
                 break;
 
             case R.id.form_field_money_factor:
-                quote.moneyFactor = value.getStringValue();
+                if(!same(quote.moneyFactor, string)) {
+                    quote.moneyFactor = string;
+                    quote.edited = true;
+                }
                 break;
 
             case R.id.form_field_interest_rate:
-                quote.interestRate = value.getStringValue();
+                if(!same(quote.interestRate, string)) {
+                    quote.interestRate = string;
+                    quote.edited = true;
+                }
                 break;
 
             case R.id.form_field_term:
-                try {
-                    quote.term = Integer.parseInt(value.getStringValue());
-                } catch (NumberFormatException e) {
-                    quote.term = null;
+                if(!same(quote.term, string)) {
+                    quote.term = string;
+                    quote.edited = true;
                 }
                 break;
 
             case R.id.form_field_down_payment:
-                quote.downPayment = value.getStringValue();
+                if(!same(quote.downPayment, string)) {
+                    quote.downPayment = string;
+                    quote.edited = true;
+                }
                 break;
 
             case R.id.form_field_trade_in_value:
-                quote.tradeValue = value.getStringValue();
+                if(!same(quote.tradeValue, string)) {
+                    quote.tradeValue = string;
+                    quote.edited = true;
+                }
                 break;
 
             case R.id.form_field_trade_in_owed:
-                quote.tradeOwed = value.getStringValue();
+                if(!same(quote.tradeOwed, string)) {
+                    quote.tradeOwed = string;
+                    quote.edited = true;
+                }
                 break;
+        }
+    }
+
+    protected void setupQuote() {
+        Quote quote = quoteManager.getQuote();
+
+        if(quote != null) {
+            fields.get(R.id.form_field_negotiated_price).setInitialValue(new StringNumber(quote.price));
+            fields.get(R.id.form_field_down_payment).setInitialValue(new StringNumber(quote.downPayment));
+            fields.get(R.id.form_field_term).setInitialValue(new StringNumber(quote.term));
+            fields.get(R.id.form_field_trade_in_value).setInitialValue(new StringNumber(quote.tradeValue));
+            fields.get(R.id.form_field_trade_in_owed).setInitialValue(new StringNumber(quote.tradeOwed));
         }
     }
 

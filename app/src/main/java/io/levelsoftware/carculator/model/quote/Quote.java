@@ -51,7 +51,7 @@ public class Quote implements Parcelable {
     public String interestRate;
 
     @SerializedName("term")
-    public Integer term;
+    public String term;
 
     @SerializedName("rebate")
     public String rebate;
@@ -102,7 +102,7 @@ public class Quote implements Parcelable {
         taxRate = in.readString();
         moneyFactor = in.readString();
         interestRate = in.readString();
-        term = in.readInt();
+        term = in.readString();
         rebate = in.readString();
         downPayment = in.readString();
         tradeValue = in.readString();
@@ -124,7 +124,7 @@ public class Quote implements Parcelable {
         dest.writeString(taxRate);
         dest.writeString(moneyFactor);
         dest.writeString(interestRate);
-        dest.writeInt((term == null) ? 0 : term);
+        dest.writeString(term);
         dest.writeString(rebate);
         dest.writeString(downPayment);
         dest.writeString(tradeValue);
@@ -188,7 +188,7 @@ public class Quote implements Parcelable {
                 ", taxRate='" + taxRate + '\'' +
                 ", moneyFactor='" + moneyFactor + '\'' +
                 ", interestRate='" + interestRate + '\'' +
-                ", term=" + term +
+                ", term='" + term + '\'' +
                 ", rebate='" + rebate + '\'' +
                 ", downPayment='" + downPayment + '\'' +
                 ", tradeValue='" + tradeValue + '\'' +

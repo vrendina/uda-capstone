@@ -114,14 +114,35 @@ public class FormField extends FrameLayout
      * @param rawValue value to set before going through validation
      */
     public void setRawValue(@NonNull StringNumber rawValue) {
-        Timber.d("Called setRawValue with: " + rawValue);
         this.rawValue = rawValue;
         this.value = validate(rawValue);
-        Timber.d("Got validated value of: " + value);
 
         listener.fieldValueChanged(getId(), value);
 
         updateDisplay();
+    }
+
+    /**
+     * Set the initial value to be displayed in the form field. This method skips any animations
+     * and other fanciness so the value can be set before the view is displayed. Also does not
+     * notify listeners that the field value has changed.
+     *
+     * @param value value to set the field to, already validated
+     */
+    public void setInitialValue(@NonNull StringNumber value) {
+        this.rawValue = value;
+        this.value = value;
+
+        Timber.d("Called setInitialValue with value of: " + getFormattedValue());
+
+        textInputLayout.setHintAnimationEnabled(false);
+        editText.post(new Runnable() {
+            @Override
+            public void run() {
+                editText.setText(getFormattedValue());
+                textInputLayout.setHintAnimationEnabled(true);
+            }
+        });
     }
 
     @Nullable
@@ -130,12 +151,14 @@ public class FormField extends FrameLayout
     }
 
     private void updateDisplay() {
-        textInputLayout.setHintAnimationEnabled(false);
         formattedValue = null;
+
         editText.setText(null);
         editText.append(getFormattedValue());
+
         setCursorPosition();
-        textInputLayout.setHintAnimationEnabled(true);
+
+        Timber.d("Called update display with value of: " + getFormattedValue());
     }
 
     private void setCursorPosition() {
