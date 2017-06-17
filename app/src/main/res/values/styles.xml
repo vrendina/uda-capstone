@@ -56,7 +56,9 @@
 
     <!-- TabLayout Styles -->
     <style name="TabLayout" parent="Widget.Design.TabLayout">
-        <!--<item name="tabMaxWidth">@dimen/tab_max_width</item>-->
+        <item name="tabMaxWidth">0dp</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
         <item name="tabBackground">?attr/selectableItemBackground</item>
         <item name="tabTextAppearance">@style/TabLayoutTextAppearance</item>
         <item name="tabSelectedTextColor">@color/defaultTabSelectedTextColor</item>
