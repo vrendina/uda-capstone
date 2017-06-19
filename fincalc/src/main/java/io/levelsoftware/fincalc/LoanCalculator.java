@@ -23,7 +23,7 @@ import java.util.List;
 import io.levelsoftware.fincalc.list.Fee;
 import io.levelsoftware.fincalc.list.Rebate;
 
-public class LoanCalculator extends BaseCalculator {
+public class LoanCalculator extends FinancialCalculator {
 
     private BigDecimal interestPercentage;
 

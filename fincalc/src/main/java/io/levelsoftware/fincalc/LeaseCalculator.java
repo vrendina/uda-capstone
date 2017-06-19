@@ -18,7 +18,7 @@ package io.levelsoftware.fincalc;
 
 import java.math.BigDecimal;
 
-public class LeaseCalculator extends BaseCalculator {
+public class LeaseCalculator extends FinancialCalculator {
     @Override
     public BigDecimal getTotalCost() {
         return null;

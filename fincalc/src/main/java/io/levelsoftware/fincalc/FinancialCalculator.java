@@ -23,7 +23,7 @@ import java.util.List;
 import io.levelsoftware.fincalc.list.Fee;
 import io.levelsoftware.fincalc.list.Rebate;
 
-public abstract class BaseCalculator {
+public abstract class FinancialCalculator {
 
     protected static final BigDecimal DECIMAL_ONE_HUNDRED = new BigDecimal("100");
     protected static final int DEFAULT_DIVISION_SCALE = 32;
