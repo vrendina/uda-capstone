@@ -14,12 +14,33 @@
  * limitations under the License.
  */
 
-apply plugin: 'java'
+package io.levelsoftware.fincalc.list;
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile "junit:junit:4.12"
+import java.math.BigDecimal;
+
+public class Rebate {
+
+    private BigDecimal amount;
+    private boolean taxable;
+
+    public Rebate(BigDecimal amount, boolean taxable) {
+        setAmount(amount);
+        setTaxable(taxable);
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = (amount == null) ? BigDecimal.ZERO : amount;
+    }
+
+    public boolean isTaxable() {
+        return taxable;
+    }
+
+    public void setTaxable(boolean taxable) {
+        this.taxable = taxable;
+    }
 }
-
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"

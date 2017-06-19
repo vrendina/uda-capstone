@@ -16,5 +16,31 @@
 
 package io.levelsoftware.fincalc;
 
-public class FinancialCalculator {
+import java.math.BigDecimal;
+
+public class LeaseCalculator extends BaseCalculator {
+    @Override
+    public BigDecimal getTotalCost() {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getMonthlyPayment() {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getDueAtSigning() {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getTotalTax() {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getNetCapitalizedCost() {
+        return null;
+    }
 }
