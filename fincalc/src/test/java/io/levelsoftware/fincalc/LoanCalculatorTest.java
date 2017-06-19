@@ -104,6 +104,11 @@ public class LoanCalculatorTest {
 
         assertEquals(new BigDecimal("732.96"),
                 calculator.getTotalInterest().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+
+        calculator.setTerm(0);
+
+        assertEquals(new BigDecimal("7254.59"),
+                calculator.getDueAtSigning().setScale(2, BigDecimal.ROUND_HALF_EVEN));
     }
 
     @Test

@@ -73,6 +73,10 @@ public class LoanCalculator extends BaseCalculator {
             total = total.add(getTotalTax());
         }
 
+        if(getTerm() == 0) {
+            total = total.add(getTotalLoanCost());
+        }
+
         return total;
     }
 
