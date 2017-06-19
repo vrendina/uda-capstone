@@ -41,14 +41,14 @@ public class Quote implements Parcelable {
     @SerializedName("residual")
     public String residual;
 
-    @SerializedName("taxRate")
-    public String taxRate;
+    @SerializedName("taxPercentage")
+    public String taxPercentage;
 
     @SerializedName("moneyFactor")
     public String moneyFactor;
 
-    @SerializedName("interestRate")
-    public String interestRate;
+    @SerializedName("interestPercentage")
+    public String interestPercentage;
 
     @SerializedName("term")
     public String term;
@@ -99,9 +99,9 @@ public class Quote implements Parcelable {
         vehicle = in.readParcelable(Vehicle.class.getClassLoader());
         price = in.readString();
         residual = in.readString();
-        taxRate = in.readString();
+        taxPercentage = in.readString();
         moneyFactor = in.readString();
-        interestRate = in.readString();
+        interestPercentage = in.readString();
         term = in.readString();
         rebate = in.readString();
         downPayment = in.readString();
@@ -121,9 +121,9 @@ public class Quote implements Parcelable {
         dest.writeParcelable(vehicle, flags);
         dest.writeString(price);
         dest.writeString(residual);
-        dest.writeString(taxRate);
+        dest.writeString(taxPercentage);
         dest.writeString(moneyFactor);
-        dest.writeString(interestRate);
+        dest.writeString(interestPercentage);
         dest.writeString(term);
         dest.writeString(rebate);
         dest.writeString(downPayment);
@@ -162,9 +162,9 @@ public class Quote implements Parcelable {
 //        result.put("dealer", (dealer != null) ? dealer.toMap() : null);
         result.put("price", price);
         result.put("residual", residual);
-        result.put("taxRate", taxRate);
+        result.put("taxPercentage", taxPercentage);
         result.put("moneyFactor", moneyFactor);
-        result.put("interestRate", interestRate);
+        result.put("interestPercentage", interestPercentage);
         result.put("term", term);
         result.put("rebate", rebate);
         result.put("downPayment", downPayment);
@@ -185,9 +185,9 @@ public class Quote implements Parcelable {
                 "vehicle=" + vehicle +
                 ", price='" + price + '\'' +
                 ", residual='" + residual + '\'' +
-                ", taxRate='" + taxRate + '\'' +
+                ", taxPercentage='" + taxPercentage + '\'' +
                 ", moneyFactor='" + moneyFactor + '\'' +
-                ", interestRate='" + interestRate + '\'' +
+                ", interestPercentage='" + interestPercentage + '\'' +
                 ", term='" + term + '\'' +
                 ", rebate='" + rebate + '\'' +
                 ", downPayment='" + downPayment + '\'' +
