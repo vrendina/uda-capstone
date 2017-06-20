@@ -31,6 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Vehicle;
+import timber.log.Timber;
 
 public class VehicleListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -68,11 +69,15 @@ public class VehicleListNestedViewHolder extends RecyclerView.ViewHolder impleme
                     + vehicle.model.photoPath
                     + context.getString(R.string.edmunds_media_thumb_suffix);
 
-            Glide.with(modelImageView.getContext())
-                    .load(imageUrl)
-                    .centerCrop()
-                    .crossFade()
-                    .into(modelImageView);
+            try {
+                Glide.with(modelImageView.getContext())
+                        .load(imageUrl)
+                        .centerCrop()
+                        .crossFade()
+                        .into(modelImageView);
+            } catch (IllegalArgumentException e) {
+                Timber.e(e, "Glide error, starting load for destroyed activity");
+            }
         }
     }
     
