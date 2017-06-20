@@ -171,4 +171,17 @@ public class LoanCalculatorTest {
                 calculator.getAmortizationCoefficient().setScale(12, BigDecimal.ROUND_HALF_EVEN));
     }
 
+    @Test
+    public void getPrincipalCredit() {
+        calculator.setTradeValue("11000");
+        assertEquals(new BigDecimal("-745.41"),
+                calculator.getTotalCost().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+
+        assertEquals(new BigDecimal("-745.41"),
+                calculator.getDueAtSigning().setScale(2, BigDecimal.ROUND_HALF_EVEN));
+
+        assertEquals(BigDecimal.ZERO,
+                calculator.getMonthlyPayment().stripTrailingZeros());
+    }
+
 }

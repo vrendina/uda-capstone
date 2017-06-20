@@ -46,7 +46,6 @@ public abstract class FinancialCalculator {
     public abstract BigDecimal getTotalTax();
     public abstract BigDecimal getNetCapitalizedCost();
 
-
     public BigDecimal getPrice() {
         return price;
     }

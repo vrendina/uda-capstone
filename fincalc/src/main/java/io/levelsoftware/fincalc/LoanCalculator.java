@@ -55,7 +55,10 @@ public class LoanCalculator extends FinancialCalculator {
 
     @Override
     public BigDecimal getTotalCost() {
-        BigDecimal total = getTotalLoanCost().add(getDownPayment()).add(getNonCapitalizedFees());
+        BigDecimal total = getTotalLoanCost()
+                .add(getDownPayment())
+                .add(getNonCapitalizedFees())
+                .add(getPrincipalCredit());
 
         if(!isTaxCapitalized()) {
             total = total.add(getTotalTax());
@@ -71,7 +74,9 @@ public class LoanCalculator extends FinancialCalculator {
 
     @Override
     public BigDecimal getDueAtSigning() {
-        BigDecimal total = getDownPayment().add(getNonCapitalizedFees());
+        BigDecimal total = getDownPayment()
+                .add(getNonCapitalizedFees())
+                .add(getPrincipalCredit());
 
         if(!isTaxCapitalized()) {
             total = total.add(getTotalTax());
@@ -91,7 +96,13 @@ public class LoanCalculator extends FinancialCalculator {
 
     @Override
     public BigDecimal getNetCapitalizedCost() {
-        return getCapitalizedVehicle().add(getCapitalizedTax()).add(getCapitalizedFees());
+        BigDecimal netCapitalizedCost = getCapitalizedVehicle().add(getCapitalizedTax()).add(getCapitalizedFees());
+
+        // Don't allow the principal to be negative for the loan
+        if(netCapitalizedCost.compareTo(BigDecimal.ZERO) == -1) {
+            return BigDecimal.ZERO;
+        }
+        return netCapitalizedCost;
     }
 
     public BigDecimal getTotalLoanCost() {
@@ -103,6 +114,16 @@ public class LoanCalculator extends FinancialCalculator {
 
     public BigDecimal getTotalInterest() {
         return getTotalLoanCost().subtract(getNetCapitalizedCost());
+    }
+
+    private BigDecimal getPrincipalCredit() {
+        BigDecimal netCapitalizedCost = getCapitalizedVehicle().add(getCapitalizedTax()).add(getCapitalizedFees());
+
+        // If the capitalized cost is negative we need to apply a credit
+        if(netCapitalizedCost.compareTo(BigDecimal.ZERO) == -1) {
+            return netCapitalizedCost;
+        }
+        return BigDecimal.ZERO;
     }
 
     protected BigDecimal getVehicleTaxBasis() {
