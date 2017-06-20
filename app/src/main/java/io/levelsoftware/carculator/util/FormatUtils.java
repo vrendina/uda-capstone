@@ -48,7 +48,8 @@ public class FormatUtils {
         formatter.setMaximumFractionDigits(0);
         formatter.setMinimumFractionDigits(0);
 
-        if(number.compareTo(new BigDecimal("1000")) == -1) {
+        if(number.compareTo(new BigDecimal("1000")) == -1
+                && number.compareTo(new BigDecimal("-1000")) == 1) {
             formatter.setMaximumFractionDigits(2);
             formatter.setMinimumFractionDigits(2);
         }
