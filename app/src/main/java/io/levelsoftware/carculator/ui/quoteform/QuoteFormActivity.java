@@ -37,7 +37,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -240,10 +239,6 @@ public class QuoteFormActivity extends AppCompatActivity
     }
 
     private void updateToolbarPriceData() {
-        NumberFormat formatter = FormatUtils.getFormatter();
-        formatter.setMaximumFractionDigits(0);
-        formatter.setMinimumFractionDigits(0);
-
         String toolbarLabel = "";
         BigDecimal value = new BigDecimal("0");
 
@@ -268,12 +263,7 @@ public class QuoteFormActivity extends AppCompatActivity
             toolbarLabel = getString(R.string.quote_toolbar_total);
         }
 
-        if(value.compareTo(new BigDecimal("1000")) == -1) {
-            formatter.setMaximumFractionDigits(2);
-            formatter.setMinimumFractionDigits(2);
-        }
-
-        toolbarPriceTextView.setText(getString(R.string.currency_symbol) + " " + formatter.format(value));
+        toolbarPriceTextView.setText(FormatUtils.formatCurrency(value));
         toolbarPriceLabelTextView.setText(toolbarLabel);
     }
 

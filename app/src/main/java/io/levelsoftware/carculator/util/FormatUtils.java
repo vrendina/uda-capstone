@@ -16,6 +16,9 @@
 
 package io.levelsoftware.carculator.util;
 
+import android.support.annotation.NonNull;
+
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -31,6 +34,26 @@ public class FormatUtils {
 
     public static NumberFormat getFormatter() {
         return formatter;
+    }
+
+    /**
+     * Format the given number as currency. If the number is less than $1000 then it
+     * will be formatted with 2 decimal places.
+     *
+     * @param number to format
+     * @return string number formatted as currency
+     */
+    public static String formatCurrency(@NonNull BigDecimal number) {
+        NumberFormat formatter = FormatUtils.getFormatter();
+        formatter.setMaximumFractionDigits(0);
+        formatter.setMinimumFractionDigits(0);
+
+        if(number.compareTo(new BigDecimal("1000")) == -1) {
+            formatter.setMaximumFractionDigits(2);
+            formatter.setMinimumFractionDigits(2);
+        }
+
+        return "$ " + formatter.format(number);
     }
 
 }
