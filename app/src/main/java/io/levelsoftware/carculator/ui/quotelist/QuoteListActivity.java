@@ -44,12 +44,13 @@ import io.levelsoftware.carculator.ui.quoteform.QuoteFormActivity;
 import io.levelsoftware.carculator.ui.vehiclelist.VehicleListActivity;
 import timber.log.Timber;
 
-public class QuoteListActivity extends AppCompatActivity {
+public class QuoteListActivity extends AppCompatActivity
+        implements QuoteListFragment.QuoteListOnScrollListener, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.view_pager) ViewPager viewPager;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
-    @BindView(R.id.fab) FloatingActionButton floatingActionButton;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     private BroadcastReceiver clickReceiver;
 
@@ -133,11 +134,12 @@ public class QuoteListActivity extends AppCompatActivity {
                 this, fragments);
 
         viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(this);
         tabLayout.setupWithViewPager(viewPager);
     }
 
     private void setupFab() {
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(getQuoteTypeForTabPosition().equals(getString(R.string.quote_type_loan))) {
@@ -202,4 +204,32 @@ public class QuoteListActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void quoteListScrolled(int dx, int dy) {
+        if (dy > 0) {
+            if (fab.isShown()) {
+                fab.hide();
+            }
+        }
+        if (dy < 0) {
+            if (!fab.isShown()) {
+                fab.show();
+            }
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+    @Override
+    public void onPageSelected(int position) {
+        // Show the fab if it is hidden when we switch tabs
+        if(!fab.isShown()) {
+            fab.show();
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {}
 }

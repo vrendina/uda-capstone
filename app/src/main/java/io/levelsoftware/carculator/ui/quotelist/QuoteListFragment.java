@@ -16,6 +16,7 @@
 
 package io.levelsoftware.carculator.ui.quotelist;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -54,6 +55,7 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
     @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
+    private QuoteListOnScrollListener scrollListener;
     private QuoteListContainerAdapter adapter;
 
     private DatabaseReference db;
@@ -68,6 +70,17 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
         fragment.setArguments(arguments);
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof QuoteListOnScrollListener) {
+            this.scrollListener = (QuoteListOnScrollListener)context;
+        } else {
+            throw new ClassCastException("Containing activity must implement QuoteListOnScrollListener");
+        }
     }
 
     @Override
@@ -90,6 +103,14 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
 
         adapter = new QuoteListContainerAdapter();
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                scrollListener.quoteListScrolled(dx, dy);
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
 
         return view;
     }
@@ -174,4 +195,8 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
     }
 
     @Override public void onCancelled(DatabaseError databaseError) {}
+
+    protected interface QuoteListOnScrollListener {
+        void quoteListScrolled(int dx, int dy);
+    }
 }
