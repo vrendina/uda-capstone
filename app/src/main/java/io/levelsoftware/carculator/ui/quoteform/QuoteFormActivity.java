@@ -36,6 +36,8 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +48,7 @@ import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
 import io.levelsoftware.carculator.model.quote.Vehicle;
 import io.levelsoftware.carculator.util.DateUtils;
+import io.levelsoftware.carculator.util.FormatUtils;
 import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
 
@@ -88,6 +91,7 @@ public class QuoteFormActivity extends AppCompatActivity
             Vehicle vehicle = getIntent().getParcelableExtra(getString(R.string.intent_key_quote_vehicle));
             quote = new Quote(vehicle);
             quote.type = getIntent().getStringExtra(getString(R.string.intent_key_quote_type));
+            quote.displayMode = getString(R.string.quote_display_monthly);
         }
 
         setupTabs();
@@ -211,10 +215,66 @@ public class QuoteFormActivity extends AppCompatActivity
                 toggleToolbarDisplayMode();
             }
         });
+
+        updateToolbarPriceData();
     }
 
     private void toggleToolbarDisplayMode() {
-        Timber.d("Toggle toolbar display mode");
+        String[] displayModes = getResources().getStringArray(R.array.quote_display_modes);
+
+        for(int i = 0; i<displayModes.length; i++) {
+            if(displayModes[i].equals(quote.displayMode)) {
+                int next = (i + 1 == displayModes.length) ? 0 : i + 1;
+                quote.displayMode = displayModes[next];
+
+                break;
+            }
+        }
+
+        // If it isn't a new quote, save the toggle position even if that is the only thing we change
+        if(!TextUtils.isEmpty(quote.created)) {
+            quote.edited = true;
+        }
+
+        updateToolbarPriceData();
+    }
+
+    private void updateToolbarPriceData() {
+        NumberFormat formatter = FormatUtils.getFormatter();
+        formatter.setMaximumFractionDigits(0);
+        formatter.setMinimumFractionDigits(0);
+
+        String toolbarLabel = "";
+        BigDecimal value = new BigDecimal("0");
+
+        if(getString(R.string.quote_display_monthly).equals(quote.displayMode)) {
+
+            if(!TextUtils.isEmpty(quote.monthlyPayment)) {
+                value = new BigDecimal(quote.monthlyPayment);
+            }
+            toolbarLabel = getString(R.string.quote_toolbar_monthly);
+
+        } else if(getString(R.string.quote_display_signing).equals(quote.displayMode)) {
+
+            if(!TextUtils.isEmpty(quote.dueAtSigning)) {
+                value = new BigDecimal(quote.dueAtSigning);
+            }
+            toolbarLabel = getString(R.string.quote_toolbar_signing);
+
+        } else if(getString(R.string.quote_display_total).equals(quote.displayMode)) {
+            if(!TextUtils.isEmpty(quote.totalCost)) {
+                value = new BigDecimal(quote.totalCost);
+            }
+            toolbarLabel = getString(R.string.quote_toolbar_total);
+        }
+
+        if(value.compareTo(new BigDecimal("1000")) == -1) {
+            formatter.setMaximumFractionDigits(2);
+            formatter.setMinimumFractionDigits(2);
+        }
+
+        toolbarPriceTextView.setText(getString(R.string.currency_symbol) + " " + formatter.format(value));
+        toolbarPriceLabelTextView.setText(toolbarLabel);
     }
 
     @Override
@@ -258,6 +318,12 @@ public class QuoteFormActivity extends AppCompatActivity
     @Override
     public Quote getQuote() {
         return quote;
+    }
+
+    @Override
+    public void notifyDataChanged() {
+        updateToolbarPriceData();
+        Timber.d("Notified that data changed");
     }
 }
 

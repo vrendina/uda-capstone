@@ -46,6 +46,7 @@ public abstract class QuoteFormFragment extends Fragment {
 
     protected interface QuoteManager {
         Quote getQuote();
+        void notifyDataChanged();
     }
 
 }

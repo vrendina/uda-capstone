@@ -17,6 +17,7 @@
 package io.levelsoftware.carculator.ui.quoteform;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,9 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
+import io.levelsoftware.fincalc.LoanCalculator;
 import io.levelsoftware.keyculator.StringNumber;
+import timber.log.Timber;
 
 public class QuoteFormLoanPricingFragment extends QuoteFormPricingFragment {
 
@@ -58,8 +61,47 @@ public class QuoteFormLoanPricingFragment extends QuoteFormPricingFragment {
         Quote quote = quoteManager.getQuote();
 
         if(quote != null) {
-            fields.get(R.id.form_field_interest_rate).setInitialValue(new StringNumber(quote.interestRate));
+            fields.get(R.id.form_field_interest_percentage).setInitialValue(new StringNumber(quote.interestPercentage));
+
+            if(quote.calculator == null) {
+                quote.calculator = new LoanCalculator.Builder().build();
+            }
+            updateCalculator();
         }
+    }
+
+    @Override
+    public void fieldValueChanged(@IdRes int id, StringNumber value) {
+        super.fieldValueChanged(id, value);
+
+        Quote quote = quoteManager.getQuote();
+        String string = value.getStringValue();
+
+        Timber.d("Field with id '" + id + "' changed value to: " + string);
+
+        switch (id) {
+            case R.id.form_field_interest_percentage:
+                if(!same(quote.interestPercentage, string)) {
+                    quote.interestPercentage = string;
+                    quote.edited = true;
+                }
+                break;
+        }
+
+        updateCalculator();
+        quoteManager.notifyDataChanged();
+    }
+
+    @Override
+    protected void updateCalculator() {
+        super.updateCalculator();
+
+        Quote quote = quoteManager.getQuote();
+
+        LoanCalculator calculator = (LoanCalculator)quote.calculator;
+        calculator.setInterestPercentage(quote.interestPercentage);
+
+        updateSummary();
     }
     
 }

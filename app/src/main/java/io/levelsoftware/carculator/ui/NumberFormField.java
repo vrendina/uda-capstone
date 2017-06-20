@@ -136,8 +136,6 @@ public class NumberFormField extends FrameLayout
         this.rawValue = value;
         this.value = value;
 
-        Timber.d("Called setInitialValue with value of: " + getFormattedValue());
-
         textInputLayout.setHintAnimationEnabled(false);
         editText.post(new Runnable() {
             @Override
@@ -243,6 +241,8 @@ public class NumberFormField extends FrameLayout
             } else {
                 // Format the field based on the flags
                 NumberFormat formatter = FormatUtils.getFormatter();
+                formatter.setMaximumFractionDigits(0);
+                formatter.setMinimumFractionDigits(0);
 
                 StringBuilder builder = new StringBuilder();
                 builder.append(formatter.format(value.getIntegerCharacteristic()));

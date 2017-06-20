@@ -40,6 +40,20 @@
     <string name="quote_type_lease" translatable="false">lease</string>
     <string name="quote_type_loan" translatable="false">loan</string>
 
+    <string name="quote_display_monthly" translatable="false">monthly</string>
+    <string name="quote_display_total" translatable="false">total</string>
+    <string name="quote_display_signing" translatable="false">signing</string>
+
+    <string-array name="quote_display_modes">
+        <item>@string/quote_display_monthly</item>
+        <item>@string/quote_display_total</item>
+        <item>@string/quote_display_signing</item>
+    </string-array>
+
+    <string name="quote_toolbar_monthly">monthly payment</string>
+    <string name="quote_toolbar_total">total cost</string>
+    <string name="quote_toolbar_signing">due at signing</string>
+
     <string name="database_tree_quotes" translatable="false">quotes</string>
     <string name="database_tree_users" translatable="false">users</string>
     <string name="database_tree_vehicles" translatable="false">vehicles</string>

@@ -17,6 +17,7 @@
 package io.levelsoftware.carculator.ui.quoteform;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +26,14 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
+import io.levelsoftware.fincalc.LeaseCalculator;
 import io.levelsoftware.keyculator.StringNumber;
+import timber.log.Timber;
 
 
 public class QuoteFormLeasePricingFragment extends QuoteFormPricingFragment {
+
+    protected LeaseCalculator calculator;
 
     public QuoteFormLeasePricingFragment() {}
 
@@ -63,6 +68,34 @@ public class QuoteFormLeasePricingFragment extends QuoteFormPricingFragment {
         if(quote != null) {
             fields.get(R.id.form_field_residual_value).setInitialValue(new StringNumber(quote.residual));
             fields.get(R.id.form_field_money_factor).setInitialValue(new StringNumber(quote.moneyFactor));
+
+            calculator = new LeaseCalculator();
         }
+    }
+
+    @Override
+    public void fieldValueChanged(@IdRes int id, StringNumber value) {
+        Quote quote = quoteManager.getQuote();
+        String string = value.getStringValue();
+
+        Timber.d("Field with id '" + id + "' changed value to: " + string);
+
+        switch (id) {
+            case R.id.form_field_residual_value:
+                if(!same(quote.residual, string)) {
+                    quote.residual = string;
+                    quote.edited = true;
+                }
+                break;
+
+            case R.id.form_field_money_factor:
+                if(!same(quote.moneyFactor, string)) {
+                    quote.moneyFactor = string;
+                    quote.edited = true;
+                }
+                break;
+        }
+
+        updateCalculator();
     }
 }

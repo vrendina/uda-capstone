@@ -26,6 +26,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.levelsoftware.fincalc.FinancialCalculator;
+
 @IgnoreExtraProperties
 public class Quote implements Parcelable {
 
@@ -53,9 +55,6 @@ public class Quote implements Parcelable {
     @SerializedName("term")
     public String term;
 
-    @SerializedName("rebate")
-    public String rebate;
-
     @SerializedName("downPayment")
     public String downPayment;
 
@@ -67,6 +66,9 @@ public class Quote implements Parcelable {
 
 //    @SerializedName("fees")
 //    public Map<String, Fee> fees;
+
+    @SerializedName("displayMode")
+    public String displayMode;
 
     @SerializedName("totalCost")
     public String totalCost;
@@ -89,6 +91,9 @@ public class Quote implements Parcelable {
     @Exclude
     public String type;
 
+    @Exclude
+    public FinancialCalculator calculator;
+
     public Quote() {}
 
     public Quote(Vehicle vehicle) {
@@ -103,10 +108,10 @@ public class Quote implements Parcelable {
         moneyFactor = in.readString();
         interestPercentage = in.readString();
         term = in.readString();
-        rebate = in.readString();
         downPayment = in.readString();
         tradeValue = in.readString();
         tradeOwed = in.readString();
+        displayMode = in.readString();
         totalCost = in.readString();
         monthlyPayment = in.readString();
         dueAtSigning = in.readString();
@@ -125,10 +130,10 @@ public class Quote implements Parcelable {
         dest.writeString(moneyFactor);
         dest.writeString(interestPercentage);
         dest.writeString(term);
-        dest.writeString(rebate);
         dest.writeString(downPayment);
         dest.writeString(tradeValue);
         dest.writeString(tradeOwed);
+        dest.writeString(displayMode);
         dest.writeString(totalCost);
         dest.writeString(monthlyPayment);
         dest.writeString(dueAtSigning);
@@ -166,10 +171,10 @@ public class Quote implements Parcelable {
         result.put("moneyFactor", moneyFactor);
         result.put("interestPercentage", interestPercentage);
         result.put("term", term);
-        result.put("rebate", rebate);
         result.put("downPayment", downPayment);
         result.put("tradeValue", tradeValue);
         result.put("tradeOwed", tradeOwed);
+        result.put("displayMode", displayMode);
 //        result.put("fees", fees);
         result.put("totalCost", totalCost);
         result.put("monthlyPayment", monthlyPayment);
@@ -189,10 +194,10 @@ public class Quote implements Parcelable {
                 ", moneyFactor='" + moneyFactor + '\'' +
                 ", interestPercentage='" + interestPercentage + '\'' +
                 ", term='" + term + '\'' +
-                ", rebate='" + rebate + '\'' +
                 ", downPayment='" + downPayment + '\'' +
                 ", tradeValue='" + tradeValue + '\'' +
                 ", tradeOwed='" + tradeOwed + '\'' +
+                ", displayMode='" + displayMode + '\'' +
                 ", totalCost='" + totalCost + '\'' +
                 ", monthlyPayment='" + monthlyPayment + '\'' +
                 ", dueAtSigning='" + dueAtSigning + '\'' +
@@ -200,6 +205,7 @@ public class Quote implements Parcelable {
                 ", edited=" + edited +
                 ", id='" + id + '\'' +
                 ", type='" + type + '\'' +
+                ", calculator=" + calculator +
                 '}';
     }
 }

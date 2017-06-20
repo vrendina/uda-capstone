@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
@@ -132,7 +134,6 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
 
     @Override
     public void fieldValueChanged(@IdRes int id, StringNumber value) {
-
         Quote quote = quoteManager.getQuote();
         String string = value.getStringValue();
 
@@ -140,27 +141,6 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
             case R.id.form_field_negotiated_price:
                 if(!same(quote.price, string)) {
                     quote.price = string;
-                    quote.edited = true;
-                }
-                break;
-
-            case R.id.form_field_residual_value:
-                if(!same(quote.residual, string)) {
-                    quote.residual = string;
-                    quote.edited = true;
-                }
-                break;
-
-            case R.id.form_field_money_factor:
-                if(!same(quote.moneyFactor, string)) {
-                    quote.moneyFactor = string;
-                    quote.edited = true;
-                }
-                break;
-
-            case R.id.form_field_interest_rate:
-                if(!same(quote.interestRate, string)) {
-                    quote.interestRate = string;
                     quote.edited = true;
                 }
                 break;
@@ -201,10 +181,39 @@ public abstract class QuoteFormPricingFragment extends QuoteFormFragment
         if(quote != null) {
             fields.get(R.id.form_field_negotiated_price).setInitialValue(new StringNumber(quote.price));
             fields.get(R.id.form_field_down_payment).setInitialValue(new StringNumber(quote.downPayment));
-            fields.get(R.id.form_field_term).setInitialValue(new StringNumber(quote.term));
             fields.get(R.id.form_field_trade_in_value).setInitialValue(new StringNumber(quote.tradeValue));
             fields.get(R.id.form_field_trade_in_owed).setInitialValue(new StringNumber(quote.tradeOwed));
+            fields.get(R.id.form_field_term).setInitialValue(new StringNumber(quote.term));
         }
+    }
+
+    protected void updateCalculator() {
+        Quote quote = quoteManager.getQuote();
+
+        quote.calculator.setPrice(quote.price);
+        quote.calculator.setTerm(quote.term);
+        quote.calculator.setDownPayment(quote.downPayment);
+        quote.calculator.setTradeValue(quote.tradeValue);
+        quote.calculator.setTradeOwed(quote.tradeOwed);
+    }
+
+    protected void updateSummary() {
+        Quote quote = quoteManager.getQuote();
+
+        String totalCost = quote.calculator.getTotalCost()
+                .setScale(2, BigDecimal.ROUND_HALF_EVEN).toPlainString();
+
+        String monthlyPayment = quote.calculator.getMonthlyPayment()
+                .setScale(2, BigDecimal.ROUND_HALF_EVEN).toPlainString();
+
+        String dueAtSigning = quote.calculator.getDueAtSigning()
+                .setScale(2, BigDecimal.ROUND_HALF_EVEN).toPlainString();
+
+        quote.totalCost = totalCost;
+        quote.monthlyPayment = monthlyPayment;
+        quote.dueAtSigning = dueAtSigning;
+
+        Timber.d("Total cost: " + totalCost + " Monthly payment: " + monthlyPayment + " Due at signing: " + dueAtSigning);
     }
 
 }
