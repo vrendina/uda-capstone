@@ -31,6 +31,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -139,10 +140,14 @@ public class QuoteListActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QuoteListActivity.this, VehicleListActivity.class);
-                intent.putExtra(getString(R.string.intent_key_quote_type), getQuoteTypeForTabPosition());
+                if(getQuoteTypeForTabPosition().equals(getString(R.string.quote_type_loan))) {
+                    Intent intent = new Intent(QuoteListActivity.this, VehicleListActivity.class);
+                    intent.putExtra(getString(R.string.intent_key_quote_type), getQuoteTypeForTabPosition());
 
-                startActivity(intent);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(QuoteListActivity.this, R.string.leasing_coming_soon, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

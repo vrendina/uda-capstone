@@ -127,4 +127,6 @@
     <string name="edmunds_media_thumb_suffix" translatable="false">150.jpg</string>
     <string name="edmunds_media_full_suffix" translatable="false">815.jpg</string>
 
+    <string name="leasing_coming_soon">Leasing coming soon!</string>
+
 </resources>
