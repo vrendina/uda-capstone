@@ -48,12 +48,8 @@
             android:clipToPadding="false"
             android:scrollbars="none"
             app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
-            app:spanCount="1"
-            tools:listitem="@layout/list_item_vehicle_element"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            app:spanCount="@integer/list_grid_span_count"
+            tools:listitem="@layout/list_item_vehicle_element" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

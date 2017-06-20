@@ -16,10 +16,5 @@
   -->
 
 <resources>
-    <integer name="list_grid_span_count">1</integer>
-
-    <integer name="default_currency_decimals">2</integer>
-    <integer name="tax_rate_decimals">4</integer>
-    <integer name="money_factor_decimals">6</integer>
-    <integer name="interest_rate_decimals">2</integer>
+    <integer name="list_grid_span_count">3</integer>
 </resources>
