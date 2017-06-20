@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
 import io.levelsoftware.carculator.model.quote.Vehicle;
+import io.levelsoftware.carculator.util.FormatUtils;
 
 public class QuoteListContainerViewHolder extends RecyclerView.ViewHolder {
 
@@ -69,7 +71,9 @@ public class QuoteListContainerViewHolder extends RecyclerView.ViewHolder {
         }
 
         modelTextView.setText(vehicle.make.name + " " + vehicle.model.name);
-        bestOfferTextView.setText("Best offer $16,179");
+
+        bestOfferTextView.setText(context.getString(R.string.quote_list_best_offer,
+                FormatUtils.formatCurrency(new BigDecimal(quotes.get(0).totalCost))));
 
         container.setContentDescription(vehicle.make.name + " " +
                 vehicle.model.name);

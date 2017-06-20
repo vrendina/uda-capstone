@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -146,7 +147,20 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
             }
 
             ArrayList<Quote> quotes = data.get(quote.vehicle.model.id);
-            quotes.add(quote);
+
+            // Sort by lowest total cost to highest
+            if(quotes.size() > 0) {
+                BigDecimal lastTotal = new BigDecimal(quotes.get(0).totalCost);
+
+                if(lastTotal.compareTo(new BigDecimal(quote.totalCost)) == 1) {
+                    quotes.add(0, quote);
+                } else {
+                    quotes.add(quote);
+                }
+
+            } else {
+                quotes.add(quote);
+            }
         }
 
         if(data.size() > 0) {

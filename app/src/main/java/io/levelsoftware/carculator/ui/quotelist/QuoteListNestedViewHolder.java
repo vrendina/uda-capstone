@@ -25,10 +25,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
+import io.levelsoftware.carculator.util.FormatUtils;
 
 public class QuoteListNestedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -56,10 +59,11 @@ public class QuoteListNestedViewHolder extends RecyclerView.ViewHolder implement
         dealerTextView.setText(context.getString(R.string.quote_no_dealer,
                 quote.vehicle.make.name, quote.vehicle.model.name));
 
+        paymentTextView.setText(context.getString(R.string.quote_list_pricing,
+                FormatUtils.formatCurrency(new BigDecimal(quote.monthlyPayment)),
+                FormatUtils.formatCurrency(new BigDecimal(quote.dueAtSigning))));
 
-        paymentTextView.setText("Not enough information to display pricing");
-
-        totalTextView.setVisibility(View.GONE);
+        totalTextView.setText(FormatUtils.formatCurrency(new BigDecimal(quote.totalCost)));
 
         container.setContentDescription(quote.vehicle.make.name + " " + quote.vehicle.model.name);
     }

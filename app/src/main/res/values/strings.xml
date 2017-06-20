@@ -22,6 +22,9 @@
 
     <string name="quote_no_dealer">%1$s %2$s Quote</string>
 
+    <string name="quote_list_best_offer">Best offer %1$s</string>
+    <string name="quote_list_pricing">%1$s/month, %2$s due at signing</string>
+
     <string name="content_description_logo">Logo</string>
     <string name="content_description_vehicle_picture">Vehicle Picture</string>
     <string name="content_description_edmunds">Data Provided by Edmunds.com</string>
