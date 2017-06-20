@@ -22,5 +22,5 @@
     <item name="lease_term_max" type="dimen" format="float">120</item>
     <item name="lease_term_min" type="dimen" format="float">12</item>
     <item name="loan_term_max" type="dimen" format="float">120</item>
-    <item name="loan_term_min" type="dimen" format="float">12</item>
+    <item name="loan_term_min" type="dimen" format="float">0</item>
 </resources>
