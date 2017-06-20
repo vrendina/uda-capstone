@@ -53,7 +53,7 @@ public class FormatUtils {
             formatter.setMinimumFractionDigits(2);
         }
 
-        return "$ " + formatter.format(number);
+        return "$" + formatter.format(number);
     }
 
 }

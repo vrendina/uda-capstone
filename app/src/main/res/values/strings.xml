@@ -128,5 +128,6 @@
     <string name="edmunds_media_full_suffix" translatable="false">815.jpg</string>
 
     <string name="leasing_coming_soon">Leasing coming soon!</string>
+    <string name="dealer_input_coming_soon">Dealer input coming soon!</string>
 
 </resources>

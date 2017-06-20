@@ -73,7 +73,7 @@
                 android:paddingEnd="16dp"
                 android:paddingStart="0dp"
                 android:paddingRight="16dp"
-                tools:text="$321/mo, $349 due at signing"/>
+                tools:text="$321.49/month, $2,350 due at signing"/>
 
         </LinearLayout>
 
