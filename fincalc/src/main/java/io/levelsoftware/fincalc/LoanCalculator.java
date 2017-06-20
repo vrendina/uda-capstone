@@ -49,6 +49,10 @@ public class LoanCalculator extends FinancialCalculator {
         this.interestPercentage = (interestPercentage == null) ? BigDecimal.ZERO : interestPercentage;
     }
 
+    public void setInterestPercentage(String interestPercentage) {
+        this.interestPercentage = (interestPercentage == null) ? BigDecimal.ZERO : new BigDecimal(interestPercentage);
+    }
+
     @Override
     public BigDecimal getTotalCost() {
         BigDecimal total = getTotalLoanCost().add(getDownPayment()).add(getNonCapitalizedFees());
@@ -171,16 +175,32 @@ public class LoanCalculator extends FinancialCalculator {
             this.interestPercentage = interestPercentage;
             this.term = term;
         }
+
+        public Builder(String price, String interestPercentage, String term) {
+            this.price = (price == null) ? null : new BigDecimal(price);
+            this.interestPercentage = (interestPercentage == null) ? null : new BigDecimal(interestPercentage);
+            this.term = (term == null) ? null : Integer.parseInt(term);
+        }
+
+        public Builder() {}
         
         public Builder tax(BigDecimal percentage, boolean capitalized) {
             this.taxPercentage = percentage;
             this.taxCapitalized = capitalized;
             return this;
         }
+
+        public Builder tax(String percentage, boolean capitalized) {
+            return tax((percentage == null) ? null : new BigDecimal(percentage), capitalized);
+        }
         
         public Builder downPayment(BigDecimal downPayment) {
             this.downPayment = downPayment;
             return this;
+        }
+
+        public Builder downPayment(String downPayment) {
+            return downPayment((downPayment == null) ? null : new BigDecimal(downPayment));
         }
         
         public Builder tradeValue(BigDecimal tradeValue) {
@@ -188,9 +208,17 @@ public class LoanCalculator extends FinancialCalculator {
             return this;
         }
 
+        public Builder tradeValue(String tradeValue) {
+            return tradeValue((tradeValue == null) ? null : new BigDecimal(tradeValue));
+        }
+
         public Builder tradeOwed(BigDecimal tradeOwed) {
             this.tradeOwed = tradeOwed;
             return this;
+        }
+
+        public Builder tradeOwed(String tradeOwed) {
+            return tradeOwed((tradeOwed == null) ? null : new BigDecimal(tradeOwed));
         }
 
         public Builder fee(Fee fee) {

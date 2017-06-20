@@ -55,12 +55,20 @@ public abstract class FinancialCalculator {
         this.price = (price == null) ? BigDecimal.ZERO : price;
     }
 
+    public void setPrice(String price) {
+        this.price = (price == null) ? BigDecimal.ZERO : new BigDecimal(price);
+    }
+
     public BigDecimal getDownPayment() {
         return downPayment;
     }
 
     public void setDownPayment(BigDecimal downPayment) {
         this.downPayment = (downPayment == null) ? BigDecimal.ZERO : downPayment;
+    }
+
+    public void setDownPayment(String downPayment) {
+        this.downPayment = (downPayment == null) ? BigDecimal.ZERO : new BigDecimal(downPayment);
     }
 
     public Integer getTerm() {
@@ -77,12 +85,20 @@ public abstract class FinancialCalculator {
         this.term = (term == null) ? 0 : term;
     }
 
+    public void setTerm(String term) {
+        this.term = (term == null) ? 0 : Integer.parseInt(term);
+    }
+
     public BigDecimal getTaxPercentage() {
         return taxPercentage;
     }
 
     public void setTaxPercentage(BigDecimal taxPercentage) {
         this.taxPercentage = (taxPercentage == null) ? BigDecimal.ZERO : taxPercentage;
+    }
+
+    public void setTaxPercentage(String taxPercentage) {
+        this.taxPercentage = (taxPercentage == null) ? BigDecimal.ZERO : new BigDecimal(taxPercentage);
     }
 
     public BigDecimal getTradeValue() {
@@ -93,12 +109,20 @@ public abstract class FinancialCalculator {
         this.tradeValue = (tradeValue == null) ? BigDecimal.ZERO : tradeValue;
     }
 
+    public void setTradeValue(String tradeValue) {
+        this.tradeValue = (tradeValue == null) ? BigDecimal.ZERO : new BigDecimal(tradeValue);
+    }
+
     public BigDecimal getTradeOwed() {
         return tradeOwed;
     }
 
     public void setTradeOwed(BigDecimal tradeOwed) {
         this.tradeOwed = (tradeOwed == null) ? BigDecimal.ZERO : tradeOwed;
+    }
+
+    public void setTradeOwed(String tradeOwed) {
+        this.tradeOwed = (tradeOwed == null) ? BigDecimal.ZERO : new BigDecimal(tradeOwed);
     }
 
     public boolean isTaxCapitalized() {
