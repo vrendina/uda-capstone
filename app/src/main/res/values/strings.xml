@@ -130,4 +130,12 @@
     <string name="leasing_coming_soon">Leasing coming soon!</string>
     <string name="dealer_input_coming_soon">Dealer input coming soon!</string>
 
+
+    <!-- Widget -->
+    <string name="broadcast_updated_data" translatable="false">io.levelsoftware.carculator.widget.ACTION_DATA_UPDATED</string>
+    <string name="widget_quote_list_name">Recent Loan Quotes</string>
+    <string name="widget_quote_list_empty">No recent quotes</string>
+    <string name="widget_pref_recent_quotes" translatable="false">recent_quotes</string>
+    <string name="intent_key_widget_launch" translatable="false">widget_launch</string>
+
 </resources>

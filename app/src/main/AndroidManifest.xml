@@ -73,6 +73,28 @@
             android:enabled="true"
             android:exported="false" />
 
+
+        <!-- Widget Related -->
+        <service
+            android:name=".widget.QuoteListWidgetIntentService"
+            android:exported="false" />
+
+        <service
+            android:name=".widget.QuoteListRemoteViewService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver
+            android:name=".widget.QuoteListWidgetProvider"
+            android:label="@string/widget_quote_list_name" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="io.levelsoftware.carculator.widget.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_quote_list" />
+        </receiver>
+
     </application>
 
 </manifest>

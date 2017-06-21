@@ -17,6 +17,7 @@
 package io.levelsoftware.carculator.ui.quoteform;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -46,6 +47,7 @@ import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
 import io.levelsoftware.carculator.model.quote.Vehicle;
+import io.levelsoftware.carculator.ui.quotelist.QuoteListActivity;
 import io.levelsoftware.carculator.util.DateUtils;
 import io.levelsoftware.carculator.util.FormatUtils;
 import io.levelsoftware.carculator.util.UserUtils;
@@ -110,6 +112,18 @@ public class QuoteFormActivity extends AppCompatActivity
         // Close the keyboard on back button press if it is open
         if(pricingFragment.keyboardVisible()) {
             pricingFragment.hideKeyboard();
+            return;
+        }
+
+        // If launched from the widget return directly to the home screen
+        boolean widgetLaunch = getIntent().getBooleanExtra(getString(R.string.intent_key_widget_launch), false);
+        if(widgetLaunch) {
+            saveQuote();
+
+            Intent homeIntent = new Intent(this, QuoteListActivity.class);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(homeIntent);
+
             return;
         }
 

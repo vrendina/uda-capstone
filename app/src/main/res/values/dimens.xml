@@ -16,4 +16,14 @@
 
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="widget_vehicle_default_width">40dp</dimen>
+    <dimen name="widget_vehicle_default_height">40dp</dimen>
+    <dimen name="widget_vehicle_min_resize_width">40dp</dimen>
+    <dimen name="widget_vehicle_min_resize_height">@dimen/widget_vehicle_default_height</dimen>
+
+    <dimen name="widget_vehicle_list_default_width">250dp</dimen>
+    <dimen name="widget_vehicle_list_default_height">110dp</dimen>
+    <dimen name="widget_vehicle_list_min_resize_width">250dp</dimen>
+    <dimen name="widget_vehicle_list_min_resize_height">@dimen/widget_vehicle_default_height</dimen>
 </resources>

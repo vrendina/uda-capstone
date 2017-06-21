@@ -37,4 +37,16 @@ public class PreferenceUtils {
         editor.putLong(key, (new Date()).getTime());
         editor.apply();
     }
+
+    public static void writeRecentQuotes(Context context, String key, String quotes) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, quotes);
+        editor.apply();
+    }
+
+    public static String getRecentQuotes(Context context, String key) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(key, null);
+    }
 }

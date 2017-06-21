@@ -17,6 +17,7 @@
 package io.levelsoftware.carculator.ui.quotelist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.levelsoftware.carculator.R;
 import io.levelsoftware.carculator.model.quote.Quote;
+import io.levelsoftware.carculator.util.PreferenceUtils;
 import io.levelsoftware.carculator.util.UserUtils;
 import timber.log.Timber;
 
@@ -192,11 +195,40 @@ public class QuoteListFragment extends Fragment implements ValueEventListener {
 
         adapter.setData(data);
         recyclerView.smoothScrollToPosition(0);
+
+        if(quoteType.equals(getString(R.string.quote_type_loan)))
+            updateRecentQuotes(reversedQuotes);
     }
 
     @Override public void onCancelled(DatabaseError databaseError) {}
 
     protected interface QuoteListOnScrollListener {
         void quoteListScrolled(int dx, int dy);
+    }
+
+    private void updateRecentQuotes(ArrayList<Quote> quotes) {
+        int max = 3;
+
+        ArrayList<Quote> recentQuotes = new ArrayList<>();
+
+        for(int i = 0; i<quotes.size(); i++) {
+            if(i == max) { break; }
+
+            if(quotes.get(i) != null) {
+                Quote quote = quotes.get(i);
+                recentQuotes.add(quote);
+            }
+
+        }
+
+        Gson gson = new Gson();
+        Timber.d("Recent quotes for widget: " + gson.toJson(recentQuotes));
+
+        Intent dataUpdatedIntent = new Intent(getString(R.string.broadcast_updated_data));
+        getContext().sendBroadcast(dataUpdatedIntent);
+
+        PreferenceUtils.writeRecentQuotes(getContext(),
+                getString(R.string.widget_pref_recent_quotes),
+                gson.toJson(recentQuotes));
     }
 }
