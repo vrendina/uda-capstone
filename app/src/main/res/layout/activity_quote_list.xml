@@ -55,7 +55,7 @@
                 style="@style/TabLayout.QuoteList"
                 android:theme="@style/TabLayout.QuoteList.Theme"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_height" />
+                android:layout_height="?attr/actionBarSize" />
 
     </android.support.design.widget.AppBarLayout>
 
